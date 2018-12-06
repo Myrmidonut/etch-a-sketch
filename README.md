@@ -8,13 +8,13 @@ The app allows the user to create accounts and to save drawings to a database wi
 Drawings of other users can be viewed and added to a personal favourites list.
 
 ## Technologies
-# Frontend
+### Frontend
 * React
 
-# Backend
+### Backend
 * Laravel
 * PostgreSQL
 
-# Hosting
+### Hosting
 * Heroku
 * ElephantSQL
