@@ -1,21 +1,55 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import Navbar from "./Navbar";
+import Drawingboard from "./Drawingboard";
+import Footer from "./Footer";
+import Gallery from "./Gallery";
 
 class App extends Component {
   constructor (props) {
     super(props)
     
     this.state = {
-      test: "test"
+      content: "Drawingboard"
     }
 
-    //this.handleFieldChange = this.handleFieldChange.bind(this)
+    // this.handleMouseDown = this.handleMouseDown.bind(this)
+  }
+
+  componentDidMount() {
+    document.getElementById("galleryButton").addEventListener("click", e => {
+      e.preventDefault();
+
+      if (this.state.content === "Drawingboard") {
+        this.setState({
+          content: "Gallery"
+        })
+      } else {
+        this.setState({
+          content: "Drawingboard"
+        })
+      }
+    })
   }
 
   render() {
+    let content = null;
+
+    if (this.state.content === "Drawingboard") {
+      content = (
+        <Drawingboard />
+      )
+    } else {
+      content = (
+        <Gallery />
+      )
+    }
+
     return (
-      <div>
-        {this.state.test}
+      <div className="App">
+        <Navbar home={this.state.content}/>
+        {content} 
+        <Footer />
       </div>
     );
   }
