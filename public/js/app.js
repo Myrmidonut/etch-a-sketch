@@ -42153,6 +42153,18 @@ function (_Component) {
   }
 
   _createClass(Navbar, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      document.getElementById("login").addEventListener("click", function (e) {
+        e.preventDefault();
+        fetch("/api/login").then(function (response) {
+          return response.text();
+        }).then(function (data) {
+          console.log(data);
+        });
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
       var buttons = null;
@@ -42202,8 +42214,9 @@ function (_Component) {
       }, home)), buttons, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
         id: "account"
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
-        href: "/",
-        alt: "Login"
+        href: "/api/login",
+        alt: "Login",
+        id: "login"
       }, "Login"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
         href: "/",
         alt: "Register"

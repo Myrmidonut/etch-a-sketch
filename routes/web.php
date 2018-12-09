@@ -14,3 +14,5 @@
 Route::get('/', function () {
   return view('app');
 });
+
+//Route::get("/login", "AccountController@login");

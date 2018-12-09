@@ -1,6 +1,18 @@
 import React, { Component } from 'react';
 
 class Navbar extends Component {
+  componentDidMount() {
+    document.getElementById("login").addEventListener("click", e => {
+      e.preventDefault();
+
+      fetch("/api/login")
+      .then(response => response.text())
+      .then(data => {
+        console.log(data);
+      })
+    })
+  }
+
   render() {
     let buttons = null;
     let home = null;
@@ -41,7 +53,7 @@ class Navbar extends Component {
         {buttons}
         
         <div id="account">
-          <a href="/" alt="Login">Login</a>
+          <a href="/api/login" alt="Login" id="login">Login</a>
           <a href="/" alt="Register">Register</a>
           <a href="/" alt="Logout">Logout</a>
           <a href="/" alt="Account">Account</a>
