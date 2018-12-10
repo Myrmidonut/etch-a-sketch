@@ -10,6 +10,7 @@ class Drawingboard extends Component {
   }
 
   componentDidMount() {
+    console.log("mount")
     const drawingBoard = document.getElementById("drawingBoard");
 
     drawingBoard.style.height = this.props.gridHeight + "px";
@@ -25,6 +26,13 @@ class Drawingboard extends Component {
   componentWillUnmount() {
     document.removeEventListener("mousedown", this.mousedown);
     document.removeEventListener("mouseup", this.mouseup);
+    console.log("unmount")
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.gridSize !== prevProps.gridSize) {
+      this.createGrid();
+    }
   }
 
   mousedown(e) {
@@ -47,6 +55,8 @@ class Drawingboard extends Component {
     const gridItemDimension = this.props.gridHeight/this.props.gridSize + "px";
     let newOpacity = [];
 
+    document.getElementById("drawingBoard").innerHTML = "";
+
     for (let i = 0; i < (this.props.gridSize * this.props.gridSize); i++) {
       const gridItem = document.createElement("div");
 
@@ -56,7 +66,13 @@ class Drawingboard extends Component {
       gridItem.style.border = "2px solid white";
       gridItem.style.float = "left";
       gridItem.style.backgroundColor = "green";
-      gridItem.style.opacity = 0;
+      //if (this.props.opacity[i]) {
+      //  gridItem.style.opacity = this.props.opacity[i];
+      //  newOpacity[i] = this.props.opacity[i];
+      //} else {
+        gridItem.style.opacity = 0;
+      //  newOpacity[i] = 0;
+      //}
       gridItem.className = "gridItem";
       
       document.getElementById("drawingBoard").appendChild(gridItem);
@@ -67,25 +83,6 @@ class Drawingboard extends Component {
         opacity: newOpacity
       })
 
-      /*
-      gridItem.addEventListener("mouseover", e => {
-        console.log(this.props.mouseHold)
-
-        if (this.props.mouseHold) {
-          let newOpacity = this.state.opacity.slice();
-
-          newOpacity[i] += 0.1;
-
-          this.setState({
-            opacity: newOpacity
-          })
-
-          this.style.opacity = this.state.opacity[i];
-        }
-      })
-      */
-
-      
       let self = this;
 
       gridItem.addEventListener("mouseover", function() {
@@ -101,7 +98,6 @@ class Drawingboard extends Component {
           if (this.style.opacity < 1) this.style.opacity = self.state.opacity[i];
         }
       })
-      
     }
   }
 

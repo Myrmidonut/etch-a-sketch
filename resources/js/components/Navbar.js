@@ -4,13 +4,14 @@ class Navbar extends Component {
   constructor (props) {
     super(props)
 
-    this.save = this.save.bind(this);
+    //this.save = this.save.bind(this);
   }
 
   componentDidMount() {
-    document.getElementById("save").addEventListener("click", this.save)
+    document.getElementById("save").addEventListener("click", this.save);
   }
 
+  /*
   save(e) {
     e.preventDefault();
 
@@ -36,6 +37,7 @@ class Navbar extends Component {
       console.log(data);
     })
   }
+  */
 
   render() {
     let buttons = null;
@@ -48,10 +50,12 @@ class Navbar extends Component {
 
       buttons = (
         <div id="interface">
-          <a href="/" alt="Save" id="save">Save</a>
+          <a href="/" alt="Save" id="save"
+            onClick={this.props.save}>Save</a>
           <a href="/" alt="Delete">Delete</a>
           <a href="/" alt="Reset">Reset</a>
-          <a href="/" alt="Settings">Settings</a>
+          <a href="/" alt="Settings" id="settings"
+            onClick={this.props.settings}>Settings</a>
         </div>
       )
     } else if (this.props.home === "Gallery") {

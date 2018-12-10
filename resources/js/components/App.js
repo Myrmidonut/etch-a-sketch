@@ -17,6 +17,46 @@ class App extends Component {
       opacity: [],
       mouseHold: false
     }
+
+    this.sendSave = this.sendSave.bind(this);
+    this.save = this.save.bind(this);
+    this.settings = this.settings.bind(this);
+  }
+
+  settings(e) {
+    e.preventDefault();
+
+    this.setState({
+      gridSize: 10
+    })
+  }
+
+  save(e) {
+    e.preventDefault();
+
+    let a = document.querySelectorAll(".gridItem");
+    let b = [];
+    
+    a.forEach(e => {
+      b.push(e.style.opacity);
+    })
+
+    this.setState({
+      opacity: b
+    }, this.sendSave)
+  }
+
+  sendSave() {
+    fetch("/api/save", {
+      method: "post",
+      body: new URLSearchParams({
+        data: this.state.opacity
+      })
+    })
+    .then(response => response.text())
+    .then(data => {
+      console.log(data);
+    })
   }
 
   componentDidMount() {
@@ -44,6 +84,7 @@ class App extends Component {
           gridSize={this.state.gridSize}
           gridHeight={this.state.gridHeight}
           mouseHold={this.state.mouseHold}
+          opacity={this.state.opacity}
         />
       )
     } else {
@@ -55,10 +96,13 @@ class App extends Component {
     return (
       <div className="App">
         <Navbar 
+          save={this.save}
+          settings={this.settings}
           home={this.state.content}
           opacity={this.state.opacity}
         />
         {content} 
+        />
         <Footer />
       </div>
     );

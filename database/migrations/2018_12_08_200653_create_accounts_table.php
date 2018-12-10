@@ -13,16 +13,18 @@ class CreateAccountsTable extends Migration {
   public function up() {
     Schema::create('accounts', function (Blueprint $table) {
       $table->increments('id');
+      $table->timestamp("updated_at");
+      $table->timestamp("created_at");
       $table->string("username");
       $table->string("email");
       $table->string("password");
-      $table->integer("default_grid_size");
-      $table->string("default_colors");
-      $table->integer("default_intensity");
-      $table->string("default_shape");
-      $table->string("drawings");
-      $table->string("favorites");
-      $table->string("likes");
+      $table->integer("default_grid_size")->default("32");
+      $table->string("default_colors")->default("green white");
+      $table->integer("default_intensity")->default(0.1);
+      $table->string("default_shape")->default("square");
+      $table->string("drawings"); //array
+      $table->string("favorites"); //array
+      $table->string("likes"); //array
     });
   }
 

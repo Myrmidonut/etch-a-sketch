@@ -13,16 +13,15 @@ class DrawingController extends Controller {
 
   public function save(Request $request) {
     //$method = $request->all();
-    
     //return($method);
 
-    //$data = json_encode($request->all());
+    $data = json_encode($request->all());
 
     $drawing = new Drawing;
-
-    $drawing->data = "hi"; //$data;
-
+    $drawing->data = $data;
     $drawing->save();
+
+    return("saved" . $data);
   }
 
   public function delete() {

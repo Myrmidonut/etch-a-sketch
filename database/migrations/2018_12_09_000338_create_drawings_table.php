@@ -18,8 +18,6 @@ class CreateDrawingsTable extends Migration {
       $table->timestamp("created_at");
       /*
       $table->string("created_by");
-      $table->string("updated_at");
-      $table->string("created_at");
       $table->string("title");
       $table->integer("likes");
       $table->integer("favorites");
