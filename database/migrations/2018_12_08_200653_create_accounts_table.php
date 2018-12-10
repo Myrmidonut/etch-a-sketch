@@ -13,10 +13,16 @@ class CreateAccountsTable extends Migration {
   public function up() {
     Schema::create('accounts', function (Blueprint $table) {
       $table->increments('id');
-      $table->timestamps();
       $table->string("username");
       $table->string("email");
       $table->string("password");
+      $table->integer("default_grid_size");
+      $table->string("default_colors");
+      $table->integer("default_intensity");
+      $table->string("default_shape");
+      $table->string("drawings");
+      $table->string("favorites");
+      $table->string("likes");
     });
   }
 

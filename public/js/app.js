@@ -19323,8 +19323,11 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(App).call(this, props));
     _this.state = {
-      content: "Drawingboard" // this.handleMouseDown = this.handleMouseDown.bind(this)
-
+      content: "Drawingboard",
+      gridSize: 3,
+      gridHeight: 700,
+      opacity: [],
+      mouseHold: false
     };
     return _this;
   }
@@ -19354,7 +19357,11 @@ function (_Component) {
       var content = null;
 
       if (this.state.content === "Drawingboard") {
-        content = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Drawingboard__["a" /* default */], null);
+        content = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Drawingboard__["a" /* default */], {
+          gridSize: this.state.gridSize,
+          gridHeight: this.state.gridHeight,
+          mouseHold: this.state.mouseHold
+        });
       } else {
         content = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__Gallery__["a" /* default */], null);
       }
@@ -19362,7 +19369,8 @@ function (_Component) {
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
         className: "App"
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Navbar__["a" /* default */], {
-        home: this.state.content
+        home: this.state.content,
+        opacity: this.state.opacity
       }), content, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__Footer__["a" /* default */], null));
     }
   }]);
@@ -42131,13 +42139,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 
 
@@ -42146,22 +42154,42 @@ var Navbar =
 function (_Component) {
   _inherits(Navbar, _Component);
 
-  function Navbar() {
+  function Navbar(props) {
+    var _this;
+
     _classCallCheck(this, Navbar);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(Navbar).apply(this, arguments));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Navbar).call(this, props));
+    _this.save = _this.save.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    return _this;
   }
 
   _createClass(Navbar, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      document.getElementById("login").addEventListener("click", function (e) {
-        e.preventDefault();
-        fetch("/api/login").then(function (response) {
-          return response.text();
-        }).then(function (data) {
-          console.log(data);
-        });
+      document.getElementById("save").addEventListener("click", this.save);
+    }
+  }, {
+    key: "save",
+    value: function save(e) {
+      e.preventDefault();
+      var a = document.querySelectorAll(".gridItem");
+      var b = [];
+      a.forEach(function (e) {
+        b.push(e.style.opacity);
+      });
+      this.setState({
+        opacity: b
+      });
+      fetch("/api/save", {
+        method: "post",
+        body: new URLSearchParams({
+          data: this.state.opacity
+        })
+      }).then(function (response) {
+        return response.text();
+      }).then(function (data) {
+        console.log(data);
       });
     }
   }, {
@@ -42176,7 +42204,8 @@ function (_Component) {
           id: "interface"
         }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
           href: "/",
-          alt: "Save"
+          alt: "Save",
+          id: "save"
         }, "Save"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
           href: "/",
           alt: "Delete"
@@ -42252,13 +42281,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 
 
@@ -42273,53 +42302,54 @@ function (_Component) {
     _classCallCheck(this, Drawingboard);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Drawingboard).call(this, props));
-    _this.state = {
-      gridSize: 32,
-      gridHeight: 700,
-      gridItem: [],
-      opacity: [],
-      mouseHold: false
-    };
+    _this.mousedown = _this.mousedown.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.mouseup = _this.mouseup.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.createGrid = _this.createGrid.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
   }
 
   _createClass(Drawingboard, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      var self = this;
       var drawingBoard = document.getElementById("drawingBoard");
-      drawingBoard.style.height = this.state.gridHeight + "px";
-      drawingBoard.style.width = this.state.gridHeight + "px";
+      drawingBoard.style.height = this.props.gridHeight + "px";
+      drawingBoard.style.width = this.props.gridHeight + "px";
       drawingBoard.style.border = "2px solid green";
-
-      function mousedown(e) {
-        e.preventDefault();
-        self.setState({
-          mouseHold: true
-        });
-      }
-
-      function mouseup(e) {
-        e.preventDefault();
-        self.setState({
-          mouseHold: false
-        });
-      }
-
-      document.addEventListener("mousedown", mousedown);
-      document.addEventListener("mouseup", mouseup);
+      document.addEventListener("mousedown", this.mousedown);
+      document.addEventListener("mouseup", this.mouseup);
       this.createGrid();
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      document.removeEventListener("mousedown", this.mousedown);
+      document.removeEventListener("mouseup", this.mouseup);
+    }
+  }, {
+    key: "mousedown",
+    value: function mousedown(e) {
+      e.preventDefault();
+      this.setState({
+        mouseHold: true
+      });
+    }
+  }, {
+    key: "mouseup",
+    value: function mouseup(e) {
+      e.preventDefault();
+      this.setState({
+        mouseHold: false
+      });
     }
   }, {
     key: "createGrid",
     value: function createGrid() {
       var _this2 = this;
 
-      var self = this;
-      var gridItemDimension = this.state.gridHeight / this.state.gridSize + "px";
+      var gridItemDimension = this.props.gridHeight / this.props.gridSize + "px";
       var newOpacity = [];
 
-      var _loop = function _loop(counter) {
+      var _loop = function _loop(i) {
         var gridItem = document.createElement("div");
         gridItem.style.width = gridItemDimension;
         gridItem.style.height = gridItemDimension;
@@ -42328,28 +42358,44 @@ function (_Component) {
         gridItem.style.float = "left";
         gridItem.style.backgroundColor = "green";
         gridItem.style.opacity = 0;
+        gridItem.className = "gridItem";
         document.getElementById("drawingBoard").appendChild(gridItem);
-        newOpacity[counter] = 0;
+        newOpacity[i] = 0;
 
         _this2.setState({
           opacity: newOpacity
         });
+        /*
+        gridItem.addEventListener("mouseover", e => {
+          console.log(this.props.mouseHold)
+            if (this.props.mouseHold) {
+            let newOpacity = this.state.opacity.slice();
+              newOpacity[i] += 0.1;
+              this.setState({
+              opacity: newOpacity
+            })
+              this.style.opacity = this.state.opacity[i];
+          }
+        })
+        */
 
+
+        var self = _this2;
         gridItem.addEventListener("mouseover", function () {
           if (self.state.mouseHold) {
             var _newOpacity = self.state.opacity.slice();
 
-            _newOpacity[counter] += 0.1;
+            _newOpacity[i] += 0.1;
             self.setState({
               opacity: _newOpacity
             });
-            this.style.opacity = self.state.opacity[counter];
+            if (this.style.opacity < 1) this.style.opacity = self.state.opacity[i];
           }
         });
       };
 
-      for (var counter = 0; counter < this.state.gridSize * this.state.gridSize; counter++) {
-        _loop(counter);
+      for (var i = 0; i < this.props.gridSize * this.props.gridSize; i++) {
+        _loop(i);
       }
     }
   }, {

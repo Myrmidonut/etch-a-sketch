@@ -19,6 +19,8 @@ use Illuminate\Http\Request;
   // register
   // account details
 
+//Route::get("/login", "AccountController@login");
+
 Route::get("/login", "AccountController@login");
 Route::get("/logout", "AccountController@logout");
 Route::post("/register", "AccountController@register");
@@ -46,4 +48,4 @@ Route::put("/settings", "DrawingController@settingsupdate");
 
 Route::get("/mydrawings", "GalleryController@mydrawings");
 Route::get("/popular", "GalleryController@popular");
-Route::get("/recet", "GalleryController@recent");
+Route::get("/recent", "GalleryController@recent");

@@ -1,15 +1,39 @@
 import React, { Component } from 'react';
 
 class Navbar extends Component {
-  componentDidMount() {
-    document.getElementById("login").addEventListener("click", e => {
-      e.preventDefault();
+  constructor (props) {
+    super(props)
 
-      fetch("/api/login")
-      .then(response => response.text())
-      .then(data => {
-        console.log(data);
+    this.save = this.save.bind(this);
+  }
+
+  componentDidMount() {
+    document.getElementById("save").addEventListener("click", this.save)
+  }
+
+  save(e) {
+    e.preventDefault();
+
+    let a = document.querySelectorAll(".gridItem");
+    let b = [];
+    
+    a.forEach(e => {
+      b.push(e.style.opacity);
+    })
+
+    this.setState({
+      opacity: b
+    })
+    
+    fetch("/api/save", {
+      method: "post",
+      body: new URLSearchParams({
+        data: this.state.opacity
       })
+    })
+    .then(response => response.text())
+    .then(data => {
+      console.log(data);
     })
   }
 
@@ -24,7 +48,7 @@ class Navbar extends Component {
 
       buttons = (
         <div id="interface">
-          <a href="/" alt="Save">Save</a>
+          <a href="/" alt="Save" id="save">Save</a>
           <a href="/" alt="Delete">Delete</a>
           <a href="/" alt="Reset">Reset</a>
           <a href="/" alt="Settings">Settings</a>

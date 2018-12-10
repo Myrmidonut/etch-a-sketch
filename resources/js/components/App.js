@@ -11,10 +11,12 @@ class App extends Component {
     super(props)
     
     this.state = {
-      content: "Drawingboard"
+      content: "Drawingboard",
+      gridSize: 3,
+      gridHeight: 700,
+      opacity: [],
+      mouseHold: false
     }
-
-    // this.handleMouseDown = this.handleMouseDown.bind(this)
   }
 
   componentDidMount() {
@@ -38,7 +40,11 @@ class App extends Component {
 
     if (this.state.content === "Drawingboard") {
       content = (
-        <Drawingboard />
+        <Drawingboard 
+          gridSize={this.state.gridSize}
+          gridHeight={this.state.gridHeight}
+          mouseHold={this.state.mouseHold}
+        />
       )
     } else {
       content = (
@@ -48,7 +54,10 @@ class App extends Component {
 
     return (
       <div className="App">
-        <Navbar home={this.state.content}/>
+        <Navbar 
+          home={this.state.content}
+          opacity={this.state.opacity}
+        />
         {content} 
         <Footer />
       </div>

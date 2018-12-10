@@ -6,6 +6,18 @@ use Illuminate\Http\Request;
 
 class AccountController extends Controller {
   public function login() {
-    return "test";
+    return "login";
+  }
+
+  public function logout() {
+    return "logout";
+  }
+
+  public function register() {
+    return "register";
+  }
+
+  public function account() {
+    return "account details";
   }
 }
