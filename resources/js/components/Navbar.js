@@ -3,41 +3,28 @@ import React, { Component } from 'react';
 class Navbar extends Component {
   constructor (props) {
     super(props)
-
-    //this.save = this.save.bind(this);
   }
 
   componentDidMount() {
     document.getElementById("save").addEventListener("click", this.save);
+
+    document.getElementById("registerForm").addEventListener("submit", e => {
+      e.preventDefault();
+
+      console.log("register form")
+
+      this.props.register();
+    });
+
+    document.getElementById("loginForm").addEventListener("submit", e => {
+      e.preventDefault();
+
+      console.log("login form")
+
+      this.props.login();
+    });
   }
 
-  /*
-  save(e) {
-    e.preventDefault();
-
-    let a = document.querySelectorAll(".gridItem");
-    let b = [];
-    
-    a.forEach(e => {
-      b.push(e.style.opacity);
-    })
-
-    this.setState({
-      opacity: b
-    })
-    
-    fetch("/api/save", {
-      method: "post",
-      body: new URLSearchParams({
-        data: this.state.opacity
-      })
-    })
-    .then(response => response.text())
-    .then(data => {
-      console.log(data);
-    })
-  }
-  */
 
   render() {
     let buttons = null;
@@ -81,10 +68,22 @@ class Navbar extends Component {
         {buttons}
         
         <div id="account">
-          <a href="/api/login" alt="Login" id="login">Login</a>
-          <a href="/" alt="Register">Register</a>
+          <form id="registerForm">
+            <input name="name"></input>
+            <input type="email" name="email"></input>
+            <input tyoe="password" name="password"></input>
+            <input type="password" name="c_password"></input>
+            <input type="submit"></input>
+          </form>
+
+          <form id="loginForm">
+            <input type="email" name="email"></input>
+            <input tyoe="password" name="password"></input>
+            <input type="submit"></input>
+          </form>
+
           <a href="/" alt="Logout">Logout</a>
-          <a href="/" alt="Account">Account</a>
+          <a href="/api/getDetails" alt="Account" id="getDetails">Account</a>
         </div>
       </div>
     )

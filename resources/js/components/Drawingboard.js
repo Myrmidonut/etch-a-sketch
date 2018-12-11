@@ -10,23 +10,21 @@ class Drawingboard extends Component {
   }
 
   componentDidMount() {
-    console.log("mount")
     const drawingBoard = document.getElementById("drawingBoard");
 
     drawingBoard.style.height = this.props.gridHeight + "px";
     drawingBoard.style.width = this.props.gridHeight + "px";
     drawingBoard.style.border = "2px solid green";
 
-    document.addEventListener("mousedown", this.mousedown)
-    document.addEventListener("mouseup", this.mouseup)
+    document.getElementById("drawingBoard").addEventListener("mousedown", this.mousedown)
+    document.getElementById("drawingBoard").addEventListener("mouseup", this.mouseup)
 
     this.createGrid();
   }
   
   componentWillUnmount() {
-    document.removeEventListener("mousedown", this.mousedown);
-    document.removeEventListener("mouseup", this.mouseup);
-    console.log("unmount")
+    document.getElementById("drawingBoard").removeEventListener("mousedown", this.mousedown);
+    document.getElementById("drawingBoard").removeEventListener("mouseup", this.mouseup);
   }
 
   componentDidUpdate(prevProps) {

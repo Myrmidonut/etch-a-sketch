@@ -18,6 +18,8 @@ class App extends Component {
       mouseHold: false
     }
 
+    this.login = this.login.bind(this);
+    this.register = this.register.bind(this);
     this.sendSave = this.sendSave.bind(this);
     this.save = this.save.bind(this);
     this.settings = this.settings.bind(this);
@@ -52,6 +54,32 @@ class App extends Component {
       body: new URLSearchParams({
         data: this.state.opacity
       })
+    })
+    .then(response => response.text())
+    .then(data => {
+      console.log(data);
+    })
+  }
+
+  login() {
+    const loginForm = document.getElementById("loginForm");
+
+    fetch("/api/login", {
+      method: "post",
+      body: new URLSearchParams(new FormData(loginForm))
+    })
+    .then(response => response.text())
+    .then(data => {
+      console.log(data);
+    })
+  }
+
+  register() {
+    const registerForm = document.getElementById("registerForm");
+
+    fetch("/api/register", {
+      method: "post",
+      body: new URLSearchParams(new FormData(registerForm))
     })
     .then(response => response.text())
     .then(data => {
@@ -100,6 +128,8 @@ class App extends Component {
           settings={this.settings}
           home={this.state.content}
           opacity={this.state.opacity}
+          login={this.login}
+          register={this.register}
         />
         {content} 
         />

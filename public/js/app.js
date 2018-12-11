@@ -19329,6 +19329,8 @@ function (_Component) {
       opacity: [],
       mouseHold: false
     };
+    _this.login = _this.login.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.register = _this.register.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.sendSave = _this.sendSave.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.save = _this.save.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.settings = _this.settings.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -19364,6 +19366,32 @@ function (_Component) {
         body: new URLSearchParams({
           data: this.state.opacity
         })
+      }).then(function (response) {
+        return response.text();
+      }).then(function (data) {
+        console.log(data);
+      });
+    }
+  }, {
+    key: "login",
+    value: function login() {
+      var loginForm = document.getElementById("loginForm");
+      fetch("/api/login", {
+        method: "post",
+        body: new URLSearchParams(new FormData(loginForm))
+      }).then(function (response) {
+        return response.text();
+      }).then(function (data) {
+        console.log(data);
+      });
+    }
+  }, {
+    key: "register",
+    value: function register() {
+      var registerForm = document.getElementById("registerForm");
+      fetch("/api/register", {
+        method: "post",
+        body: new URLSearchParams(new FormData(registerForm))
       }).then(function (response) {
         return response.text();
       }).then(function (data) {
@@ -19411,7 +19439,9 @@ function (_Component) {
         save: this.save,
         settings: this.settings,
         home: this.state.content,
-        opacity: this.state.opacity
+        opacity: this.state.opacity,
+        login: this.login,
+        register: this.register
       }), content, "/>", __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__Footer__["a" /* default */], null));
     }
   }]);
@@ -42198,40 +42228,28 @@ function (_Component) {
   function Navbar(props) {
     _classCallCheck(this, Navbar);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(Navbar).call(this, props)); //this.save = this.save.bind(this);
+    return _possibleConstructorReturn(this, _getPrototypeOf(Navbar).call(this, props));
   }
 
   _createClass(Navbar, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      document.getElementById("save").addEventListener("click", this.save);
-    }
-    /*
-    save(e) {
-      e.preventDefault();
-        let a = document.querySelectorAll(".gridItem");
-      let b = [];
-      
-      a.forEach(e => {
-        b.push(e.style.opacity);
-      })
-        this.setState({
-        opacity: b
-      })
-      
-      fetch("/api/save", {
-        method: "post",
-        body: new URLSearchParams({
-          data: this.state.opacity
-        })
-      })
-      .then(response => response.text())
-      .then(data => {
-        console.log(data);
-      })
-    }
-    */
+      var _this = this;
 
+      document.getElementById("save").addEventListener("click", this.save);
+      document.getElementById("registerForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        console.log("register form");
+
+        _this.props.register();
+      });
+      document.getElementById("loginForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        console.log("login form");
+
+        _this.props.login();
+      });
+    }
   }, {
     key: "render",
     value: function render() {
@@ -42285,19 +42303,38 @@ function (_Component) {
         id: "galleryButton"
       }, home)), buttons, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
         id: "account"
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
-        href: "/api/login",
-        alt: "Login",
-        id: "login"
-      }, "Login"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
-        href: "/",
-        alt: "Register"
-      }, "Register"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", {
+        id: "registerForm"
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        name: "name"
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        type: "email",
+        name: "email"
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        tyoe: "password",
+        name: "password"
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        type: "password",
+        name: "c_password"
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        type: "submit"
+      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", {
+        id: "loginForm"
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        type: "email",
+        name: "email"
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        tyoe: "password",
+        name: "password"
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        type: "submit"
+      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
         href: "/",
         alt: "Logout"
       }, "Logout"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
-        href: "/",
-        alt: "Account"
+        href: "/api/getDetails",
+        alt: "Account",
+        id: "getDetails"
       }, "Account")));
     }
   }]);
@@ -42354,21 +42391,19 @@ function (_Component) {
   _createClass(Drawingboard, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      console.log("mount");
       var drawingBoard = document.getElementById("drawingBoard");
       drawingBoard.style.height = this.props.gridHeight + "px";
       drawingBoard.style.width = this.props.gridHeight + "px";
       drawingBoard.style.border = "2px solid green";
-      document.addEventListener("mousedown", this.mousedown);
-      document.addEventListener("mouseup", this.mouseup);
+      document.getElementById("drawingBoard").addEventListener("mousedown", this.mousedown);
+      document.getElementById("drawingBoard").addEventListener("mouseup", this.mouseup);
       this.createGrid();
     }
   }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
-      document.removeEventListener("mousedown", this.mousedown);
-      document.removeEventListener("mouseup", this.mouseup);
-      console.log("unmount");
+      document.getElementById("drawingBoard").removeEventListener("mousedown", this.mousedown);
+      document.getElementById("drawingBoard").removeEventListener("mouseup", this.mouseup);
     }
   }, {
     key: "componentDidUpdate",
