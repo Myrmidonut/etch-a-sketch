@@ -19,12 +19,11 @@ use Illuminate\Http\Request;
   // register
   // account details
 
-//Route::get("/login", "AccountController@login");
-
-Route::get("/login", "AccountController@login");
-Route::get("/logout", "AccountController@logout");
-Route::post("/register", "AccountController@register");
-Route::get("/account", "AccountController@account");
+Route::post("/login", "PassportController@login");
+Route::post("/register", "PassportController@register");
+Route::group(["middleware" => "auth:api"], function() {
+  Route::post("/get-details", "PassportController@getDetails");
+});
 
 // drawingboard:
   // show
