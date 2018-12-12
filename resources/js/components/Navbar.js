@@ -8,10 +8,20 @@ class Navbar extends Component {
   componentDidMount() {
     document.getElementById("save").addEventListener("click", this.save);
 
-    document.getElementById("registerForm").addEventListener("submit", e => {
+    document.getElementById("delete").addEventListener("click", e => {
       e.preventDefault();
 
-      console.log("register form")
+      this.props.delete();
+    });
+
+    document.getElementById("reset").addEventListener("click", e => {
+      e.preventDefault();
+
+      this.props.createGrid();
+    });
+
+    document.getElementById("registerForm").addEventListener("submit", e => {
+      e.preventDefault();
 
       this.props.register();
     });
@@ -19,12 +29,15 @@ class Navbar extends Component {
     document.getElementById("loginForm").addEventListener("submit", e => {
       e.preventDefault();
 
-      console.log("login form")
-
       this.props.login();
     });
-  }
 
+    document.getElementById("account").addEventListener("click", e => {
+      e.preventDefault();
+
+      this.props.account();
+    });
+  }
 
   render() {
     let buttons = null;
@@ -37,12 +50,10 @@ class Navbar extends Component {
 
       buttons = (
         <div id="interface">
-          <a href="/" alt="Save" id="save"
-            onClick={this.props.save}>Save</a>
-          <a href="/" alt="Delete">Delete</a>
-          <a href="/" alt="Reset">Reset</a>
-          <a href="/" alt="Settings" id="settings"
-            onClick={this.props.settings}>Settings</a>
+          <a href="/" alt="Save" id="save" onClick={this.props.save}>Save</a>
+          <a href="/" alt="Delete" id="delete" onClick={this.props.delete}>Delete</a>
+          <a href="/" alt="Reset" id="reset">Reset</a>
+          <a href="/" alt="Settings" id="settings" onClick={this.props.settings}>Settings</a>
         </div>
       )
     } else if (this.props.home === "Gallery") {
@@ -69,21 +80,22 @@ class Navbar extends Component {
         
         <div id="account">
           <form id="registerForm">
-            <input name="name"></input>
-            <input type="email" name="email"></input>
-            <input tyoe="password" name="password"></input>
-            <input type="password" name="c_password"></input>
-            <input type="submit"></input>
+            <input name="name" placeholder="Username"></input>
+            <input type="email" name="email" placeholder="Email"></input>
+            <input type="password" name="password" placeholder="Password"></input>
+            <input type="password" name="c_password" placeholder="Confirm Password"></input>
+            <input type="submit" id="submitRegister" value="Register"></input>
           </form>
 
           <form id="loginForm">
-            <input type="email" name="email"></input>
-            <input tyoe="password" name="password"></input>
-            <input type="submit"></input>
+            <input type="email" name="email" placeholder="Email"></input>
+            <input type="password" name="password" placeholder="Password"></input>
+            <input type="submit" id="submitLogin" value="Login"></input>
           </form>
 
           <a href="/" alt="Logout">Logout</a>
-          <a href="/api/getDetails" alt="Account" id="getDetails">Account</a>
+
+          <a href="/api/account" alt="Account" id="account">Account</a>
         </div>
       </div>
     )

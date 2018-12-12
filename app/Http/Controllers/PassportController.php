@@ -25,7 +25,11 @@ class PassportController extends Controller {
       $user = Auth::user();
       $success['token'] = $user->createToken('MyApp')->accessToken;
 
-      return response()->json(['success' => $success], $this->successStatus);
+      return response()->json([
+        "name" => $user->name,
+        "id" => $user->id,
+        'success' => $success
+      ], $this->successStatus);
     } else {
       return response()->json(['error' => 'Unauthorised'], 401);
     }
@@ -55,7 +59,11 @@ class PassportController extends Controller {
     $success['token'] = $user->createToken('MyApp')->accessToken;
     $success['name'] = $user->name;
 
-    return response()->json(['success' => $success], $this->successStatus);
+    return response()->json([
+      "name" => $user->name,
+      "id" => $user->id,
+      'success' => $success
+    ], $this->successStatus);
   }
 
   /**
@@ -64,7 +72,7 @@ class PassportController extends Controller {
    * @return \Illuminate\Http\Response
    */
 
-  public function getDetails() {
+  public function account() {
     $user = Auth::user();
 
     return response()->json(['success' => $user], $this->successStatus);

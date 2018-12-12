@@ -19327,17 +19327,84 @@ function (_Component) {
       gridSize: 3,
       gridHeight: 700,
       opacity: [],
-      mouseHold: false
+      mouseHold: false,
+      token: ""
     };
-    _this.login = _this.login.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.register = _this.register.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.mousedown = _this.mousedown.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.mouseup = _this.mouseup.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.createGrid = _this.createGrid.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.sendSave = _this.sendSave.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.save = _this.save.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.delete = _this.delete.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.reset = _this.reset.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.settings = _this.settings.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.login = _this.login.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.register = _this.register.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.account = _this.account.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
   }
 
   _createClass(App, [{
+    key: "mousedown",
+    value: function mousedown(e) {
+      e.preventDefault();
+      this.setState({
+        mouseHold: true
+      });
+    }
+  }, {
+    key: "mouseup",
+    value: function mouseup(e) {
+      e.preventDefault();
+      this.setState({
+        mouseHold: false
+      });
+    }
+  }, {
+    key: "createGrid",
+    value: function createGrid() {
+      var _this2 = this;
+
+      var gridItemDimension = this.state.gridHeight / this.state.gridSize + "px";
+      var newOpacity = [];
+      document.getElementById("drawingBoard").innerHTML = "";
+
+      var _loop = function _loop(i) {
+        var gridItem = document.createElement("div");
+        gridItem.style.width = gridItemDimension;
+        gridItem.style.height = gridItemDimension;
+        gridItem.style.boxSizing = "border-box";
+        gridItem.style.border = "2px solid white";
+        gridItem.style.float = "left";
+        gridItem.style.backgroundColor = "green";
+        gridItem.style.opacity = 0;
+        gridItem.className = "gridItem";
+        document.getElementById("drawingBoard").appendChild(gridItem);
+        newOpacity[i] = 0;
+
+        _this2.setState({
+          opacity: newOpacity
+        });
+
+        var self = _this2;
+        gridItem.addEventListener("mouseover", function () {
+          if (self.state.mouseHold) {
+            var _newOpacity = self.state.opacity.slice();
+
+            _newOpacity[i] += 0.1;
+            self.setState({
+              opacity: _newOpacity
+            });
+            if (this.style.opacity < 1) this.style.opacity = self.state.opacity[i];
+          }
+        });
+      };
+
+      for (var i = 0; i < this.state.gridSize * this.state.gridSize; i++) {
+        _loop(i);
+      }
+    }
+  }, {
     key: "settings",
     value: function settings(e) {
       e.preventDefault();
@@ -19373,12 +19440,30 @@ function (_Component) {
       });
     }
   }, {
-    key: "login",
-    value: function login() {
-      var loginForm = document.getElementById("loginForm");
-      fetch("/api/login", {
+    key: "reset",
+    value: function reset() {
+      //e.preventDefault();
+      console.log("reset"); //this.createGrid();
+    }
+  }, {
+    key: "delete",
+    value: function _delete() {}
+  }, {
+    key: "getSettings",
+    value: function getSettings() {
+      fetch("/api/settings").then(function (response) {
+        return response.text();
+      }).then(function (data) {
+        console.log(data);
+      });
+    }
+  }, {
+    key: "saveSettings",
+    value: function saveSettings() {
+      var settingsForm = document.getElementById("settingsForm");
+      fetch("/api/settings", {
         method: "post",
-        body: new URLSearchParams(new FormData(loginForm))
+        body: new URLSearchParams(new FormData(settingsForm))
       }).then(function (response) {
         return response.text();
       }).then(function (data) {
@@ -19386,12 +19471,48 @@ function (_Component) {
       });
     }
   }, {
+    key: "login",
+    value: function login() {
+      var loginForm = document.getElementById("loginForm");
+      var submitLogin = document.getElementById("submitLogin");
+      submitLogin.value = "Loading";
+      fetch("/api/login", {
+        method: "post",
+        body: new URLSearchParams(new FormData(loginForm))
+      }).then(function (response) {
+        return response.text();
+      }).then(function (data) {
+        submitLogin.value = "Success";
+        console.log(data);
+      });
+    }
+  }, {
     key: "register",
     value: function register() {
       var registerForm = document.getElementById("registerForm");
+      var submitRegister = document.getElementById("submitRegister");
+      submitRegister.value = "Loading";
       fetch("/api/register", {
         method: "post",
         body: new URLSearchParams(new FormData(registerForm))
+      }).then(function (response) {
+        return response.text();
+      }).then(function (data) {
+        console.log(data);
+        submitRegister.value = "Success";
+      });
+    }
+  }, {
+    key: "account",
+    value: function account() {
+      //const details = document.getElementById("getDetails");
+      fetch("/api/account", {
+        method: "post",
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': "a" //body: new URLSearchParams(new FormData(registerForm))
+
+        }
       }).then(function (response) {
         return response.text();
       }).then(function (data) {
@@ -19401,17 +19522,17 @@ function (_Component) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this2 = this;
+      var _this3 = this;
 
       document.getElementById("galleryButton").addEventListener("click", function (e) {
         e.preventDefault();
 
-        if (_this2.state.content === "Drawingboard") {
-          _this2.setState({
+        if (_this3.state.content === "Drawingboard") {
+          _this3.setState({
             content: "Gallery"
           });
         } else {
-          _this2.setState({
+          _this3.setState({
             content: "Drawingboard"
           });
         }
@@ -19424,6 +19545,9 @@ function (_Component) {
 
       if (this.state.content === "Drawingboard") {
         content = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Drawingboard__["a" /* default */], {
+          mouseup: this.mouseup,
+          mousedown: this.mousedown,
+          createGrid: this.createGrid,
           gridSize: this.state.gridSize,
           gridHeight: this.state.gridHeight,
           mouseHold: this.state.mouseHold,
@@ -19436,13 +19560,17 @@ function (_Component) {
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
         className: "App"
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Navbar__["a" /* default */], {
-        save: this.save,
-        settings: this.settings,
         home: this.state.content,
         opacity: this.state.opacity,
+        createGrid: this.createGrid,
+        save: this.save,
+        delete: this.delete,
+        reset: this.reset,
+        settings: this.settings,
         login: this.login,
-        register: this.register
-      }), content, "/>", __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__Footer__["a" /* default */], null));
+        register: this.register,
+        account: this.account
+      }), content, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__Footer__["a" /* default */], null));
     }
   }]);
 
@@ -42237,17 +42365,30 @@ function (_Component) {
       var _this = this;
 
       document.getElementById("save").addEventListener("click", this.save);
+      document.getElementById("delete").addEventListener("click", function (e) {
+        e.preventDefault();
+
+        _this.props.delete();
+      });
+      document.getElementById("reset").addEventListener("click", function (e) {
+        e.preventDefault();
+
+        _this.props.createGrid();
+      });
       document.getElementById("registerForm").addEventListener("submit", function (e) {
         e.preventDefault();
-        console.log("register form");
 
         _this.props.register();
       });
       document.getElementById("loginForm").addEventListener("submit", function (e) {
         e.preventDefault();
-        console.log("login form");
 
         _this.props.login();
+      });
+      document.getElementById("account").addEventListener("click", function (e) {
+        e.preventDefault();
+
+        _this.props.account();
       });
     }
   }, {
@@ -42267,10 +42408,13 @@ function (_Component) {
           onClick: this.props.save
         }, "Save"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
           href: "/",
-          alt: "Delete"
+          alt: "Delete",
+          id: "delete",
+          onClick: this.props.delete
         }, "Delete"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
           href: "/",
-          alt: "Reset"
+          alt: "Reset",
+          id: "reset"
         }, "Reset"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
           href: "/",
           alt: "Settings",
@@ -42306,35 +42450,45 @@ function (_Component) {
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", {
         id: "registerForm"
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
-        name: "name"
+        name: "name",
+        placeholder: "Username"
       }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
         type: "email",
-        name: "email"
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
-        tyoe: "password",
-        name: "password"
+        name: "email",
+        placeholder: "Email"
       }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
         type: "password",
-        name: "c_password"
+        name: "password",
+        placeholder: "Password"
       }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
-        type: "submit"
+        type: "password",
+        name: "c_password",
+        placeholder: "Confirm Password"
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        type: "submit",
+        id: "submitRegister",
+        value: "Register"
       })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", {
         id: "loginForm"
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
         type: "email",
-        name: "email"
+        name: "email",
+        placeholder: "Email"
       }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
-        tyoe: "password",
-        name: "password"
+        type: "password",
+        name: "password",
+        placeholder: "Password"
       }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
-        type: "submit"
+        type: "submit",
+        id: "submitLogin",
+        value: "Login"
       })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
         href: "/",
         alt: "Logout"
       }, "Logout"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
-        href: "/api/getDetails",
+        href: "/api/account",
         alt: "Account",
-        id: "getDetails"
+        id: "account"
       }, "Account")));
     }
   }]);
@@ -42361,13 +42515,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 
 
@@ -42377,15 +42531,9 @@ function (_Component) {
   _inherits(Drawingboard, _Component);
 
   function Drawingboard(props) {
-    var _this;
-
     _classCallCheck(this, Drawingboard);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Drawingboard).call(this, props));
-    _this.mousedown = _this.mousedown.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.mouseup = _this.mouseup.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.createGrid = _this.createGrid.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    return _this;
+    return _possibleConstructorReturn(this, _getPrototypeOf(Drawingboard).call(this, props));
   }
 
   _createClass(Drawingboard, [{
@@ -42395,9 +42543,9 @@ function (_Component) {
       drawingBoard.style.height = this.props.gridHeight + "px";
       drawingBoard.style.width = this.props.gridHeight + "px";
       drawingBoard.style.border = "2px solid green";
-      document.getElementById("drawingBoard").addEventListener("mousedown", this.mousedown);
-      document.getElementById("drawingBoard").addEventListener("mouseup", this.mouseup);
-      this.createGrid();
+      document.getElementById("drawingBoard").addEventListener("mousedown", this.props.mousedown);
+      document.addEventListener("mouseup", this.props.mouseup);
+      this.props.createGrid();
     }
   }, {
     key: "componentWillUnmount",
@@ -42409,73 +42557,7 @@ function (_Component) {
     key: "componentDidUpdate",
     value: function componentDidUpdate(prevProps) {
       if (this.props.gridSize !== prevProps.gridSize) {
-        this.createGrid();
-      }
-    }
-  }, {
-    key: "mousedown",
-    value: function mousedown(e) {
-      e.preventDefault();
-      this.setState({
-        mouseHold: true
-      });
-    }
-  }, {
-    key: "mouseup",
-    value: function mouseup(e) {
-      e.preventDefault();
-      this.setState({
-        mouseHold: false
-      });
-    }
-  }, {
-    key: "createGrid",
-    value: function createGrid() {
-      var _this2 = this;
-
-      var gridItemDimension = this.props.gridHeight / this.props.gridSize + "px";
-      var newOpacity = [];
-      document.getElementById("drawingBoard").innerHTML = "";
-
-      var _loop = function _loop(i) {
-        var gridItem = document.createElement("div");
-        gridItem.style.width = gridItemDimension;
-        gridItem.style.height = gridItemDimension;
-        gridItem.style.boxSizing = "border-box";
-        gridItem.style.border = "2px solid white";
-        gridItem.style.float = "left";
-        gridItem.style.backgroundColor = "green"; //if (this.props.opacity[i]) {
-        //  gridItem.style.opacity = this.props.opacity[i];
-        //  newOpacity[i] = this.props.opacity[i];
-        //} else {
-
-        gridItem.style.opacity = 0; //  newOpacity[i] = 0;
-        //}
-
-        gridItem.className = "gridItem";
-        document.getElementById("drawingBoard").appendChild(gridItem);
-        newOpacity[i] = 0;
-
-        _this2.setState({
-          opacity: newOpacity
-        });
-
-        var self = _this2;
-        gridItem.addEventListener("mouseover", function () {
-          if (self.state.mouseHold) {
-            var _newOpacity = self.state.opacity.slice();
-
-            _newOpacity[i] += 0.1;
-            self.setState({
-              opacity: _newOpacity
-            });
-            if (this.style.opacity < 1) this.style.opacity = self.state.opacity[i];
-          }
-        });
-      };
-
-      for (var i = 0; i < this.props.gridSize * this.props.gridSize; i++) {
-        _loop(i);
+        this.props.createGrid();
       }
     }
   }, {

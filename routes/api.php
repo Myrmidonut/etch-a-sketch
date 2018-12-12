@@ -22,7 +22,7 @@ use Illuminate\Http\Request;
 Route::post("/login", "PassportController@login");
 Route::post("/register", "PassportController@register");
 Route::group(["middleware" => "auth:api"], function() {
-  Route::post("/get-details", "PassportController@getDetails");
+  Route::post("/account", "PassportController@getDetails");
 });
 
 // drawingboard:
@@ -38,7 +38,7 @@ Route::post("/save", "DrawingController@save");
 Route::delete("/delete", "DrawingController@delete");
 Route::get("/reset", "DrawingController@reset");
 Route::get("/settings", "DrawingController@settings");
-Route::put("/settings", "DrawingController@settingsupdate");
+Route::post("/settings", "DrawingController@settingsupdate");
 
 // gallery:
   // my drawings
