@@ -11,12 +11,6 @@ use Validator;
 class PassportController extends Controller {
   public $successStatus = 200;
 
-  /**
-   * login api
-   *
-   * @return \Illuminate\Http\Response
-   */
-
   public function login() {
     if (Auth::attempt([
         'email' => request('email'),
@@ -28,18 +22,15 @@ class PassportController extends Controller {
       return response()->json([
         "name" => $user->name,
         "id" => $user->id,
+        "default_grid_size" => $user->default_grid_size,
+        "default_intensity" => $user->default_intensity,
+        "default_shape" => $user->default_shape,
         'success' => $success
       ], $this->successStatus);
     } else {
       return response()->json(['error' => 'Unauthorised'], 401);
     }
   }
-
-  /**
-   * register api
-   *
-   * @return \Illuminate\Http\Response
-   */
 
   public function register(Request $request) {
     $validator = Validator::make($request->all(), [
@@ -66,15 +57,22 @@ class PassportController extends Controller {
     ], $this->successStatus);
   }
 
-  /**
-   * details api
-   *
-   * @return \Illuminate\Http\Response
-   */
-
   public function account() {
     $user = Auth::user();
 
-    return response()->json(['success' => $user], $this->successStatus);
+    return ($user);
+  }
+
+  public function savesettings(Request $request) {
+    $user = Auth::user();
+
+    $user->default_grid_size = $request->grid_size;
+    $user->default_intensity = $request->intensity;
+    //$user->default_colors = $request->colors;
+    $user->default_shape = $request->shape;
+
+    $user->save();
+
+    return ($user);
   }
 }

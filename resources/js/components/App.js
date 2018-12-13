@@ -12,8 +12,10 @@ class App extends Component {
     
     this.state = {
       content: "Drawingboard",
-      gridSize: 3,
+      gridSize: 20,
       gridHeight: 700,
+      shape: "square",
+      intensity: "0.1",
       opacity: [],
       mouseHold: false,
       token: ""
@@ -24,12 +26,13 @@ class App extends Component {
 
     this.createGrid = this.createGrid.bind(this);
 
-    this.sendSave = this.sendSave.bind(this);
+    //this.sendSave = this.sendSave.bind(this);
 
     this.save = this.save.bind(this);
     this.delete = this.delete.bind(this);
-    this.reset = this.reset.bind(this);
-    this.settings = this.settings.bind(this);
+    //this.reset = this.reset.bind(this);
+    this.setDefaultSettings = this.setDefaultSettings.bind(this);
+    this.setCurrentSettings = this.setCurrentSettings.bind(this);
 
     this.login = this.login.bind(this);
     this.register = this.register.bind(this);
@@ -69,6 +72,9 @@ class App extends Component {
       gridItem.style.backgroundColor = "green";
       gridItem.style.opacity = 0;
       gridItem.className = "gridItem";
+
+      if (this.state.shape === "round") gridItem.style.borderRadius = "50%";
+      else gridItem.style.borderRadius = "0";
       
       document.getElementById("drawingBoard").appendChild(gridItem);
       
@@ -84,7 +90,7 @@ class App extends Component {
         if (self.state.mouseHold) {
           let newOpacity = self.state.opacity.slice();
 
-          newOpacity[i] += 0.1;
+          newOpacity[i] += Number(self.state.intensity);
 
           self.setState({
             opacity: newOpacity
@@ -96,13 +102,13 @@ class App extends Component {
     }
   }
 
-  settings(e) {
+  /*settings(e) {
     e.preventDefault();
 
     this.setState({
       gridSize: 10
     })
-  }
+  }*/
 
   save(e) {
     e.preventDefault();
@@ -119,7 +125,7 @@ class App extends Component {
     }, this.sendSave)
   }
 
-  sendSave() {
+  /*sendSave() {
     fetch("/api/save", {
       method: "post",
       body: new URLSearchParams({
@@ -130,14 +136,11 @@ class App extends Component {
     .then(data => {
       console.log(data);
     })
-  }
+  }*/
 
-  reset() {
-    //e.preventDefault();
+  /*reset() {
 
-    console.log("reset")
-    //this.createGrid();
-  }
+  }*/
 
   delete() {
     
@@ -151,20 +154,37 @@ class App extends Component {
     })
   }
 
-  saveSettings() {
+  setDefaultSettings() {
     const settingsForm = document.getElementById("settingsForm");
 
     fetch("/api/settings", {
       method: "post",
-      body: new URLSearchParams(new FormData(settingsForm))
+      body: new URLSearchParams(new FormData(settingsForm)),
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': "Bearer " + this.state.token
+    }
     })
-    .then(response => response.text())
+    .then(response => response.json())
     .then(data => {
       console.log(data);
     })
   }
 
+  setCurrentSettings() {
+    const gridSize = document.getElementById("grid_size").value;
+    const intensity = document.getElementById("intensity").value;
+    const shape = document.getElementById("shape").value;
+
+    this.setState({
+      gridSize: gridSize,
+      shape: shape,
+      intensity: intensity,
+    })
+  }
+
   login() {
+    console.log("login function")
     const loginForm = document.getElementById("loginForm");
     const submitLogin = document.getElementById("submitLogin");
 
@@ -174,10 +194,21 @@ class App extends Component {
       method: "post",
       body: new URLSearchParams(new FormData(loginForm))
     })
-    .then(response => response.text())
+    .then(response => response.json())
     .then(data => {
       submitLogin.value = "Success"
+
       console.log(data);
+
+      this.setState({
+        gridSize: data.default_grid_size,
+        shape: data.default_shape,
+        intensity: data.default_intensity,
+        token: data.success.token
+      })
+    })
+    .then(() => {
+      console.log(this.state)
     })
   }
 
@@ -191,7 +222,7 @@ class App extends Component {
       method: "post",
       body: new URLSearchParams(new FormData(registerForm))
     })
-    .then(response => response.text())
+    .then(response => response.json())
     .then(data => {
       console.log(data);
 
@@ -200,17 +231,14 @@ class App extends Component {
   }
 
   account() {
-    //const details = document.getElementById("getDetails");
-
     fetch("/api/account", {
       method: "post",
       headers: {
           'Accept': 'application/json',
-          'Authorization': "a"
+          'Authorization': "Bearer " + this.state.token
       }
-      //body: new URLSearchParams(new FormData(registerForm))
     })
-    .then(response => response.text())
+    .then(response => response.json())
     .then(data => {
       console.log(data);
     })
@@ -241,10 +269,12 @@ class App extends Component {
           mouseup={this.mouseup}
           mousedown={this.mousedown}
           createGrid={this.createGrid}
+
           gridSize={this.state.gridSize}
           gridHeight={this.state.gridHeight}
           mouseHold={this.state.mouseHold}
           opacity={this.state.opacity}
+          shape={this.state.shape}
         />
       )
     } else {
@@ -258,14 +288,12 @@ class App extends Component {
         <Navbar 
           home={this.state.content}
           opacity={this.state.opacity}
-
           createGrid={this.createGrid}
-
           save={this.save}
           delete={this.delete}
           reset={this.reset}
-          settings={this.settings}
-
+          setCurrentSettings={this.setCurrentSettings}
+          setDefaultSettings={this.setDefaultSettings}
           login={this.login}
           register={this.register}
           account={this.account}

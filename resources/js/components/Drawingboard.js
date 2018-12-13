@@ -24,14 +24,10 @@ class Drawingboard extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.gridSize !== prevProps.gridSize) {
+    if (this.props.gridSize !== prevProps.gridSize || this.props.shape !== prevProps.shape) {
       this.props.createGrid();
     }
   }
-
-
-
-
 
   render() {
     return (

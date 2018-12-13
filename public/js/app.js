@@ -19324,20 +19324,23 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(App).call(this, props));
     _this.state = {
       content: "Drawingboard",
-      gridSize: 3,
+      gridSize: 20,
       gridHeight: 700,
+      shape: "square",
+      intensity: "0.1",
       opacity: [],
       mouseHold: false,
       token: ""
     };
     _this.mousedown = _this.mousedown.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.mouseup = _this.mouseup.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.createGrid = _this.createGrid.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.sendSave = _this.sendSave.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.createGrid = _this.createGrid.bind(_assertThisInitialized(_assertThisInitialized(_this))); //this.sendSave = this.sendSave.bind(this);
+
     _this.save = _this.save.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.delete = _this.delete.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.reset = _this.reset.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.settings = _this.settings.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.delete = _this.delete.bind(_assertThisInitialized(_assertThisInitialized(_this))); //this.reset = this.reset.bind(this);
+
+    _this.setDefaultSettings = _this.setDefaultSettings.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.setCurrentSettings = _this.setCurrentSettings.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.login = _this.login.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.register = _this.register.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.account = _this.account.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -19379,6 +19382,7 @@ function (_Component) {
         gridItem.style.backgroundColor = "green";
         gridItem.style.opacity = 0;
         gridItem.className = "gridItem";
+        if (_this2.state.shape === "round") gridItem.style.borderRadius = "50%";else gridItem.style.borderRadius = "0";
         document.getElementById("drawingBoard").appendChild(gridItem);
         newOpacity[i] = 0;
 
@@ -19391,7 +19395,7 @@ function (_Component) {
           if (self.state.mouseHold) {
             var _newOpacity = self.state.opacity.slice();
 
-            _newOpacity[i] += 0.1;
+            _newOpacity[i] += Number(self.state.intensity);
             self.setState({
               opacity: _newOpacity
             });
@@ -19404,14 +19408,13 @@ function (_Component) {
         _loop(i);
       }
     }
-  }, {
-    key: "settings",
-    value: function settings(e) {
+    /*settings(e) {
       e.preventDefault();
-      this.setState({
+       this.setState({
         gridSize: 10
-      });
-    }
+      })
+    }*/
+
   }, {
     key: "save",
     value: function save(e) {
@@ -19425,26 +19428,22 @@ function (_Component) {
         opacity: b
       }, this.sendSave);
     }
-  }, {
-    key: "sendSave",
-    value: function sendSave() {
+    /*sendSave() {
       fetch("/api/save", {
         method: "post",
         body: new URLSearchParams({
           data: this.state.opacity
         })
-      }).then(function (response) {
-        return response.text();
-      }).then(function (data) {
+      })
+      .then(response => response.text())
+      .then(data => {
         console.log(data);
-      });
-    }
-  }, {
-    key: "reset",
-    value: function reset() {
-      //e.preventDefault();
-      console.log("reset"); //this.createGrid();
-    }
+      })
+    }*/
+
+    /*reset() {
+     }*/
+
   }, {
     key: "delete",
     value: function _delete() {}
@@ -19458,21 +19457,40 @@ function (_Component) {
       });
     }
   }, {
-    key: "saveSettings",
-    value: function saveSettings() {
+    key: "setDefaultSettings",
+    value: function setDefaultSettings() {
       var settingsForm = document.getElementById("settingsForm");
       fetch("/api/settings", {
         method: "post",
-        body: new URLSearchParams(new FormData(settingsForm))
+        body: new URLSearchParams(new FormData(settingsForm)),
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': "Bearer " + this.state.token
+        }
       }).then(function (response) {
-        return response.text();
+        return response.json();
       }).then(function (data) {
         console.log(data);
       });
     }
   }, {
+    key: "setCurrentSettings",
+    value: function setCurrentSettings() {
+      var gridSize = document.getElementById("grid_size").value;
+      var intensity = document.getElementById("intensity").value;
+      var shape = document.getElementById("shape").value;
+      this.setState({
+        gridSize: gridSize,
+        shape: shape,
+        intensity: intensity
+      });
+    }
+  }, {
     key: "login",
     value: function login() {
+      var _this3 = this;
+
+      console.log("login function");
       var loginForm = document.getElementById("loginForm");
       var submitLogin = document.getElementById("submitLogin");
       submitLogin.value = "Loading";
@@ -19480,10 +19498,19 @@ function (_Component) {
         method: "post",
         body: new URLSearchParams(new FormData(loginForm))
       }).then(function (response) {
-        return response.text();
+        return response.json();
       }).then(function (data) {
         submitLogin.value = "Success";
         console.log(data);
+
+        _this3.setState({
+          gridSize: data.default_grid_size,
+          shape: data.default_shape,
+          intensity: data.default_intensity,
+          token: data.success.token
+        });
+      }).then(function () {
+        console.log(_this3.state);
       });
     }
   }, {
@@ -19496,7 +19523,7 @@ function (_Component) {
         method: "post",
         body: new URLSearchParams(new FormData(registerForm))
       }).then(function (response) {
-        return response.text();
+        return response.json();
       }).then(function (data) {
         console.log(data);
         submitRegister.value = "Success";
@@ -19505,16 +19532,14 @@ function (_Component) {
   }, {
     key: "account",
     value: function account() {
-      //const details = document.getElementById("getDetails");
       fetch("/api/account", {
         method: "post",
         headers: {
           'Accept': 'application/json',
-          'Authorization': "a" //body: new URLSearchParams(new FormData(registerForm))
-
+          'Authorization': "Bearer " + this.state.token
         }
       }).then(function (response) {
-        return response.text();
+        return response.json();
       }).then(function (data) {
         console.log(data);
       });
@@ -19522,17 +19547,17 @@ function (_Component) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this3 = this;
+      var _this4 = this;
 
       document.getElementById("galleryButton").addEventListener("click", function (e) {
         e.preventDefault();
 
-        if (_this3.state.content === "Drawingboard") {
-          _this3.setState({
+        if (_this4.state.content === "Drawingboard") {
+          _this4.setState({
             content: "Gallery"
           });
         } else {
-          _this3.setState({
+          _this4.setState({
             content: "Drawingboard"
           });
         }
@@ -19551,7 +19576,8 @@ function (_Component) {
           gridSize: this.state.gridSize,
           gridHeight: this.state.gridHeight,
           mouseHold: this.state.mouseHold,
-          opacity: this.state.opacity
+          opacity: this.state.opacity,
+          shape: this.state.shape
         });
       } else {
         content = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__Gallery__["a" /* default */], null);
@@ -19566,7 +19592,8 @@ function (_Component) {
         save: this.save,
         delete: this.delete,
         reset: this.reset,
-        settings: this.settings,
+        setCurrentSettings: this.setCurrentSettings,
+        setDefaultSettings: this.setDefaultSettings,
         login: this.login,
         register: this.register,
         account: this.account
@@ -42330,6 +42357,8 @@ exports.unstable_unsubscribe = unstable_unsubscribe;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -42375,17 +42404,34 @@ function (_Component) {
 
         _this.props.createGrid();
       });
+      document.getElementById("settingsForm").addEventListener("submit", function (e) {
+        console.log("settings");
+        e.preventDefault();
+
+        if (document.getElementById("defaultcheckbox").checked === true) {
+          console.log("default settings");
+
+          _this.props.setDefaultSettings();
+        } else {
+          console.log("current settings");
+
+          _this.props.setCurrentSettings();
+        }
+      });
       document.getElementById("registerForm").addEventListener("submit", function (e) {
         e.preventDefault();
+        console.log("register");
 
         _this.props.register();
       });
       document.getElementById("loginForm").addEventListener("submit", function (e) {
+        console.log("login");
         e.preventDefault();
 
         _this.props.login();
       });
-      document.getElementById("account").addEventListener("click", function (e) {
+      document.getElementById("accountLink").addEventListener("click", function (e) {
+        console.log("account");
         e.preventDefault();
 
         _this.props.account();
@@ -42420,7 +42466,46 @@ function (_Component) {
           alt: "Settings",
           id: "settings",
           onClick: this.props.settings
-        }, "Settings"));
+        }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", {
+          id: "settingsForm"
+        }, "Grid Size:", __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+          type: "range",
+          min: "5",
+          max: "50",
+          defaultValue: "20",
+          name: "grid_size",
+          id: "grid_size"
+        }), "Intensity:", __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+          type: "range",
+          min: "0.1",
+          max: "1.0",
+          step: "0.1",
+          defaultValue: "0.1",
+          name: "intensity",
+          id: "intensity"
+        }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", _defineProperty({
+          type: "text",
+          name: "colors",
+          id: "colors",
+          placeholder: "colors"
+        }, "id", "colors")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("select", {
+          name: "shape",
+          id: "shape"
+        }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("option", {
+          value: "square",
+          className: "shape"
+        }, "Square"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("option", {
+          value: "round",
+          className: "shape"
+        }, "Round")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null), "Set as Default:", __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+          type: "checkbox",
+          value: "true",
+          id: "defaultcheckbox"
+        }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+          type: "submit",
+          id: "submitSettings",
+          value: "Save"
+        })));
       } else if (this.props.home === "Gallery") {
         home = "Drawingboard";
         buttons = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
@@ -42488,7 +42573,7 @@ function (_Component) {
       }, "Logout"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
         href: "/api/account",
         alt: "Account",
-        id: "account"
+        id: "accountLink"
       }, "Account")));
     }
   }]);
@@ -42556,7 +42641,7 @@ function (_Component) {
   }, {
     key: "componentDidUpdate",
     value: function componentDidUpdate(prevProps) {
-      if (this.props.gridSize !== prevProps.gridSize) {
+      if (this.props.gridSize !== prevProps.gridSize || this.props.shape !== prevProps.shape) {
         this.props.createGrid();
       }
     }
