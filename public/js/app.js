@@ -19324,23 +19324,28 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(App).call(this, props));
     _this.state = {
       content: "Drawingboard",
-      gridSize: 20,
       gridHeight: 700,
-      shape: "square",
+      gridSize: 20,
       intensity: "0.1",
+      mainColor: "#008000",
+      backgroundColor: "#ffffff",
+      shape: "square",
       opacity: [],
+      color: [],
       mouseHold: false,
       token: ""
     };
     _this.mousedown = _this.mousedown.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.mouseup = _this.mouseup.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.createGrid = _this.createGrid.bind(_assertThisInitialized(_assertThisInitialized(_this))); //this.sendSave = this.sendSave.bind(this);
+    _this.createGrid = _this.createGrid.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.updateGrid = _this.updateGrid.bind(_assertThisInitialized(_assertThisInitialized(_this))); //this.sendSave = this.sendSave.bind(this);
 
     _this.save = _this.save.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.delete = _this.delete.bind(_assertThisInitialized(_assertThisInitialized(_this))); //this.reset = this.reset.bind(this);
-
+    _this.delete = _this.delete.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.reset = _this.reset.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.setDefaultSettings = _this.setDefaultSettings.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.setCurrentSettings = _this.setCurrentSettings.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.loadDefaultSettings = _this.loadDefaultSettings.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.login = _this.login.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.register = _this.register.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.account = _this.account.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -19364,13 +19369,27 @@ function (_Component) {
       });
     }
   }, {
+    key: "updateGrid",
+    value: function updateGrid() {
+      var _this2 = this;
+
+      var gridItems = document.querySelectorAll(".gridItem");
+      var drawingBoard = document.getElementById("drawingBoard");
+      drawingBoard.style.background = this.state.backgroundColor;
+      gridItems.forEach(function (e) {
+        if (_this2.state.shape === "round") e.style.borderRadius = "50%";else e.style.borderRadius = "0";
+      });
+    }
+  }, {
     key: "createGrid",
     value: function createGrid() {
-      var _this2 = this;
+      var _this3 = this;
 
       var gridItemDimension = this.state.gridHeight / this.state.gridSize + "px";
       var newOpacity = [];
+      var newColor = [];
       document.getElementById("drawingBoard").innerHTML = "";
+      document.getElementById("drawingBoard").style.backgroundColor = this.state.backgroundColor;
 
       var _loop = function _loop(i) {
         var gridItem = document.createElement("div");
@@ -19378,26 +19397,34 @@ function (_Component) {
         gridItem.style.height = gridItemDimension;
         gridItem.style.boxSizing = "border-box";
         gridItem.style.border = "2px solid white";
-        gridItem.style.float = "left";
-        gridItem.style.backgroundColor = "green";
+        gridItem.style.float = "left"; //gridItem.style.backgroundColor = this.state.mainColor;
+
         gridItem.style.opacity = 0;
         gridItem.className = "gridItem";
-        if (_this2.state.shape === "round") gridItem.style.borderRadius = "50%";else gridItem.style.borderRadius = "0";
+        if (_this3.state.shape === "round") gridItem.style.borderRadius = "50%";else gridItem.style.borderRadius = "0";
         document.getElementById("drawingBoard").appendChild(gridItem);
         newOpacity[i] = 0;
+        newColor[i] = _this3.state.mainColor;
 
-        _this2.setState({
-          opacity: newOpacity
+        _this3.setState({
+          opacity: newOpacity,
+          color: newColor
         });
 
-        var self = _this2;
+        var self = _this3;
         gridItem.addEventListener("mouseover", function () {
           if (self.state.mouseHold) {
+            this.style.backgroundColor = self.state.mainColor;
+
             var _newOpacity = self.state.opacity.slice();
 
+            var _newColor = self.state.color.slice();
+
             _newOpacity[i] += Number(self.state.intensity);
+            _newColor[i] = self.state.mainColor;
             self.setState({
-              opacity: _newOpacity
+              opacity: _newOpacity,
+              color: _newColor
             });
             if (this.style.opacity < 1) this.style.opacity = self.state.opacity[i];
           }
@@ -19408,25 +19435,21 @@ function (_Component) {
         _loop(i);
       }
     }
-    /*settings(e) {
-      e.preventDefault();
-       this.setState({
-        gridSize: 10
-      })
-    }*/
-
   }, {
     key: "save",
     value: function save(e) {
       e.preventDefault();
-      var a = document.querySelectorAll(".gridItem");
-      var b = [];
-      a.forEach(function (e) {
-        b.push(e.style.opacity);
+      var gridItems = document.querySelectorAll(".gridItem");
+      var opacity = [];
+      var color = [];
+      gridItems.forEach(function (e) {
+        opacity.push(e.style.opacity);
+        color.push(e.style.backgroundColor);
       });
       this.setState({
-        opacity: b
-      }, this.sendSave);
+        opacity: opacity,
+        color: color
+      }); //}, this.sendSave)
     }
     /*sendSave() {
       fetch("/api/save", {
@@ -19441,9 +19464,19 @@ function (_Component) {
       })
     }*/
 
-    /*reset() {
-     }*/
-
+  }, {
+    key: "reset",
+    value: function reset() {
+      this.setState({
+        gridSize: 20,
+        intensity: "0.1",
+        mainColor: "#008000",
+        backgroundColor: "#ffffff",
+        shape: "square",
+        opacity: [],
+        color: []
+      });
+    }
   }, {
     key: "delete",
     value: function _delete() {}
@@ -19476,19 +19509,48 @@ function (_Component) {
   }, {
     key: "setCurrentSettings",
     value: function setCurrentSettings() {
-      var gridSize = document.getElementById("grid_size").value;
-      var intensity = document.getElementById("intensity").value;
+      var gridSize = document.getElementById("gridSizeSlider").value;
+      var intensity = document.getElementById("intensitySlider").value;
+      var mainColor = document.getElementById("mainColorPicker").value;
+      var backgroundColor = document.getElementById("backgroundColorPicker").value;
       var shape = document.getElementById("shape").value;
       this.setState({
         gridSize: gridSize,
-        shape: shape,
-        intensity: intensity
+        intensity: intensity,
+        mainColor: mainColor,
+        backgroundColor: backgroundColor,
+        shape: shape
+      }, this.updateGrid());
+    }
+  }, {
+    key: "loadDefaultSettings",
+    value: function loadDefaultSettings() {
+      var _this4 = this;
+
+      fetch("/api/settings", {
+        method: "get",
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': "Bearer " + this.state.token
+        }
+      }).then(function (response) {
+        return response.json();
+      }).then(function (data) {
+        console.log(data);
+
+        _this4.setState({
+          gridSize: data.default_grid_size,
+          intensity: data.default_intensity,
+          mainColor: data.default_main_color,
+          backgroundColor: data.default_background_color,
+          shape: data.default_shape
+        });
       });
     }
   }, {
     key: "login",
     value: function login() {
-      var _this3 = this;
+      var _this5 = this;
 
       console.log("login function");
       var loginForm = document.getElementById("loginForm");
@@ -19503,14 +19565,16 @@ function (_Component) {
         submitLogin.value = "Success";
         console.log(data);
 
-        _this3.setState({
+        _this5.setState({
           gridSize: data.default_grid_size,
-          shape: data.default_shape,
           intensity: data.default_intensity,
+          mainColor: data.default_main_color,
+          backgroundColor: data.default_background_color,
+          shape: data.default_shape,
           token: data.success.token
         });
       }).then(function () {
-        console.log(_this3.state);
+        console.log(_this5.state);
       });
     }
   }, {
@@ -19523,7 +19587,7 @@ function (_Component) {
         method: "post",
         body: new URLSearchParams(new FormData(registerForm))
       }).then(function (response) {
-        return response.json();
+        return response.text();
       }).then(function (data) {
         console.log(data);
         submitRegister.value = "Success";
@@ -19547,17 +19611,17 @@ function (_Component) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this4 = this;
+      var _this6 = this;
 
       document.getElementById("galleryButton").addEventListener("click", function (e) {
         e.preventDefault();
 
-        if (_this4.state.content === "Drawingboard") {
-          _this4.setState({
+        if (_this6.state.content === "Drawingboard") {
+          _this6.setState({
             content: "Gallery"
           });
         } else {
-          _this4.setState({
+          _this6.setState({
             content: "Drawingboard"
           });
         }
@@ -19573,6 +19637,7 @@ function (_Component) {
           mouseup: this.mouseup,
           mousedown: this.mousedown,
           createGrid: this.createGrid,
+          updateGrid: this.updateGrid,
           gridSize: this.state.gridSize,
           gridHeight: this.state.gridHeight,
           mouseHold: this.state.mouseHold,
@@ -19588,12 +19653,14 @@ function (_Component) {
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Navbar__["a" /* default */], {
         home: this.state.content,
         opacity: this.state.opacity,
+        updateGrid: this.updateGrid,
         createGrid: this.createGrid,
         save: this.save,
         delete: this.delete,
         reset: this.reset,
         setCurrentSettings: this.setCurrentSettings,
         setDefaultSettings: this.setDefaultSettings,
+        loadDefaultSettings: this.loadDefaultSettings,
         login: this.login,
         register: this.register,
         account: this.account
@@ -42357,8 +42424,6 @@ exports.unstable_unsubscribe = unstable_unsubscribe;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -42367,13 +42432,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 
 
@@ -42383,59 +42448,76 @@ function (_Component) {
   _inherits(Navbar, _Component);
 
   function Navbar(props) {
+    var _this;
+
     _classCallCheck(this, Navbar);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(Navbar).call(this, props));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Navbar).call(this, props));
+    _this.updateGridSizeSlider = _this.updateGridSizeSlider.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.updateIntensitySlider = _this.updateIntensitySlider.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    return _this;
   }
 
   _createClass(Navbar, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this = this;
+      var _this2 = this;
 
       document.getElementById("save").addEventListener("click", this.save);
       document.getElementById("delete").addEventListener("click", function (e) {
         e.preventDefault();
 
-        _this.props.delete();
+        _this2.props.delete();
       });
       document.getElementById("reset").addEventListener("click", function (e) {
         e.preventDefault();
 
-        _this.props.createGrid();
+        _this2.props.reset();
       });
-      document.getElementById("settingsForm").addEventListener("submit", function (e) {
-        console.log("settings");
+      document.getElementById("saveSettings").addEventListener("click", function (e) {
         e.preventDefault();
 
         if (document.getElementById("defaultcheckbox").checked === true) {
           console.log("default settings");
 
-          _this.props.setDefaultSettings();
+          _this2.props.setDefaultSettings();
         } else {
           console.log("current settings");
 
-          _this.props.setCurrentSettings();
+          _this2.props.setCurrentSettings(); //this.props.updateGrid();
+
         }
+      });
+      document.getElementById("loadDefaultSettings").addEventListener("click", function (e) {
+        e.preventDefault();
+
+        _this2.props.loadDefaultSettings();
       });
       document.getElementById("registerForm").addEventListener("submit", function (e) {
         e.preventDefault();
-        console.log("register");
 
-        _this.props.register();
+        _this2.props.register();
       });
       document.getElementById("loginForm").addEventListener("submit", function (e) {
-        console.log("login");
         e.preventDefault();
 
-        _this.props.login();
+        _this2.props.login();
       });
       document.getElementById("accountLink").addEventListener("click", function (e) {
-        console.log("account");
         e.preventDefault();
 
-        _this.props.account();
+        _this2.props.account();
       });
+    }
+  }, {
+    key: "updateGridSizeSlider",
+    value: function updateGridSizeSlider() {
+      document.getElementById("gridSizeValue").textContent = document.getElementById("gridSizeSlider").value;
+    }
+  }, {
+    key: "updateIntensitySlider",
+    value: function updateIntensitySlider() {
+      document.getElementById("intensityValue").textContent = document.getElementById("intensitySlider").value;
     }
   }, {
     key: "render",
@@ -42468,27 +42550,46 @@ function (_Component) {
           onClick: this.props.settings
         }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", {
           id: "settingsForm"
-        }, "Grid Size:", __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Grid Size: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+          id: "gridSizeValue"
+        }, "20"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+          id: "gridSizeMin"
+        }, "5"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
           type: "range",
           min: "5",
           max: "50",
           defaultValue: "20",
           name: "grid_size",
-          id: "grid_size"
-        }), "Intensity:", __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+          id: "gridSizeSlider",
+          onChange: this.updateGridSizeSlider
+        }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+          id: "gridSizeMax"
+        }, "50"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Intensity: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+          id: "intensityValue"
+        }, "0.1"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+          id: "intensityMin"
+        }, "0.1"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
           type: "range",
           min: "0.1",
           max: "1.0",
           step: "0.1",
           defaultValue: "0.1",
           name: "intensity",
-          id: "intensity"
-        }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", _defineProperty({
-          type: "text",
-          name: "colors",
-          id: "colors",
-          placeholder: "colors"
-        }, "id", "colors")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("select", {
+          id: "intensitySlider",
+          onChange: this.updateIntensitySlider
+        }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+          id: "intensityMax"
+        }, "1"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Main Color: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+          type: "color",
+          name: "main_color",
+          id: "mainColorPicker",
+          defaultValue: "#008000"
+        }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Background Color: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+          type: "color",
+          name: "background_color",
+          id: "backgroundColorPicker",
+          defaultValue: "#ffffff"
+        }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Shape: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("select", {
           name: "shape",
           id: "shape"
         }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("option", {
@@ -42497,14 +42598,18 @@ function (_Component) {
         }, "Square"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("option", {
           value: "round",
           className: "shape"
-        }, "Round")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null), "Set as Default:", __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        }, "Round")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Set as Default: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
           type: "checkbox",
           value: "true",
           id: "defaultcheckbox"
-        }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
-          type: "submit",
-          id: "submitSettings",
+        }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+          type: "button",
+          id: "saveSettings",
           value: "Save"
+        }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+          type: "button",
+          id: "loadDefaultSettings",
+          value: "Load Default"
         })));
       } else if (this.props.home === "Gallery") {
         home = "Drawingboard";
@@ -42631,6 +42736,7 @@ function (_Component) {
       document.getElementById("drawingBoard").addEventListener("mousedown", this.props.mousedown);
       document.addEventListener("mouseup", this.props.mouseup);
       this.props.createGrid();
+      this.props.updateGrid();
     }
   }, {
     key: "componentWillUnmount",
@@ -42641,7 +42747,8 @@ function (_Component) {
   }, {
     key: "componentDidUpdate",
     value: function componentDidUpdate(prevProps) {
-      if (this.props.gridSize !== prevProps.gridSize || this.props.shape !== prevProps.shape) {
+      if (this.props.gridSize !== prevProps.gridSize) {
+        // || this.props.shape !== prevProps.shape) {
         this.props.createGrid();
       }
     }
@@ -42733,7 +42840,7 @@ exports = module.exports = __webpack_require__(51)(false);
 
 
 // module
-exports.push([module.i, "html, body, #app {\r\n  height: 100%;\r\n  margin: 0;\r\n  padding: 0;\r\n}\r\n\r\n.App {\r\n  justify-content: space-between;\r\n  height: 100%;\r\n  flex-direction: column;\r\n  display: flex;\r\n  align-items: center;\r\n}\r\n\r\n#navbar, #footer {\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n  border: 1px solid black;\r\n}\r\n\r\n#navbar {\r\n  display: flex;\r\n  justify-content: space-between;\r\n}\r\n\r\n#navbar div {\r\n  display: flex;\r\n  flex: 1;\r\n}\r\n\r\n#navbar #interface {\r\n  justify-content: center;\r\n}\r\n\r\n#navbar #account {\r\n  justify-content: flex-end;\r\n}\r\n\r\n#navbar a {\r\n  margin: 10px;\r\n  height: 30px;\r\n}", ""]);
+exports.push([module.i, "html, body, #app {\r\n  height: 100%;\r\n  margin: 0;\r\n  padding: 0;\r\n}\r\n\r\n.App {\r\n  justify-content: space-between;\r\n  height: 100%;\r\n  flex-direction: column;\r\n  display: flex;\r\n  align-items: center;\r\n}\r\n\r\n#navbar, #footer {\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n  border: 1px solid black;\r\n}\r\n\r\n#navbar {\r\n  display: flex;\r\n  justify-content: space-between;\r\n}\r\n\r\n#navbar div {\r\n  display: flex;\r\n  flex: 1;\r\n}\r\n\r\n#navbar #interface {\r\n  justify-content: center;\r\n}\r\n\r\n#navbar #account {\r\n  justify-content: flex-end;\r\n}\r\n\r\n#navbar a {\r\n  margin: 10px;\r\n  height: 30px;\r\n}\r\n\r\n#settingsForm {\r\n  width: 200px;\r\n}\r\n\r\n#gridSizeSlider, #intensitySlider {\r\n  width: 70%;\r\n}", ""]);
 
 // exports
 

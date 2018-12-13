@@ -40,3 +40,11 @@ html, body, #app {
   margin: 10px;
   height: 30px;
 }
+
+#settingsForm {
+  width: 200px;
+}
+
+#gridSizeSlider, #intensitySlider {
+  width: 70%;
+}

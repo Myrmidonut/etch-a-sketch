@@ -16,6 +16,7 @@ class Drawingboard extends Component {
     document.addEventListener("mouseup", this.props.mouseup)
 
     this.props.createGrid();
+    this.props.updateGrid();
   }
   
   componentWillUnmount() {
@@ -24,7 +25,7 @@ class Drawingboard extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.gridSize !== prevProps.gridSize || this.props.shape !== prevProps.shape) {
+    if (this.props.gridSize !== prevProps.gridSize) { // || this.props.shape !== prevProps.shape) {
       this.props.createGrid();
     }
   }

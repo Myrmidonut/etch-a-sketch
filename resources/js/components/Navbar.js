@@ -3,6 +3,9 @@ import React, { Component } from 'react';
 class Navbar extends Component {
   constructor (props) {
     super(props)
+
+    this.updateGridSizeSlider = this.updateGridSizeSlider.bind(this);
+    this.updateIntensitySlider = this.updateIntensitySlider.bind(this);
   }
 
   componentDidMount() {
@@ -17,42 +20,55 @@ class Navbar extends Component {
     document.getElementById("reset").addEventListener("click", e => {
       e.preventDefault();
 
-      this.props.createGrid();
+      this.props.reset();
     });
 
-    document.getElementById("settingsForm").addEventListener("submit", e => {
-      console.log("settings")
+    document.getElementById("saveSettings").addEventListener("click", e => {
       e.preventDefault();
 
       if (document.getElementById("defaultcheckbox").checked === true) {
         console.log("default settings")
+
         this.props.setDefaultSettings();
       } else {
         console.log("current settings");
+
         this.props.setCurrentSettings();
+        //this.props.updateGrid();
       }
+    });
+
+    document.getElementById("loadDefaultSettings").addEventListener("click", e => {
+      e.preventDefault();
+
+      this.props.loadDefaultSettings();
     });
 
     document.getElementById("registerForm").addEventListener("submit", e => {
       e.preventDefault();
-      console.log("register")
 
       this.props.register();
     });
 
     document.getElementById("loginForm").addEventListener("submit", e => {
-      console.log("login")
       e.preventDefault();
 
       this.props.login();
     });
 
     document.getElementById("accountLink").addEventListener("click", e => {
-      console.log("account");
       e.preventDefault();
 
       this.props.account();
     });
+  }
+
+  updateGridSizeSlider() {
+    document.getElementById("gridSizeValue").textContent = document.getElementById("gridSizeSlider").value;
+  }
+
+  updateIntensitySlider() {
+    document.getElementById("intensityValue").textContent = document.getElementById("intensitySlider").value;
   }
 
   render() {
@@ -73,18 +89,41 @@ class Navbar extends Component {
           <a href="/" alt="Settings" id="settings" onClick={this.props.settings}>Settings</a>
 
           <form id="settingsForm">
-            Grid Size:
-            <input type="range" min="5" max="50" defaultValue="20" name="grid_size" id="grid_size"/>
-            Intensity:
-            <input type="range" min="0.1" max="1.0" step="0.1" defaultValue="0.1" name="intensity" id="intensity" />
-            <input type="text" name="colors" id="colors" placeholder="colors" id="colors" />
+            <span>Grid Size: </span>
+            <span id="gridSizeValue">20</span>
+            <br />
+            <span id="gridSizeMin">5</span>
+            <input type="range" min="5" max="50" defaultValue="20" name="grid_size" id="gridSizeSlider" onChange={this.updateGridSizeSlider} />
+            <span id="gridSizeMax">50</span>
+            <br />
+
+            <span>Intensity: </span>
+            <span id="intensityValue">0.1</span>
+            <br />
+            <span id="intensityMin">0.1</span>
+            <input type="range" min="0.1" max="1.0" step="0.1" defaultValue="0.1" name="intensity" id="intensitySlider" onChange={this.updateIntensitySlider} />
+            <span id="intensityMax">1</span>
+            <br />
+
+            <span>Main Color: </span>
+            <input type="color" name="main_color" id="mainColorPicker" defaultValue="#008000" />
+
+            <span>Background Color: </span>
+            <input type="color" name="background_color" id="backgroundColorPicker" defaultValue="#ffffff" />
+
+            <span>Shape: </span>
             <select name="shape" id="shape">
               <option value="square" className="shape">Square</option>
               <option value="round" className="shape">Round</option>
-            </select><br />
-            Set as Default:
+            </select>
+            <br />
+
+            <span>Set as Default: </span>
             <input type="checkbox" value="true" id="defaultcheckbox" />
-            <input type="submit" id="submitSettings" value="Save" />
+            <br />
+
+            <input type="button" id="saveSettings" value="Save" />
+            <input type="button" id="loadDefaultSettings" value="Load Default" />
           </form>
 
         </div>

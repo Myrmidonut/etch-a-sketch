@@ -24,6 +24,7 @@ Route::post("/register", "PassportController@register");
 Route::group(["middleware" => "auth:api"], function() {
   Route::post("/account", "PassportController@account");
   Route::post("/settings", "PassportController@savesettings");
+  Route::get("/settings", "PassportController@loadsettings");
 });
 
 // drawingboard:

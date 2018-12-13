@@ -24,6 +24,8 @@ class PassportController extends Controller {
         "id" => $user->id,
         "default_grid_size" => $user->default_grid_size,
         "default_intensity" => $user->default_intensity,
+        "default_main_color" => $user->default_main_color,
+        "default_background_color" => $user->default_background_color,
         "default_shape" => $user->default_shape,
         'success' => $success
       ], $this->successStatus);
@@ -68,11 +70,24 @@ class PassportController extends Controller {
 
     $user->default_grid_size = $request->grid_size;
     $user->default_intensity = $request->intensity;
-    //$user->default_colors = $request->colors;
+    $user->default_main_color = $request->main_color;
+    $user->default_background_color = $request->background_color;
     $user->default_shape = $request->shape;
 
     $user->save();
 
     return ($user);
+  }
+
+  public function loadsettings() {
+    $user = Auth::user();
+
+    return response()->json([
+      "default_grid_size" => $user->default_grid_size,
+      "default_intensity" => $user->default_intensity,
+      "default_main_color" => $user->default_main_color,
+      "default_background_color" => $user->default_background_color,
+      "default_shape" => $user->default_shape
+    ]);
   }
 }
