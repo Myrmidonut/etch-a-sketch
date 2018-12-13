@@ -35,7 +35,7 @@ class App extends Component {
 
     //this.sendSave = this.sendSave.bind(this);
 
-    this.save = this.save.bind(this);
+    //this.save = this.save.bind(this);
     this.delete = this.delete.bind(this);
     this.reset = this.reset.bind(this);
     this.setDefaultSettings = this.setDefaultSettings.bind(this);
@@ -131,6 +131,7 @@ class App extends Component {
     }
   }
 
+  /*
   save(e) {
     e.preventDefault();
 
@@ -149,6 +150,7 @@ class App extends Component {
     })
     //}, this.sendSave)
   }
+  */
 
   /*sendSave() {
     fetch("/api/save", {
@@ -180,16 +182,11 @@ class App extends Component {
     
   }
 
-  getSettings() {
-    fetch("/api/settings")
-    .then(response => response.text())
-    .then(data => {
-      console.log(data);
-    })
-  }
-
   setDefaultSettings() {
     const settingsForm = document.getElementById("settingsForm");
+    const saveButton = document.getElementById("saveSettings");
+
+    saveButton.value = "Saving";
 
     fetch("/api/settings", {
       method: "post",
@@ -201,7 +198,7 @@ class App extends Component {
     })
     .then(response => response.json())
     .then(data => {
-      console.log(data);
+      saveButton.value = "Save";
     })
   }
 
@@ -222,6 +219,10 @@ class App extends Component {
   }
 
   loadDefaultSettings() {
+    const saveButton = document.getElementById("saveSettings");
+
+    saveButton.value = "Loading";
+
     fetch("/api/settings", {
       method: "get",
       headers: {
@@ -231,7 +232,7 @@ class App extends Component {
     })
     .then(response => response.json())
     .then(data => {
-      console.log(data);
+      saveButton.value = "Save";
 
       this.setState({
         gridSize: data.default_grid_size,
@@ -241,10 +242,16 @@ class App extends Component {
         shape: data.default_shape
       })
     })
+    .then(() => {
+      document.getElementById("gridSizeSlider").value = this.state.gridSize;
+      document.getElementById("intensitySlider").value = this.state.intensity;
+      document.getElementById("mainColorPicker").value = this.state.mainColor;
+      document.getElementById("backgroundColorPicker").value = this.state.backgroundColor;
+      document.getElementById("shape").value = this.state.shape;
+    })
   }
 
   login() {
-    console.log("login function")
     const loginForm = document.getElementById("loginForm");
     const submitLogin = document.getElementById("submitLogin");
 
@@ -256,9 +263,7 @@ class App extends Component {
     })
     .then(response => response.json())
     .then(data => {
-      submitLogin.value = "Success"
-
-      console.log(data);
+      submitLogin.value = "Login"
 
       this.setState({
         gridSize: data.default_grid_size,
@@ -270,7 +275,11 @@ class App extends Component {
       })
     })
     .then(() => {
-      console.log(this.state)
+      document.getElementById("gridSizeSlider").value = this.state.gridSize;
+      document.getElementById("intensitySlider").value = this.state.intensity;
+      document.getElementById("mainColorPicker").value = this.state.mainColor;
+      document.getElementById("backgroundColorPicker").value = this.state.backgroundColor;
+      document.getElementById("shape").value = this.state.shape;
     })
   }
 
@@ -354,7 +363,7 @@ class App extends Component {
 
           updateGrid={this.updateGrid}
           createGrid={this.createGrid}
-          save={this.save}
+          //save={this.save}
           delete={this.delete}
           reset={this.reset}
           setCurrentSettings={this.setCurrentSettings}

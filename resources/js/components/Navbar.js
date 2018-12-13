@@ -9,23 +9,27 @@ class Navbar extends Component {
   }
 
   componentDidMount() {
-    document.getElementById("save").addEventListener("click", this.save);
+    document.getElementById("save").addEventListener("click", e => {
+      e.preventDefault();
+      this.props.save();
+    });
 
     document.getElementById("delete").addEventListener("click", e => {
       e.preventDefault();
-
       this.props.delete();
     });
 
     document.getElementById("reset").addEventListener("click", e => {
       e.preventDefault();
-
       this.props.reset();
+    });
+
+    document.getElementById("settings").addEventListener("click", e => {
+      e.preventDefault();
     });
 
     document.getElementById("saveSettings").addEventListener("click", e => {
       e.preventDefault();
-
       if (document.getElementById("defaultcheckbox").checked === true) {
         console.log("default settings")
 
@@ -40,25 +44,21 @@ class Navbar extends Component {
 
     document.getElementById("loadDefaultSettings").addEventListener("click", e => {
       e.preventDefault();
-
       this.props.loadDefaultSettings();
     });
 
     document.getElementById("registerForm").addEventListener("submit", e => {
       e.preventDefault();
-
       this.props.register();
     });
 
     document.getElementById("loginForm").addEventListener("submit", e => {
       e.preventDefault();
-
       this.props.login();
     });
 
     document.getElementById("accountLink").addEventListener("click", e => {
       e.preventDefault();
-
       this.props.account();
     });
   }

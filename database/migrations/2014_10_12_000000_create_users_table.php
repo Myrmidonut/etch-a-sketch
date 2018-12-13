@@ -22,8 +22,8 @@ class CreateUsersTable extends Migration {
       $table->timestamps();
 
       $table->integer("default_grid_size")->default("32");
-      $table->string("default_main_color")->default("green");
-      $table->string("default_background_color")->default("white");
+      $table->string("default_main_color")->default("#008000");
+      $table->string("default_background_color")->default("#ffffff");
       $table->string("default_intensity")->default("0.1");
       $table->string("default_shape")->default("square");
     });

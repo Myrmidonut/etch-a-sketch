@@ -16,16 +16,12 @@ class CreateDrawingsTable extends Migration {
       $table->string("data");
       $table->timestamp("updated_at");
       $table->timestamp("created_at");
-      /*
-      $table->string("created_by");
-      $table->string("title");
-      $table->integer("likes");
-      $table->integer("favorites");
+      
       $table->integer("grid_size");
-      $table->string("colors");
-      $table->integer("intensity");
+      $table->string("opacity");
+      $table->string("color");
+      $table->string("background_color");
       $table->string("shape");
-      */
     });
   }
 

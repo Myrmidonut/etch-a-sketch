@@ -19339,8 +19339,8 @@ function (_Component) {
     _this.mouseup = _this.mouseup.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.createGrid = _this.createGrid.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.updateGrid = _this.updateGrid.bind(_assertThisInitialized(_assertThisInitialized(_this))); //this.sendSave = this.sendSave.bind(this);
+    //this.save = this.save.bind(this);
 
-    _this.save = _this.save.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.delete = _this.delete.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.reset = _this.reset.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.setDefaultSettings = _this.setDefaultSettings.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -19435,22 +19435,25 @@ function (_Component) {
         _loop(i);
       }
     }
-  }, {
-    key: "save",
-    value: function save(e) {
+    /*
+    save(e) {
       e.preventDefault();
-      var gridItems = document.querySelectorAll(".gridItem");
-      var opacity = [];
-      var color = [];
-      gridItems.forEach(function (e) {
+       let gridItems = document.querySelectorAll(".gridItem");
+      let opacity = [];
+      let color = [];
+      
+      gridItems.forEach(e => {
         opacity.push(e.style.opacity);
         color.push(e.style.backgroundColor);
-      });
-      this.setState({
+      })
+       this.setState({
         opacity: opacity,
         color: color
-      }); //}, this.sendSave)
+      })
+      //}, this.sendSave)
     }
+    */
+
     /*sendSave() {
       fetch("/api/save", {
         method: "post",
@@ -19481,18 +19484,11 @@ function (_Component) {
     key: "delete",
     value: function _delete() {}
   }, {
-    key: "getSettings",
-    value: function getSettings() {
-      fetch("/api/settings").then(function (response) {
-        return response.text();
-      }).then(function (data) {
-        console.log(data);
-      });
-    }
-  }, {
     key: "setDefaultSettings",
     value: function setDefaultSettings() {
       var settingsForm = document.getElementById("settingsForm");
+      var saveButton = document.getElementById("saveSettings");
+      saveButton.value = "Saving";
       fetch("/api/settings", {
         method: "post",
         body: new URLSearchParams(new FormData(settingsForm)),
@@ -19503,7 +19499,7 @@ function (_Component) {
       }).then(function (response) {
         return response.json();
       }).then(function (data) {
-        console.log(data);
+        saveButton.value = "Save";
       });
     }
   }, {
@@ -19527,6 +19523,8 @@ function (_Component) {
     value: function loadDefaultSettings() {
       var _this4 = this;
 
+      var saveButton = document.getElementById("saveSettings");
+      saveButton.value = "Loading";
       fetch("/api/settings", {
         method: "get",
         headers: {
@@ -19536,7 +19534,7 @@ function (_Component) {
       }).then(function (response) {
         return response.json();
       }).then(function (data) {
-        console.log(data);
+        saveButton.value = "Save";
 
         _this4.setState({
           gridSize: data.default_grid_size,
@@ -19545,6 +19543,12 @@ function (_Component) {
           backgroundColor: data.default_background_color,
           shape: data.default_shape
         });
+      }).then(function () {
+        document.getElementById("gridSizeSlider").value = _this4.state.gridSize;
+        document.getElementById("intensitySlider").value = _this4.state.intensity;
+        document.getElementById("mainColorPicker").value = _this4.state.mainColor;
+        document.getElementById("backgroundColorPicker").value = _this4.state.backgroundColor;
+        document.getElementById("shape").value = _this4.state.shape;
       });
     }
   }, {
@@ -19552,7 +19556,6 @@ function (_Component) {
     value: function login() {
       var _this5 = this;
 
-      console.log("login function");
       var loginForm = document.getElementById("loginForm");
       var submitLogin = document.getElementById("submitLogin");
       submitLogin.value = "Loading";
@@ -19562,8 +19565,7 @@ function (_Component) {
       }).then(function (response) {
         return response.json();
       }).then(function (data) {
-        submitLogin.value = "Success";
-        console.log(data);
+        submitLogin.value = "Login";
 
         _this5.setState({
           gridSize: data.default_grid_size,
@@ -19574,7 +19576,11 @@ function (_Component) {
           token: data.success.token
         });
       }).then(function () {
-        console.log(_this5.state);
+        document.getElementById("gridSizeSlider").value = _this5.state.gridSize;
+        document.getElementById("intensitySlider").value = _this5.state.intensity;
+        document.getElementById("mainColorPicker").value = _this5.state.mainColor;
+        document.getElementById("backgroundColorPicker").value = _this5.state.backgroundColor;
+        document.getElementById("shape").value = _this5.state.shape;
       });
     }
   }, {
@@ -19654,8 +19660,8 @@ function (_Component) {
         home: this.state.content,
         opacity: this.state.opacity,
         updateGrid: this.updateGrid,
-        createGrid: this.createGrid,
-        save: this.save,
+        createGrid: this.createGrid //save={this.save}
+        ,
         delete: this.delete,
         reset: this.reset,
         setCurrentSettings: this.setCurrentSettings,
@@ -42463,7 +42469,11 @@ function (_Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      document.getElementById("save").addEventListener("click", this.save);
+      document.getElementById("save").addEventListener("click", function (e) {
+        e.preventDefault();
+
+        _this2.props.save();
+      });
       document.getElementById("delete").addEventListener("click", function (e) {
         e.preventDefault();
 
@@ -42473,6 +42483,9 @@ function (_Component) {
         e.preventDefault();
 
         _this2.props.reset();
+      });
+      document.getElementById("settings").addEventListener("click", function (e) {
+        e.preventDefault();
       });
       document.getElementById("saveSettings").addEventListener("click", function (e) {
         e.preventDefault();

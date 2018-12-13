@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
   // logout
   // register
   // account details
+  // settings
 
 Route::post("/login", "PassportController@login");
 Route::post("/register", "PassportController@register");
@@ -31,16 +32,10 @@ Route::group(["middleware" => "auth:api"], function() {
   // show
   // save
   // delete
-  // reset
-  // show settings
-  // save settings
 
 Route::get("/show", "DrawingController@show");
 Route::post("/save", "DrawingController@save");
 Route::delete("/delete", "DrawingController@delete");
-//Route::get("/reset", "DrawingController@reset");
-//Route::get("/settings", "DrawingController@settings");
-//Route::post("/settings", "DrawingController@settingsupdate");
 
 // gallery:
   // my drawings
