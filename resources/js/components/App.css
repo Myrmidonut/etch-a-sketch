@@ -48,3 +48,10 @@ html, body, #app {
 #gridSizeSlider, #intensitySlider {
   width: 70%;
 }
+
+#galleryContent {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}

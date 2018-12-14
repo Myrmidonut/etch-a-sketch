@@ -19,6 +19,7 @@ class App extends Component {
       mainColor: "#008000",
       backgroundColor: "#ffffff",
       shape: "square",
+      title: "",
       
       opacity: [],
       color: [],
@@ -36,11 +37,12 @@ class App extends Component {
     this.createGrid = this.createGrid.bind(this);
     this.updateGrid = this.updateGrid.bind(this);
 
-    //this.sendSave = this.sendSave.bind(this);
+    this.loadAllDrawings = this.loadAllDrawings.bind(this);
 
     this.save = this.save.bind(this);
     this.delete = this.delete.bind(this);
     this.reset = this.reset.bind(this);
+
     this.setDefaultSettings = this.setDefaultSettings.bind(this);
     this.setCurrentSettings = this.setCurrentSettings.bind(this);
     this.loadDefaultSettings = this.loadDefaultSettings.bind(this);
@@ -134,7 +136,27 @@ class App extends Component {
     }
   }
 
+  loadAllDrawings() {
+    fetch("/api/drawings")
+    .then(response => response.json())
+    .then(data => {
+      console.log(data)
+      return data;
+    })
+  }
+
+  loadOneDrawing(id) {
+    fetch(`/api/drawings/${id}`)
+    .then(response => response.json())
+    .then(data => {
+      console.log(data)
+      return data;
+    })
+  }
+
   save() {
+    document.getElementById("save").textContent = "Saving";
+
     fetch("/api/save", {
       method: "post",
       body: new URLSearchParams({
@@ -143,7 +165,8 @@ class App extends Component {
         color: this.state.color,
         background_color: this.state.backgroundColor,
         shape: this.state.shape,
-        owner: this.state.accountId
+        owner: this.state.accountId,
+        title: this.state.title
       }),
       headers: {
         'Accept': 'application/json',
@@ -153,42 +176,9 @@ class App extends Component {
     .then(response => response.text())
     .then(data => {
       console.log(data)
+      document.getElementById("save").textContent = "Save";
     })
   }
-
-  /*
-  save(e) {
-    e.preventDefault();
-
-    let gridItems = document.querySelectorAll(".gridItem");
-    let opacity = [];
-    let color = [];
-    
-    gridItems.forEach(e => {
-      opacity.push(e.style.opacity);
-      color.push(e.style.backgroundColor);
-    })
-
-    this.setState({
-      opacity: opacity,
-      color: color
-    })
-    //}, this.sendSave)
-  }
-  */
-
-  /*sendSave() {
-    fetch("/api/save", {
-      method: "post",
-      body: new URLSearchParams({
-        data: this.state.opacity
-      })
-    })
-    .then(response => response.text())
-    .then(data => {
-      console.log(data);
-    })
-  }*/
 
   reset() {
     this.setState({
@@ -233,6 +223,7 @@ class App extends Component {
     const mainColor = document.getElementById("mainColorPicker").value;
     const backgroundColor = document.getElementById("backgroundColorPicker").value;
     const shape = document.getElementById("shape").value;
+    const title = document.getElementById("titleInput").value;
 
     this.setState({
       gridSize: gridSize,
@@ -240,13 +231,14 @@ class App extends Component {
       mainColor: mainColor,
       backgroundColor: backgroundColor,
       shape: shape,
+      title: title
     }, this.updateGrid())
   }
 
   loadDefaultSettings() {
-    const saveButton = document.getElementById("saveSettings");
+    const loadDefaultButton = document.getElementById("loadDefaultSettings");
 
-    saveButton.value = "Loading";
+    loadDefaultButton.value = "Loading";
 
     fetch("/api/settings", {
       method: "get",
@@ -257,7 +249,7 @@ class App extends Component {
     })
     .then(response => response.json())
     .then(data => {
-      saveButton.value = "Save";
+      loadDefaultButton.value = "Save";
 
       this.setState({
         gridSize: data.default_grid_size,
@@ -307,6 +299,7 @@ class App extends Component {
       document.getElementById("mainColorPicker").value = this.state.mainColor;
       document.getElementById("backgroundColorPicker").value = this.state.backgroundColor;
       document.getElementById("shape").value = this.state.shape;
+      document.getElementById("accountLink").textContent = this.state.accountName;
     })
   }
 
@@ -378,7 +371,9 @@ class App extends Component {
       )
     } else {
       content = (
-        <Gallery />
+        <Gallery 
+          loadAllDrawings={this.loadAllDrawings}
+        />
       )
     }
 
@@ -390,12 +385,15 @@ class App extends Component {
 
           updateGrid={this.updateGrid}
           createGrid={this.createGrid}
+
           save={this.save}
           delete={this.delete}
           reset={this.reset}
+
           setCurrentSettings={this.setCurrentSettings}
           setDefaultSettings={this.setDefaultSettings}
           loadDefaultSettings={this.loadDefaultSettings}
+
           login={this.login}
           register={this.register}
           account={this.account}

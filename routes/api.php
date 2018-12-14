@@ -33,15 +33,16 @@ Route::group(["middleware" => "auth:api"], function() {
   // save
   // delete
 
-Route::get("/show", "DrawingController@show");
-Route::post("/save", "DrawingController@save");
-Route::delete("/delete", "DrawingController@delete");
+Route::get("/drawings/{id}", "DrawingController@one");
+Route::group(["middleware" => "auth:api"], function() {
+  Route::post("/save", "DrawingController@save");
+  Route::delete("/delete", "DrawingController@delete");
+});
 
 // gallery:
+  // all
   // my drawings
   // popular
   // recent
 
-Route::get("/mydrawings", "GalleryController@mydrawings");
-Route::get("/popular", "GalleryController@popular");
-Route::get("/recent", "GalleryController@recent");
+Route::get("/drawings", "DrawingController@all");

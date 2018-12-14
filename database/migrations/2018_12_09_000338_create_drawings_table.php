@@ -17,6 +17,7 @@ class CreateDrawingsTable extends Migration {
       $table->timestamp("updated_at");
       $table->timestamp("created_at");
 
+      $table->string("title");
       $table->integer("grid_size");
       $table->text("opacity");
       $table->text("color");

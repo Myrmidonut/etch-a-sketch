@@ -122,6 +122,8 @@ class Navbar extends Component {
             <input type="checkbox" value="true" id="defaultcheckbox" />
             <br />
 
+            <input type="text" name="title" placeholder="Title" id="titleInput" />
+
             <input type="button" id="saveSettings" value="Save" />
             <input type="button" id="loadDefaultSettings" value="Load Default" />
           </form>

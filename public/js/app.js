@@ -19330,6 +19330,7 @@ function (_Component) {
       mainColor: "#008000",
       backgroundColor: "#ffffff",
       shape: "square",
+      title: "",
       opacity: [],
       color: [],
       mouseHold: false,
@@ -19340,8 +19341,8 @@ function (_Component) {
     _this.mousedown = _this.mousedown.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.mouseup = _this.mouseup.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.createGrid = _this.createGrid.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.updateGrid = _this.updateGrid.bind(_assertThisInitialized(_assertThisInitialized(_this))); //this.sendSave = this.sendSave.bind(this);
-
+    _this.updateGrid = _this.updateGrid.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.loadAllDrawings = _this.loadAllDrawings.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.save = _this.save.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.delete = _this.delete.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.reset = _this.reset.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -19438,8 +19439,29 @@ function (_Component) {
       }
     }
   }, {
+    key: "loadAllDrawings",
+    value: function loadAllDrawings() {
+      fetch("/api/drawings").then(function (response) {
+        return response.json();
+      }).then(function (data) {
+        console.log(data);
+        return data;
+      });
+    }
+  }, {
+    key: "loadOneDrawing",
+    value: function loadOneDrawing(id) {
+      fetch("/api/drawings/".concat(id)).then(function (response) {
+        return response.json();
+      }).then(function (data) {
+        console.log(data);
+        return data;
+      });
+    }
+  }, {
     key: "save",
     value: function save() {
+      document.getElementById("save").textContent = "Saving";
       fetch("/api/save", {
         method: "post",
         body: new URLSearchParams({
@@ -19448,7 +19470,8 @@ function (_Component) {
           color: this.state.color,
           background_color: this.state.backgroundColor,
           shape: this.state.shape,
-          owner: this.state.accountId
+          owner: this.state.accountId,
+          title: this.state.title
         }),
         headers: {
           'Accept': 'application/json',
@@ -19458,40 +19481,9 @@ function (_Component) {
         return response.text();
       }).then(function (data) {
         console.log(data);
+        document.getElementById("save").textContent = "Save";
       });
     }
-    /*
-    save(e) {
-      e.preventDefault();
-       let gridItems = document.querySelectorAll(".gridItem");
-      let opacity = [];
-      let color = [];
-      
-      gridItems.forEach(e => {
-        opacity.push(e.style.opacity);
-        color.push(e.style.backgroundColor);
-      })
-       this.setState({
-        opacity: opacity,
-        color: color
-      })
-      //}, this.sendSave)
-    }
-    */
-
-    /*sendSave() {
-      fetch("/api/save", {
-        method: "post",
-        body: new URLSearchParams({
-          data: this.state.opacity
-        })
-      })
-      .then(response => response.text())
-      .then(data => {
-        console.log(data);
-      })
-    }*/
-
   }, {
     key: "reset",
     value: function reset() {
@@ -19535,12 +19527,14 @@ function (_Component) {
       var mainColor = document.getElementById("mainColorPicker").value;
       var backgroundColor = document.getElementById("backgroundColorPicker").value;
       var shape = document.getElementById("shape").value;
+      var title = document.getElementById("titleInput").value;
       this.setState({
         gridSize: gridSize,
         intensity: intensity,
         mainColor: mainColor,
         backgroundColor: backgroundColor,
-        shape: shape
+        shape: shape,
+        title: title
       }, this.updateGrid());
     }
   }, {
@@ -19548,8 +19542,8 @@ function (_Component) {
     value: function loadDefaultSettings() {
       var _this4 = this;
 
-      var saveButton = document.getElementById("saveSettings");
-      saveButton.value = "Loading";
+      var loadDefaultButton = document.getElementById("loadDefaultSettings");
+      loadDefaultButton.value = "Loading";
       fetch("/api/settings", {
         method: "get",
         headers: {
@@ -19559,7 +19553,7 @@ function (_Component) {
       }).then(function (response) {
         return response.json();
       }).then(function (data) {
-        saveButton.value = "Save";
+        loadDefaultButton.value = "Save";
 
         _this4.setState({
           gridSize: data.default_grid_size,
@@ -19608,6 +19602,7 @@ function (_Component) {
         document.getElementById("mainColorPicker").value = _this5.state.mainColor;
         document.getElementById("backgroundColorPicker").value = _this5.state.backgroundColor;
         document.getElementById("shape").value = _this5.state.shape;
+        document.getElementById("accountLink").textContent = _this5.state.accountName;
       });
     }
   }, {
@@ -19678,7 +19673,9 @@ function (_Component) {
           shape: this.state.shape
         });
       } else {
-        content = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__Gallery__["a" /* default */], null);
+        content = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__Gallery__["a" /* default */], {
+          loadAllDrawings: this.loadAllDrawings
+        });
       }
 
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
@@ -42641,6 +42638,11 @@ function (_Component) {
           value: "true",
           id: "defaultcheckbox"
         }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+          type: "text",
+          name: "title",
+          placeholder: "Title",
+          id: "titleInput"
+        }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
           type: "button",
           id: "saveSettings",
           value: "Save"
@@ -42828,13 +42830,83 @@ var Footer = function Footer() {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 
-var Gallery = function Gallery() {
-  return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
-    id: "gallery"
-  }, "Here is the gallery.");
-};
+
+var Gallery =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(Gallery, _Component);
+
+  function Gallery(props) {
+    _classCallCheck(this, Gallery);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(Gallery).call(this, props));
+  }
+
+  _createClass(Gallery, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      document.getElementById("galleryContent").textContent = "Loading";
+      fetch("/api/drawings").then(function (response) {
+        return response.json();
+      }).then(function (data) {
+        document.getElementById("galleryContent").textContent = "";
+        data.forEach(function (e, i) {
+          var drawing = document.createElement("div");
+          drawing.id = "preview" + i;
+          document.getElementById("galleryContent").appendChild(drawing);
+          var gridHeight = 200;
+          var gridItemDimension = gridHeight / e.grid_size + "px";
+          document.getElementById("preview" + i).style.backgroundColor = e.background_color;
+          document.getElementById("preview" + i).style.height = gridHeight + "px";
+          document.getElementById("preview" + i).style.width = gridHeight + "px";
+          document.getElementById("preview" + i).style.border = "2px solid green";
+
+          for (var j = 0; j < e.grid_size * e.grid_size; j++) {
+            var gridItem = document.createElement("div");
+            gridItem.style.width = gridItemDimension;
+            gridItem.style.height = gridItemDimension;
+            gridItem.style.boxSizing = "border-box";
+            gridItem.style.border = "2px solid white";
+            gridItem.style.float = "left";
+            gridItem.style.backgroundColor = JSON.parse(e.color).split(",")[j];
+            gridItem.style.opacity = JSON.parse(e.opacity).split(",")[j];
+            gridItem.className = "gridItem";
+            if (e.shape === "round") gridItem.style.borderRadius = "50%";else gridItem.style.borderRadius = "0";
+            document.getElementById("preview" + i).appendChild(gridItem);
+          }
+        });
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+        id: "galleryContent"
+      });
+    }
+  }]);
+
+  return Gallery;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
 /* harmony default export */ __webpack_exports__["a"] = (Gallery);
 
@@ -42878,7 +42950,7 @@ exports = module.exports = __webpack_require__(51)(false);
 
 
 // module
-exports.push([module.i, "html, body, #app {\r\n  height: 100%;\r\n  margin: 0;\r\n  padding: 0;\r\n}\r\n\r\n.App {\r\n  justify-content: space-between;\r\n  height: 100%;\r\n  flex-direction: column;\r\n  display: flex;\r\n  align-items: center;\r\n}\r\n\r\n#navbar, #footer {\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n  border: 1px solid black;\r\n}\r\n\r\n#navbar {\r\n  display: flex;\r\n  justify-content: space-between;\r\n}\r\n\r\n#navbar div {\r\n  display: flex;\r\n  flex: 1;\r\n}\r\n\r\n#navbar #interface {\r\n  justify-content: center;\r\n}\r\n\r\n#navbar #account {\r\n  justify-content: flex-end;\r\n}\r\n\r\n#navbar a {\r\n  margin: 10px;\r\n  height: 30px;\r\n}\r\n\r\n#settingsForm {\r\n  width: 200px;\r\n}\r\n\r\n#gridSizeSlider, #intensitySlider {\r\n  width: 70%;\r\n}", ""]);
+exports.push([module.i, "html, body, #app {\r\n  height: 100%;\r\n  margin: 0;\r\n  padding: 0;\r\n}\r\n\r\n.App {\r\n  justify-content: space-between;\r\n  height: 100%;\r\n  flex-direction: column;\r\n  display: flex;\r\n  align-items: center;\r\n}\r\n\r\n#navbar, #footer {\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n  border: 1px solid black;\r\n}\r\n\r\n#navbar {\r\n  display: flex;\r\n  justify-content: space-between;\r\n}\r\n\r\n#navbar div {\r\n  display: flex;\r\n  flex: 1;\r\n}\r\n\r\n#navbar #interface {\r\n  justify-content: center;\r\n}\r\n\r\n#navbar #account {\r\n  justify-content: flex-end;\r\n}\r\n\r\n#navbar a {\r\n  margin: 10px;\r\n  height: 30px;\r\n}\r\n\r\n#settingsForm {\r\n  width: 200px;\r\n}\r\n\r\n#gridSizeSlider, #intensitySlider {\r\n  width: 70%;\r\n}\r\n\r\n#galleryContent {\r\n  display: flex;\r\n  flex-direction: row;\r\n  flex-wrap: wrap;\r\n  justify-content: space-around;\r\n}", ""]);
 
 // exports
 
