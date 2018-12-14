@@ -13,13 +13,13 @@ class CreateDrawingsTable extends Migration {
   public function up() {
     Schema::create('drawings', function (Blueprint $table) {
       $table->increments('id');
-      $table->string("data");
+      $table->integer("owner");
       $table->timestamp("updated_at");
       $table->timestamp("created_at");
-      
+
       $table->integer("grid_size");
-      $table->string("opacity");
-      $table->string("color");
+      $table->text("opacity");
+      $table->text("color");
       $table->string("background_color");
       $table->string("shape");
     });

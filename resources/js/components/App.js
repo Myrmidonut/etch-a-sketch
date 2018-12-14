@@ -24,6 +24,9 @@ class App extends Component {
       color: [],
 
       mouseHold: false,
+
+      accountName: "",
+      accountId: "",
       token: ""
     }
 
@@ -35,7 +38,7 @@ class App extends Component {
 
     //this.sendSave = this.sendSave.bind(this);
 
-    //this.save = this.save.bind(this);
+    this.save = this.save.bind(this);
     this.delete = this.delete.bind(this);
     this.reset = this.reset.bind(this);
     this.setDefaultSettings = this.setDefaultSettings.bind(this);
@@ -129,6 +132,28 @@ class App extends Component {
         }
       })
     }
+  }
+
+  save() {
+    fetch("/api/save", {
+      method: "post",
+      body: new URLSearchParams({
+        grid_size: this.state.gridSize,
+        opacity: this.state.opacity,
+        color: this.state.color,
+        background_color: this.state.backgroundColor,
+        shape: this.state.shape,
+        owner: this.state.accountId
+      }),
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': "Bearer " + this.state.token
+      }
+    })
+    .then(response => response.text())
+    .then(data => {
+      console.log(data)
+    })
   }
 
   /*
@@ -271,6 +296,8 @@ class App extends Component {
         mainColor: data.default_main_color,
         backgroundColor: data.default_background_color,
         shape: data.default_shape,
+        accountName: data.name,
+        accountId: data.id,
         token: data.success.token
       })
     })
@@ -363,7 +390,7 @@ class App extends Component {
 
           updateGrid={this.updateGrid}
           createGrid={this.createGrid}
-          //save={this.save}
+          save={this.save}
           delete={this.delete}
           reset={this.reset}
           setCurrentSettings={this.setCurrentSettings}

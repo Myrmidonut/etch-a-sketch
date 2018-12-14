@@ -82,8 +82,8 @@ class Navbar extends Component {
 
       buttons = (
         <div id="interface">
-          <a href="/" alt="Save" id="save" onClick={this.props.save}>Save</a>
-          <a href="/" alt="Delete" id="delete" onClick={this.props.delete}>Delete</a>
+          <a href="/" alt="Save" id="save">Save</a>
+          <a href="/" alt="Delete" id="delete">Delete</a>
           <a href="/" alt="Reset" id="reset">Reset</a>
 
           <a href="/" alt="Settings" id="settings" onClick={this.props.settings}>Settings</a>

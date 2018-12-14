@@ -19333,14 +19333,16 @@ function (_Component) {
       opacity: [],
       color: [],
       mouseHold: false,
+      accountName: "",
+      accountId: "",
       token: ""
     };
     _this.mousedown = _this.mousedown.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.mouseup = _this.mouseup.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.createGrid = _this.createGrid.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.updateGrid = _this.updateGrid.bind(_assertThisInitialized(_assertThisInitialized(_this))); //this.sendSave = this.sendSave.bind(this);
-    //this.save = this.save.bind(this);
 
+    _this.save = _this.save.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.delete = _this.delete.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.reset = _this.reset.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.setDefaultSettings = _this.setDefaultSettings.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -19434,6 +19436,29 @@ function (_Component) {
       for (var i = 0; i < this.state.gridSize * this.state.gridSize; i++) {
         _loop(i);
       }
+    }
+  }, {
+    key: "save",
+    value: function save() {
+      fetch("/api/save", {
+        method: "post",
+        body: new URLSearchParams({
+          grid_size: this.state.gridSize,
+          opacity: this.state.opacity,
+          color: this.state.color,
+          background_color: this.state.backgroundColor,
+          shape: this.state.shape,
+          owner: this.state.accountId
+        }),
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': "Bearer " + this.state.token
+        }
+      }).then(function (response) {
+        return response.text();
+      }).then(function (data) {
+        console.log(data);
+      });
     }
     /*
     save(e) {
@@ -19573,6 +19598,8 @@ function (_Component) {
           mainColor: data.default_main_color,
           backgroundColor: data.default_background_color,
           shape: data.default_shape,
+          accountName: data.name,
+          accountId: data.id,
           token: data.success.token
         });
       }).then(function () {
@@ -19660,8 +19687,8 @@ function (_Component) {
         home: this.state.content,
         opacity: this.state.opacity,
         updateGrid: this.updateGrid,
-        createGrid: this.createGrid //save={this.save}
-        ,
+        createGrid: this.createGrid,
+        save: this.save,
         delete: this.delete,
         reset: this.reset,
         setCurrentSettings: this.setCurrentSettings,
@@ -42545,13 +42572,11 @@ function (_Component) {
         }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
           href: "/",
           alt: "Save",
-          id: "save",
-          onClick: this.props.save
+          id: "save"
         }, "Save"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
           href: "/",
           alt: "Delete",
-          id: "delete",
-          onClick: this.props.delete
+          id: "delete"
         }, "Delete"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
           href: "/",
           alt: "Reset",
