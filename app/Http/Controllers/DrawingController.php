@@ -23,15 +23,17 @@ class DrawingController extends Controller {
     return("saved" . $drawing);
   }
 
-  public function all(Request $request) {
-    $drawings = Drawing::all();
+  public function all() {
+    $alldrawings = Drawing::all();
 
-    return response()->json($drawings);
+    $latestdrawings = Drawing::orderBy("created_at", "desc")->take(5)->get();
+
+    return response()->json([$alldrawings, $latestdrawings]);
   }
 
   public function one($id) {
     $drawing = Drawing::find($id);
 
-    
+
   }
 }

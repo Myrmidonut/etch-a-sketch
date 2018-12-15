@@ -42775,8 +42775,7 @@ function (_Component) {
       drawingBoard.style.border = "2px solid green";
       document.getElementById("drawingBoard").addEventListener("mousedown", this.props.mousedown);
       document.addEventListener("mouseup", this.props.mouseup);
-      this.props.createGrid();
-      this.props.updateGrid();
+      this.props.createGrid(); //this.props.updateGrid();
     }
   }, {
     key: "componentWillUnmount",
@@ -42788,7 +42787,6 @@ function (_Component) {
     key: "componentDidUpdate",
     value: function componentDidUpdate(prevProps) {
       if (this.props.gridSize !== prevProps.gridSize) {
-        // || this.props.shape !== prevProps.shape) {
         this.props.createGrid();
       }
     }
@@ -42864,21 +42862,29 @@ function (_Component) {
   _createClass(Gallery, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      document.getElementById("galleryContent").textContent = "Loading";
+      document.getElementById("galleryLatest").textContent = "Loading";
+      document.getElementById("galleryPopular").textContent = "Loading";
       fetch("/api/drawings").then(function (response) {
         return response.json();
       }).then(function (data) {
-        document.getElementById("galleryContent").textContent = "";
-        data.forEach(function (e, i) {
+        // data[0] all
+        // data[0] 5 latest
+        document.getElementById("galleryLatest").textContent = "";
+        data[1].forEach(function (e, i) {
           var drawing = document.createElement("div");
-          drawing.id = "preview" + i;
-          document.getElementById("galleryContent").appendChild(drawing);
+          drawing.id = "previewLatest" + i;
+          drawing.className = "previewLatest";
+          document.getElementById("galleryLatest").appendChild(drawing);
           var gridHeight = 200;
           var gridItemDimension = gridHeight / e.grid_size + "px";
-          document.getElementById("preview" + i).style.backgroundColor = e.background_color;
-          document.getElementById("preview" + i).style.height = gridHeight + "px";
-          document.getElementById("preview" + i).style.width = gridHeight + "px";
-          document.getElementById("preview" + i).style.border = "2px solid green";
+          document.getElementById("previewLatest" + i).style.backgroundColor = e.background_color;
+          document.getElementById("previewLatest" + i).style.height = gridHeight + "px";
+          document.getElementById("previewLatest" + i).style.width = gridHeight + "px";
+          document.getElementById("previewLatest" + i).style.border = "2px solid green";
+          document.getElementById("previewLatest" + i).addEventListener("click", function (f) {
+            f.preventDefault();
+            console.log("clicked " + e.id);
+          });
 
           for (var j = 0; j < e.grid_size * e.grid_size; j++) {
             var gridItem = document.createElement("div");
@@ -42891,17 +42897,57 @@ function (_Component) {
             gridItem.style.opacity = JSON.parse(e.opacity).split(",")[j];
             gridItem.className = "gridItem";
             if (e.shape === "round") gridItem.style.borderRadius = "50%";else gridItem.style.borderRadius = "0";
-            document.getElementById("preview" + i).appendChild(gridItem);
+            document.getElementById("previewLatest" + i).appendChild(gridItem);
+          }
+        }); // -------------------
+
+        document.getElementById("galleryPopular").textContent = "";
+        data[0].forEach(function (e, i) {
+          var drawing = document.createElement("div");
+          drawing.id = "previewPopular" + i;
+          drawing.className = "previewPopular";
+          document.getElementById("galleryPopular").appendChild(drawing);
+          var gridHeight = 200;
+          var gridItemDimension = gridHeight / e.grid_size + "px";
+          document.getElementById("previewPopular" + i).style.backgroundColor = e.background_color;
+          document.getElementById("previewPopular" + i).style.height = gridHeight + "px";
+          document.getElementById("previewPopular" + i).style.width = gridHeight + "px";
+          document.getElementById("previewPopular" + i).style.border = "2px solid green";
+          document.getElementById("previewPopular" + i).addEventListener("click", function (f) {
+            f.preventDefault();
+            console.log("clicked " + e.id);
+          });
+
+          for (var j = 0; j < e.grid_size * e.grid_size; j++) {
+            var gridItem = document.createElement("div");
+            gridItem.style.width = gridItemDimension;
+            gridItem.style.height = gridItemDimension;
+            gridItem.style.boxSizing = "border-box";
+            gridItem.style.border = "2px solid white";
+            gridItem.style.float = "left";
+            gridItem.style.backgroundColor = JSON.parse(e.color).split(",")[j];
+            gridItem.style.opacity = JSON.parse(e.opacity).split(",")[j];
+            gridItem.className = "gridItem";
+            if (e.shape === "round") gridItem.style.borderRadius = "50%";else gridItem.style.borderRadius = "0";
+            document.getElementById("previewPopular" + i).appendChild(gridItem);
           }
         });
+      }).then(function (e) {
+        console.log("done");
       });
     }
   }, {
     key: "render",
     value: function render() {
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
-        id: "galleryContent"
-      });
+        id: "galleryContainer"
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+        id: "galleryPopular"
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+        id: "galleryLatest"
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+        id: "galleryPersonal"
+      }));
     }
   }]);
 
@@ -42950,7 +42996,7 @@ exports = module.exports = __webpack_require__(51)(false);
 
 
 // module
-exports.push([module.i, "html, body, #app {\r\n  height: 100%;\r\n  margin: 0;\r\n  padding: 0;\r\n}\r\n\r\n.App {\r\n  justify-content: space-between;\r\n  height: 100%;\r\n  flex-direction: column;\r\n  display: flex;\r\n  align-items: center;\r\n}\r\n\r\n#navbar, #footer {\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n  border: 1px solid black;\r\n}\r\n\r\n#navbar {\r\n  display: flex;\r\n  justify-content: space-between;\r\n}\r\n\r\n#navbar div {\r\n  display: flex;\r\n  flex: 1;\r\n}\r\n\r\n#navbar #interface {\r\n  justify-content: center;\r\n}\r\n\r\n#navbar #account {\r\n  justify-content: flex-end;\r\n}\r\n\r\n#navbar a {\r\n  margin: 10px;\r\n  height: 30px;\r\n}\r\n\r\n#settingsForm {\r\n  width: 200px;\r\n}\r\n\r\n#gridSizeSlider, #intensitySlider {\r\n  width: 70%;\r\n}\r\n\r\n#galleryContent {\r\n  display: flex;\r\n  flex-direction: row;\r\n  flex-wrap: wrap;\r\n  justify-content: space-around;\r\n}", ""]);
+exports.push([module.i, "html, body, #app {\r\n  height: 100%;\r\n  margin: 0;\r\n  padding: 0;\r\n}\r\n\r\n.App {\r\n  justify-content: space-between;\r\n  height: 100%;\r\n  flex-direction: column;\r\n  display: flex;\r\n  align-items: center;\r\n}\r\n\r\n#navbar, #footer {\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n  border: 1px solid black;\r\n}\r\n\r\n#navbar {\r\n  display: flex;\r\n  justify-content: space-between;\r\n}\r\n\r\n#navbar div {\r\n  display: flex;\r\n  flex: 1;\r\n}\r\n\r\n#navbar #interface {\r\n  justify-content: center;\r\n}\r\n\r\n#navbar #account {\r\n  justify-content: flex-end;\r\n}\r\n\r\n#navbar a {\r\n  margin: 10px;\r\n  height: 30px;\r\n}\r\n\r\n#settingsForm {\r\n  width: 200px;\r\n}\r\n\r\n#gridSizeSlider, #intensitySlider {\r\n  width: 70%;\r\n}\r\n\r\n#galleryContainer {\r\n  display: flex;\r\n  flex-direction: column;\r\n}\r\n\r\n#galleryLatest, #galleryPopular, #galleryPersonal {\r\n  min-height: 200px;\r\n  border: 1px solid black;\r\n  margin: 20px;\r\n}\r\n\r\n#galleryLatest, #galleryPopular {\r\n  display: flex;\r\n  flex-direction: row;\r\n  flex-wrap: wrap;\r\n  justify-content: space-around;\r\n}\r\n\r\n.previewPopular, .previewLatest {\r\n  margin: 20px;\r\n}", ""]);
 
 // exports
 

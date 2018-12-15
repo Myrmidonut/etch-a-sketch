@@ -49,9 +49,24 @@ html, body, #app {
   width: 70%;
 }
 
-#galleryContent {
+#galleryContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+#galleryLatest, #galleryPopular, #galleryPersonal {
+  min-height: 200px;
+  border: 1px solid black;
+  margin: 20px;
+}
+
+#galleryLatest, #galleryPopular {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
+}
+
+.previewPopular, .previewLatest {
+  margin: 20px;
 }
