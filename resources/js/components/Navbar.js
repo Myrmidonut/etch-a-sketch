@@ -23,11 +23,11 @@ class Navbar extends Component {
       e.preventDefault();
       this.props.reset();
     });
-
+/*
     document.getElementById("settings").addEventListener("click", e => {
       e.preventDefault();
     });
-
+*/
     document.getElementById("saveSettings").addEventListener("click", e => {
       e.preventDefault();
       if (document.getElementById("defaultcheckbox").checked === true) {
@@ -86,7 +86,7 @@ class Navbar extends Component {
           <a href="/" alt="Delete" id="delete">Delete</a>
           <a href="/" alt="Reset" id="reset">Reset</a>
 
-          <a href="/" alt="Settings" id="settings" onClick={this.props.settings}>Settings</a>
+          {/*<a href="/" alt="Settings" id="settings" onClick={this.props.settings}>Settings</a>*/}
 
           <form id="settingsForm">
             <span>Grid Size: </span>

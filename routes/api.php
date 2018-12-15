@@ -14,24 +14,16 @@ use Illuminate\Http\Request;
 */
 
 // account:
-  // login
-  // logout
-  // register
-  // account details
-  // settings
 
 Route::post("/login", "PassportController@login");
 Route::post("/register", "PassportController@register");
 Route::group(["middleware" => "auth:api"], function() {
-  Route::post("/account", "PassportController@account");
+  Route::get("/account", "PassportController@account");
   Route::post("/settings", "PassportController@savesettings");
   Route::get("/settings", "PassportController@loadsettings");
 });
 
 // drawingboard:
-  // show
-  // save
-  // delete
 
 Route::get("/drawings/{id}", "DrawingController@one");
 Route::group(["middleware" => "auth:api"], function() {
@@ -40,9 +32,5 @@ Route::group(["middleware" => "auth:api"], function() {
 });
 
 // gallery:
-  // all
-  // my drawings
-  // popular
-  // recent
 
 Route::get("/drawings", "DrawingController@all");

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Drawing;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 
@@ -61,8 +62,9 @@ class PassportController extends Controller {
 
   public function account() {
     $user = Auth::user();
+    $drawings = Drawing::where("owner", $user->id)->get();
 
-    return ($user);
+    return response()->json([$user, $drawings]);
   }
 
   public function savesettings(Request $request) {
@@ -88,6 +90,6 @@ class PassportController extends Controller {
       "default_main_color" => $user->default_main_color,
       "default_background_color" => $user->default_background_color,
       "default_shape" => $user->default_shape
-    ]);
+    ], $this->successStatus);
   }
 }

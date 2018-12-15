@@ -13,18 +13,26 @@ class Gallery extends Component {
     .then(response => response.json())
     .then(data => {
       // data[0] all
-      // data[0] 5 latest
-
+      // data[1] 5 latest
+      
       document.getElementById("galleryLatest").textContent = "";
+
+      const heading = document.createElement("h2");
+      heading.textContent = "Latest Drawings:"
+      document.getElementById("galleryLatest").appendChild(heading);
+
+      const galleryLatestContainer = document.createElement("div");
+      galleryLatestContainer.id = "galleryLatestContainer";
+      document.getElementById("galleryLatest").appendChild(galleryLatestContainer);
 
       data[1].forEach((e, i) => {
         const drawing = document.createElement("div");
         drawing.id = "previewLatest" + i;
         drawing.className = "previewLatest";
 
-        document.getElementById("galleryLatest").appendChild(drawing);
+        document.getElementById("galleryLatestContainer").appendChild(drawing);
 
-        const gridHeight = 200;
+        const gridHeight = 120;
         const gridItemDimension = gridHeight/e.grid_size + "px";
     
         document.getElementById("previewLatest" + i).style.backgroundColor = e.background_color;
@@ -34,7 +42,6 @@ class Gallery extends Component {
 
         document.getElementById("previewLatest" + i).addEventListener("click", f => {
           f.preventDefault();
-
           console.log("clicked " + e.id)
         })
 
@@ -56,9 +63,9 @@ class Gallery extends Component {
           document.getElementById("previewLatest" + i).appendChild(gridItem);
         }
       })
-   
+      
       // -------------------
-
+/*
       document.getElementById("galleryPopular").textContent = "";
 
       data[0].forEach((e, i) => {
@@ -100,6 +107,7 @@ class Gallery extends Component {
           document.getElementById("previewPopular" + i).appendChild(gridItem);
         }
       })
+      */
     })
     .then(e => {
       console.log("done")

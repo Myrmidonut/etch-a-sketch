@@ -55,12 +55,12 @@ html, body, #app {
 }
 
 #galleryLatest, #galleryPopular, #galleryPersonal {
-  min-height: 200px;
+  min-height: 100px;
   border: 1px solid black;
   margin: 20px;
 }
 
-#galleryLatest, #galleryPopular {
+#galleryLatestContainer, #galleryPopular {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -69,4 +69,8 @@ html, body, #app {
 
 .previewPopular, .previewLatest {
   margin: 20px;
+}
+
+h2 {
+  text-align: center;
 }

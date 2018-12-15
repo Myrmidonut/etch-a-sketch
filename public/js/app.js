@@ -19343,7 +19343,8 @@ function (_Component) {
     _this.createGrid = _this.createGrid.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.updateGrid = _this.updateGrid.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.loadAllDrawings = _this.loadAllDrawings.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.save = _this.save.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.loadOneDrawing = _this.loadOneDrawing.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.saveDrawing = _this.saveDrawing.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.delete = _this.delete.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.reset = _this.reset.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.setDefaultSettings = _this.setDefaultSettings.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -19376,6 +19377,7 @@ function (_Component) {
     value: function updateGrid() {
       var _this2 = this;
 
+      console.log("update grid");
       var gridItems = document.querySelectorAll(".gridItem");
       var drawingBoard = document.getElementById("drawingBoard");
       drawingBoard.style.background = this.state.backgroundColor;
@@ -19459,8 +19461,8 @@ function (_Component) {
       });
     }
   }, {
-    key: "save",
-    value: function save() {
+    key: "saveDrawing",
+    value: function saveDrawing() {
       document.getElementById("save").textContent = "Saving";
       fetch("/api/save", {
         method: "post",
@@ -19480,7 +19482,7 @@ function (_Component) {
       }).then(function (response) {
         return response.text();
       }).then(function (data) {
-        console.log(data);
+        console.log("drawing saved");
         document.getElementById("save").textContent = "Save";
       });
     }
@@ -19517,6 +19519,7 @@ function (_Component) {
         return response.json();
       }).then(function (data) {
         saveButton.value = "Save";
+        console.log("default settings loaded");
       });
     }
   }, {
@@ -19535,7 +19538,8 @@ function (_Component) {
         backgroundColor: backgroundColor,
         shape: shape,
         title: title
-      }, this.updateGrid());
+      }, this.updateGrid);
+      console.log("set current settings");
     }
   }, {
     key: "loadDefaultSettings",
@@ -19568,6 +19572,7 @@ function (_Component) {
         document.getElementById("mainColorPicker").value = _this4.state.mainColor;
         document.getElementById("backgroundColorPicker").value = _this4.state.backgroundColor;
         document.getElementById("shape").value = _this4.state.shape;
+        console.log("Defaults loaded");
       });
     }
   }, {
@@ -19603,6 +19608,7 @@ function (_Component) {
         document.getElementById("backgroundColorPicker").value = _this5.state.backgroundColor;
         document.getElementById("shape").value = _this5.state.shape;
         document.getElementById("accountLink").textContent = _this5.state.accountName;
+        console.log("Logged in");
       });
     }
   }, {
@@ -19617,15 +19623,15 @@ function (_Component) {
       }).then(function (response) {
         return response.text();
       }).then(function (data) {
-        console.log(data);
-        submitRegister.value = "Success";
+        console.log("Registered");
+        submitRegister.value = "Register";
       });
     }
   }, {
     key: "account",
     value: function account() {
       fetch("/api/account", {
-        method: "post",
+        method: "get",
         headers: {
           'Accept': 'application/json',
           'Authorization': "Bearer " + this.state.token
@@ -19634,6 +19640,7 @@ function (_Component) {
         return response.json();
       }).then(function (data) {
         console.log(data);
+        console.log("Account");
       });
     }
   }, {
@@ -19674,7 +19681,8 @@ function (_Component) {
         });
       } else {
         content = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__Gallery__["a" /* default */], {
-          loadAllDrawings: this.loadAllDrawings
+          loadAllDrawings: this.loadAllDrawings,
+          loadOneDrawing: this.loadOneDrawing
         });
       }
 
@@ -19685,7 +19693,7 @@ function (_Component) {
         opacity: this.state.opacity,
         updateGrid: this.updateGrid,
         createGrid: this.createGrid,
-        save: this.save,
+        save: this.saveDrawing,
         delete: this.delete,
         reset: this.reset,
         setCurrentSettings: this.setCurrentSettings,
@@ -42508,9 +42516,12 @@ function (_Component) {
 
         _this2.props.reset();
       });
-      document.getElementById("settings").addEventListener("click", function (e) {
-        e.preventDefault();
-      });
+      /*
+          document.getElementById("settings").addEventListener("click", e => {
+            e.preventDefault();
+          });
+      */
+
       document.getElementById("saveSettings").addEventListener("click", function (e) {
         e.preventDefault();
 
@@ -42578,12 +42589,7 @@ function (_Component) {
           href: "/",
           alt: "Reset",
           id: "reset"
-        }, "Reset"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
-          href: "/",
-          alt: "Settings",
-          id: "settings",
-          onClick: this.props.settings
-        }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", {
+        }, "Reset"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", {
           id: "settingsForm"
         }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Grid Size: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
           id: "gridSizeValue"
@@ -42769,6 +42775,7 @@ function (_Component) {
   _createClass(Drawingboard, [{
     key: "componentDidMount",
     value: function componentDidMount() {
+      console.log("Drawingboard mount");
       var drawingBoard = document.getElementById("drawingBoard");
       drawingBoard.style.height = this.props.gridHeight + "px";
       drawingBoard.style.width = this.props.gridHeight + "px";
@@ -42780,14 +42787,17 @@ function (_Component) {
   }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
+      console.log("Drawingboard unmount");
       document.getElementById("drawingBoard").removeEventListener("mousedown", this.mousedown);
       document.getElementById("drawingBoard").removeEventListener("mouseup", this.mouseup);
     }
   }, {
     key: "componentDidUpdate",
     value: function componentDidUpdate(prevProps) {
+      //console.log("Drawingboard update")
       if (this.props.gridSize !== prevProps.gridSize) {
         this.props.createGrid();
+        console.log("Drawingboard update gridsize");
       }
     }
   }, {
@@ -42868,14 +42878,20 @@ function (_Component) {
         return response.json();
       }).then(function (data) {
         // data[0] all
-        // data[0] 5 latest
+        // data[1] 5 latest
         document.getElementById("galleryLatest").textContent = "";
+        var heading = document.createElement("h2");
+        heading.textContent = "Latest Drawings:";
+        document.getElementById("galleryLatest").appendChild(heading);
+        var galleryLatestContainer = document.createElement("div");
+        galleryLatestContainer.id = "galleryLatestContainer";
+        document.getElementById("galleryLatest").appendChild(galleryLatestContainer);
         data[1].forEach(function (e, i) {
           var drawing = document.createElement("div");
           drawing.id = "previewLatest" + i;
           drawing.className = "previewLatest";
-          document.getElementById("galleryLatest").appendChild(drawing);
-          var gridHeight = 200;
+          document.getElementById("galleryLatestContainer").appendChild(drawing);
+          var gridHeight = 120;
           var gridItemDimension = gridHeight / e.grid_size + "px";
           document.getElementById("previewLatest" + i).style.backgroundColor = e.background_color;
           document.getElementById("previewLatest" + i).style.height = gridHeight + "px";
@@ -42901,37 +42917,49 @@ function (_Component) {
           }
         }); // -------------------
 
-        document.getElementById("galleryPopular").textContent = "";
-        data[0].forEach(function (e, i) {
-          var drawing = document.createElement("div");
-          drawing.id = "previewPopular" + i;
-          drawing.className = "previewPopular";
-          document.getElementById("galleryPopular").appendChild(drawing);
-          var gridHeight = 200;
-          var gridItemDimension = gridHeight / e.grid_size + "px";
-          document.getElementById("previewPopular" + i).style.backgroundColor = e.background_color;
-          document.getElementById("previewPopular" + i).style.height = gridHeight + "px";
-          document.getElementById("previewPopular" + i).style.width = gridHeight + "px";
-          document.getElementById("previewPopular" + i).style.border = "2px solid green";
-          document.getElementById("previewPopular" + i).addEventListener("click", function (f) {
-            f.preventDefault();
-            console.log("clicked " + e.id);
-          });
-
-          for (var j = 0; j < e.grid_size * e.grid_size; j++) {
-            var gridItem = document.createElement("div");
-            gridItem.style.width = gridItemDimension;
-            gridItem.style.height = gridItemDimension;
-            gridItem.style.boxSizing = "border-box";
-            gridItem.style.border = "2px solid white";
-            gridItem.style.float = "left";
-            gridItem.style.backgroundColor = JSON.parse(e.color).split(",")[j];
-            gridItem.style.opacity = JSON.parse(e.opacity).split(",")[j];
-            gridItem.className = "gridItem";
-            if (e.shape === "round") gridItem.style.borderRadius = "50%";else gridItem.style.borderRadius = "0";
-            document.getElementById("previewPopular" + i).appendChild(gridItem);
-          }
-        });
+        /*
+              document.getElementById("galleryPopular").textContent = "";
+        
+              data[0].forEach((e, i) => {
+                const drawing = document.createElement("div");
+                drawing.id = "previewPopular" + i;
+                drawing.className = "previewPopular";
+        
+                document.getElementById("galleryPopular").appendChild(drawing);
+        
+                const gridHeight = 200;
+                const gridItemDimension = gridHeight/e.grid_size + "px";
+            
+                document.getElementById("previewPopular" + i).style.backgroundColor = e.background_color;
+                document.getElementById("previewPopular" + i).style.height = gridHeight + "px";
+                document.getElementById("previewPopular" + i).style.width = gridHeight + "px";
+                document.getElementById("previewPopular" + i).style.border = "2px solid green";
+        
+                document.getElementById("previewPopular" + i).addEventListener("click", f => {
+                  f.preventDefault();
+        
+                  console.log("clicked " + e.id)
+                })
+        
+                for (let j = 0; j < (e.grid_size * e.grid_size); j++) {
+                  const gridItem = document.createElement("div");
+            
+                  gridItem.style.width = gridItemDimension;
+                  gridItem.style.height = gridItemDimension;
+                  gridItem.style.boxSizing = "border-box"
+                  gridItem.style.border = "2px solid white";
+                  gridItem.style.float = "left";
+                  gridItem.style.backgroundColor = JSON.parse(e.color).split(",")[j];
+                  gridItem.style.opacity = JSON.parse(e.opacity).split(",")[j];
+                  gridItem.className = "gridItem";
+        
+                  if (e.shape === "round") gridItem.style.borderRadius = "50%";
+                  else gridItem.style.borderRadius = "0";
+                  
+                  document.getElementById("previewPopular" + i).appendChild(gridItem);
+                }
+              })
+              */
       }).then(function (e) {
         console.log("done");
       });
@@ -42996,7 +43024,7 @@ exports = module.exports = __webpack_require__(51)(false);
 
 
 // module
-exports.push([module.i, "html, body, #app {\r\n  height: 100%;\r\n  margin: 0;\r\n  padding: 0;\r\n}\r\n\r\n.App {\r\n  justify-content: space-between;\r\n  height: 100%;\r\n  flex-direction: column;\r\n  display: flex;\r\n  align-items: center;\r\n}\r\n\r\n#navbar, #footer {\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n  border: 1px solid black;\r\n}\r\n\r\n#navbar {\r\n  display: flex;\r\n  justify-content: space-between;\r\n}\r\n\r\n#navbar div {\r\n  display: flex;\r\n  flex: 1;\r\n}\r\n\r\n#navbar #interface {\r\n  justify-content: center;\r\n}\r\n\r\n#navbar #account {\r\n  justify-content: flex-end;\r\n}\r\n\r\n#navbar a {\r\n  margin: 10px;\r\n  height: 30px;\r\n}\r\n\r\n#settingsForm {\r\n  width: 200px;\r\n}\r\n\r\n#gridSizeSlider, #intensitySlider {\r\n  width: 70%;\r\n}\r\n\r\n#galleryContainer {\r\n  display: flex;\r\n  flex-direction: column;\r\n}\r\n\r\n#galleryLatest, #galleryPopular, #galleryPersonal {\r\n  min-height: 200px;\r\n  border: 1px solid black;\r\n  margin: 20px;\r\n}\r\n\r\n#galleryLatest, #galleryPopular {\r\n  display: flex;\r\n  flex-direction: row;\r\n  flex-wrap: wrap;\r\n  justify-content: space-around;\r\n}\r\n\r\n.previewPopular, .previewLatest {\r\n  margin: 20px;\r\n}", ""]);
+exports.push([module.i, "html, body, #app {\r\n  height: 100%;\r\n  margin: 0;\r\n  padding: 0;\r\n}\r\n\r\n.App {\r\n  justify-content: space-between;\r\n  height: 100%;\r\n  flex-direction: column;\r\n  display: flex;\r\n  align-items: center;\r\n}\r\n\r\n#navbar, #footer {\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n  border: 1px solid black;\r\n}\r\n\r\n#navbar {\r\n  display: flex;\r\n  justify-content: space-between;\r\n}\r\n\r\n#navbar div {\r\n  display: flex;\r\n  flex: 1;\r\n}\r\n\r\n#navbar #interface {\r\n  justify-content: center;\r\n}\r\n\r\n#navbar #account {\r\n  justify-content: flex-end;\r\n}\r\n\r\n#navbar a {\r\n  margin: 10px;\r\n  height: 30px;\r\n}\r\n\r\n#settingsForm {\r\n  width: 200px;\r\n}\r\n\r\n#gridSizeSlider, #intensitySlider {\r\n  width: 70%;\r\n}\r\n\r\n#galleryContainer {\r\n  display: flex;\r\n  flex-direction: column;\r\n}\r\n\r\n#galleryLatest, #galleryPopular, #galleryPersonal {\r\n  min-height: 100px;\r\n  border: 1px solid black;\r\n  margin: 20px;\r\n}\r\n\r\n#galleryLatestContainer, #galleryPopular {\r\n  display: flex;\r\n  flex-direction: row;\r\n  flex-wrap: wrap;\r\n  justify-content: space-around;\r\n}\r\n\r\n.previewPopular, .previewLatest {\r\n  margin: 20px;\r\n}\r\n\r\nh2 {\r\n  text-align: center;\r\n}", ""]);
 
 // exports
 

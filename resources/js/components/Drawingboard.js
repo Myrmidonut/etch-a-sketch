@@ -6,6 +6,8 @@ class Drawingboard extends Component {
   }
 
   componentDidMount() {
+    console.log("Drawingboard mount")
+
     const drawingBoard = document.getElementById("drawingBoard");
 
     drawingBoard.style.height = this.props.gridHeight + "px";
@@ -20,13 +22,19 @@ class Drawingboard extends Component {
   }
   
   componentWillUnmount() {
+    console.log("Drawingboard unmount")
+
     document.getElementById("drawingBoard").removeEventListener("mousedown", this.mousedown);
     document.getElementById("drawingBoard").removeEventListener("mouseup", this.mouseup);
   }
 
   componentDidUpdate(prevProps) {
+    //console.log("Drawingboard update")
+
     if (this.props.gridSize !== prevProps.gridSize) {
       this.props.createGrid();
+      
+      console.log("Drawingboard update gridsize")
     }
   }
 

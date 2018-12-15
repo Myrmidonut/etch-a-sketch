@@ -38,8 +38,9 @@ class App extends Component {
     this.updateGrid = this.updateGrid.bind(this);
 
     this.loadAllDrawings = this.loadAllDrawings.bind(this);
+    this.loadOneDrawing = this.loadOneDrawing.bind(this);
 
-    this.save = this.save.bind(this);
+    this.saveDrawing = this.saveDrawing.bind(this);
     this.delete = this.delete.bind(this);
     this.reset = this.reset.bind(this);
 
@@ -69,6 +70,8 @@ class App extends Component {
   }
 
   updateGrid() {
+    console.log("update grid")
+
     const gridItems = document.querySelectorAll(".gridItem");
     const drawingBoard = document.getElementById("drawingBoard");
 
@@ -154,7 +157,7 @@ class App extends Component {
     })
   }
 
-  save() {
+  saveDrawing() {
     document.getElementById("save").textContent = "Saving";
 
     fetch("/api/save", {
@@ -175,7 +178,8 @@ class App extends Component {
     })
     .then(response => response.text())
     .then(data => {
-      console.log(data)
+      console.log("drawing saved")
+
       document.getElementById("save").textContent = "Save";
     })
   }
@@ -214,6 +218,8 @@ class App extends Component {
     .then(response => response.json())
     .then(data => {
       saveButton.value = "Save";
+
+      console.log("default settings loaded")
     })
   }
 
@@ -232,7 +238,9 @@ class App extends Component {
       backgroundColor: backgroundColor,
       shape: shape,
       title: title
-    }, this.updateGrid())
+    }, this.updateGrid)
+
+    console.log("set current settings")
   }
 
   loadDefaultSettings() {
@@ -265,6 +273,8 @@ class App extends Component {
       document.getElementById("mainColorPicker").value = this.state.mainColor;
       document.getElementById("backgroundColorPicker").value = this.state.backgroundColor;
       document.getElementById("shape").value = this.state.shape;
+
+      console.log("Defaults loaded")
     })
   }
 
@@ -300,6 +310,8 @@ class App extends Component {
       document.getElementById("backgroundColorPicker").value = this.state.backgroundColor;
       document.getElementById("shape").value = this.state.shape;
       document.getElementById("accountLink").textContent = this.state.accountName;
+
+      console.log("Logged in")
     })
   }
 
@@ -315,15 +327,15 @@ class App extends Component {
     })
     .then(response => response.text())
     .then(data => {
-      console.log(data);
+      console.log("Registered");
 
-      submitRegister.value = "Success"
+      submitRegister.value = "Register"
     })
   }
 
   account() {
     fetch("/api/account", {
-      method: "post",
+      method: "get",
       headers: {
           'Accept': 'application/json',
           'Authorization': "Bearer " + this.state.token
@@ -331,7 +343,8 @@ class App extends Component {
     })
     .then(response => response.json())
     .then(data => {
-      console.log(data);
+      console.log(data)
+      console.log("Account");
     })
   }
 
@@ -373,6 +386,7 @@ class App extends Component {
       content = (
         <Gallery 
           loadAllDrawings={this.loadAllDrawings}
+          loadOneDrawing={this.loadOneDrawing}
         />
       )
     }
@@ -386,7 +400,7 @@ class App extends Component {
           updateGrid={this.updateGrid}
           createGrid={this.createGrid}
 
-          save={this.save}
+          save={this.saveDrawing}
           delete={this.delete}
           reset={this.reset}
 

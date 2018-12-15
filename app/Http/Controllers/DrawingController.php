@@ -8,6 +8,7 @@ use App\Drawing;
 
 class DrawingController extends Controller {
   public function save(Request $request) {
+    
     $drawing = new Drawing;
 
     $drawing->grid_size = $request->grid_size;
