@@ -19525,7 +19525,7 @@ function (_Component) {
   }, {
     key: "setCurrentSettings",
     value: function setCurrentSettings() {
-      var gridSize = document.getElementById("gridSizeSlider").value;
+      var gridSize = Number(document.getElementById("gridSizeSlider").value);
       var intensity = document.getElementById("intensitySlider").value;
       var mainColor = document.getElementById("mainColorPicker").value;
       var backgroundColor = document.getElementById("backgroundColorPicker").value;
@@ -19667,19 +19667,7 @@ function (_Component) {
     value: function render() {
       var content = null;
 
-      if (this.state.content === "Drawingboard") {
-        content = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Drawingboard__["a" /* default */], {
-          mouseup: this.mouseup,
-          mousedown: this.mousedown,
-          createGrid: this.createGrid,
-          updateGrid: this.updateGrid,
-          gridSize: this.state.gridSize,
-          gridHeight: this.state.gridHeight,
-          mouseHold: this.state.mouseHold,
-          opacity: this.state.opacity,
-          shape: this.state.shape
-        });
-      } else {
+      if (this.state.content === "Gallery") {
         content = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__Gallery__["a" /* default */], {
           loadAllDrawings: this.loadAllDrawings,
           loadOneDrawing: this.loadOneDrawing
@@ -19702,7 +19690,17 @@ function (_Component) {
         login: this.login,
         register: this.register,
         account: this.account
-      }), content, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__Footer__["a" /* default */], null));
+      }), content, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Drawingboard__["a" /* default */], {
+        mouseup: this.mouseup,
+        mousedown: this.mousedown,
+        createGrid: this.createGrid,
+        updateGrid: this.updateGrid,
+        gridSize: this.state.gridSize,
+        gridHeight: this.state.gridHeight,
+        mouseHold: this.state.mouseHold,
+        opacity: this.state.opacity,
+        shape: this.state.shape
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__Footer__["a" /* default */], null));
     }
   }]);
 
@@ -42493,10 +42491,27 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Navbar).call(this, props));
     _this.updateGridSizeSlider = _this.updateGridSizeSlider.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.updateIntensitySlider = _this.updateIntensitySlider.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.saveSettings = _this.saveSettings.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
   }
 
   _createClass(Navbar, [{
+    key: "saveSettings",
+    value: function saveSettings() {
+      if (document.getElementById("defaultcheckbox").checked === true) {
+        console.log("default settings");
+        this.props.setDefaultSettings();
+      } else {
+        console.log("current settings");
+        this.props.setCurrentSettings();
+      }
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate() {//this.updateGridSizeSlider();
+      //this.updateIntensitySlider();
+    }
+  }, {
     key: "componentDidMount",
     value: function componentDidMount() {
       var _this2 = this;
@@ -42515,31 +42530,6 @@ function (_Component) {
         e.preventDefault();
 
         _this2.props.reset();
-      });
-      /*
-          document.getElementById("settings").addEventListener("click", e => {
-            e.preventDefault();
-          });
-      */
-
-      document.getElementById("saveSettings").addEventListener("click", function (e) {
-        e.preventDefault();
-
-        if (document.getElementById("defaultcheckbox").checked === true) {
-          console.log("default settings");
-
-          _this2.props.setDefaultSettings();
-        } else {
-          console.log("current settings");
-
-          _this2.props.setCurrentSettings(); //this.props.updateGrid();
-
-        }
-      });
-      document.getElementById("loadDefaultSettings").addEventListener("click", function (e) {
-        e.preventDefault();
-
-        _this2.props.loadDefaultSettings();
       });
       document.getElementById("registerForm").addEventListener("submit", function (e) {
         e.preventDefault();
@@ -42651,11 +42641,13 @@ function (_Component) {
         }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
           type: "button",
           id: "saveSettings",
-          value: "Save"
+          value: "Save",
+          onClick: this.saveSettings
         }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
           type: "button",
           id: "loadDefaultSettings",
-          value: "Load Default"
+          value: "Load Default",
+          onClick: this.props.loadDefaultSettings
         })));
       } else if (this.props.home === "Gallery") {
         home = "Drawingboard";
@@ -42794,7 +42786,6 @@ function (_Component) {
   }, {
     key: "componentDidUpdate",
     value: function componentDidUpdate(prevProps) {
-      //console.log("Drawingboard update")
       if (this.props.gridSize !== prevProps.gridSize) {
         this.props.createGrid();
         console.log("Drawingboard update gridsize");
@@ -42870,10 +42861,16 @@ function (_Component) {
   }
 
   _createClass(Gallery, [{
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      document.getElementById("drawingBoard").style.display = "block";
+    }
+  }, {
     key: "componentDidMount",
     value: function componentDidMount() {
       document.getElementById("galleryLatest").textContent = "Loading";
       document.getElementById("galleryPopular").textContent = "Loading";
+      document.getElementById("drawingBoard").style.display = "none";
       fetch("/api/drawings").then(function (response) {
         return response.json();
       }).then(function (data) {

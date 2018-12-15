@@ -224,7 +224,7 @@ class App extends Component {
   }
 
   setCurrentSettings() {
-    const gridSize = document.getElementById("gridSizeSlider").value;
+    const gridSize = Number(document.getElementById("gridSizeSlider").value);
     const intensity = document.getElementById("intensitySlider").value;
     const mainColor = document.getElementById("mainColorPicker").value;
     const backgroundColor = document.getElementById("backgroundColorPicker").value;
@@ -365,24 +365,10 @@ class App extends Component {
   }
 
   render() {
+    
     let content = null;
 
-    if (this.state.content === "Drawingboard") {
-      content = (
-        <Drawingboard
-          mouseup={this.mouseup}
-          mousedown={this.mousedown}
-          createGrid={this.createGrid}
-          updateGrid={this.updateGrid}
-
-          gridSize={this.state.gridSize}
-          gridHeight={this.state.gridHeight}
-          mouseHold={this.state.mouseHold}
-          opacity={this.state.opacity}
-          shape={this.state.shape}
-        />
-      )
-    } else {
+    if (this.state.content === "Gallery") {
       content = (
         <Gallery 
           loadAllDrawings={this.loadAllDrawings}
@@ -414,6 +400,19 @@ class App extends Component {
         />
 
         {content}
+
+        <Drawingboard
+          mouseup={this.mouseup}
+          mousedown={this.mousedown}
+          createGrid={this.createGrid}
+          updateGrid={this.updateGrid}
+
+          gridSize={this.state.gridSize}
+          gridHeight={this.state.gridHeight}
+          mouseHold={this.state.mouseHold}
+          opacity={this.state.opacity}
+          shape={this.state.shape}
+        />
 
         <Footer />
       </div>

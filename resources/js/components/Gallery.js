@@ -5,9 +5,15 @@ class Gallery extends Component {
     super(props);
   }
 
+  componentWillUnmount() {
+    document.getElementById("drawingBoard").style.display = "block";
+  }
+
   componentDidMount() {
     document.getElementById("galleryLatest").textContent = "Loading";
     document.getElementById("galleryPopular").textContent = "Loading";
+
+    document.getElementById("drawingBoard").style.display = "none";
 
     fetch("/api/drawings")
     .then(response => response.json())

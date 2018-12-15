@@ -29,8 +29,6 @@ class Drawingboard extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    //console.log("Drawingboard update")
-
     if (this.props.gridSize !== prevProps.gridSize) {
       this.props.createGrid();
       

@@ -6,6 +6,24 @@ class Navbar extends Component {
 
     this.updateGridSizeSlider = this.updateGridSizeSlider.bind(this);
     this.updateIntensitySlider = this.updateIntensitySlider.bind(this);
+    this.saveSettings = this.saveSettings.bind(this);
+  }
+
+  saveSettings() {
+    if (document.getElementById("defaultcheckbox").checked === true) {
+      console.log("default settings")
+
+      this.props.setDefaultSettings();
+    } else {
+      console.log("current settings");
+
+      this.props.setCurrentSettings();
+    }
+  }
+
+  componentDidUpdate() {
+    //this.updateGridSizeSlider();
+    //this.updateIntensitySlider();
   }
 
   componentDidMount() {
@@ -22,29 +40,6 @@ class Navbar extends Component {
     document.getElementById("reset").addEventListener("click", e => {
       e.preventDefault();
       this.props.reset();
-    });
-/*
-    document.getElementById("settings").addEventListener("click", e => {
-      e.preventDefault();
-    });
-*/
-    document.getElementById("saveSettings").addEventListener("click", e => {
-      e.preventDefault();
-      if (document.getElementById("defaultcheckbox").checked === true) {
-        console.log("default settings")
-
-        this.props.setDefaultSettings();
-      } else {
-        console.log("current settings");
-
-        this.props.setCurrentSettings();
-        //this.props.updateGrid();
-      }
-    });
-
-    document.getElementById("loadDefaultSettings").addEventListener("click", e => {
-      e.preventDefault();
-      this.props.loadDefaultSettings();
     });
 
     document.getElementById("registerForm").addEventListener("submit", e => {
@@ -86,8 +81,6 @@ class Navbar extends Component {
           <a href="/" alt="Delete" id="delete">Delete</a>
           <a href="/" alt="Reset" id="reset">Reset</a>
 
-          {/*<a href="/" alt="Settings" id="settings" onClick={this.props.settings}>Settings</a>*/}
-
           <form id="settingsForm">
             <span>Grid Size: </span>
             <span id="gridSizeValue">20</span>
@@ -124,8 +117,8 @@ class Navbar extends Component {
 
             <input type="text" name="title" placeholder="Title" id="titleInput" />
 
-            <input type="button" id="saveSettings" value="Save" />
-            <input type="button" id="loadDefaultSettings" value="Load Default" />
+            <input type="button" id="saveSettings" value="Save" onClick={this.saveSettings} />
+            <input type="button" id="loadDefaultSettings" value="Load Default" onClick={this.props.loadDefaultSettings} />
           </form>
 
         </div>
