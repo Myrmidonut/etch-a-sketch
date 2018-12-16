@@ -19344,6 +19344,7 @@ function (_Component) {
     _this.updateGrid = _this.updateGrid.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.loadAllDrawings = _this.loadAllDrawings.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.loadOneDrawing = _this.loadOneDrawing.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.openDrawing = _this.openDrawing.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.saveDrawing = _this.saveDrawing.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.delete = _this.delete.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.reset = _this.reset.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -19380,9 +19381,15 @@ function (_Component) {
       console.log("update grid");
       var gridItems = document.querySelectorAll(".gridItem");
       var drawingBoard = document.getElementById("drawingBoard");
+      document.getElementById("gridSizeValue").textContent = this.state.gridSize;
+      document.getElementById("gridSizeSlider").value = this.state.gridSize;
+      document.getElementById("shape").value = this.state.shape;
+      document.getElementById("backgroundColorPicker").value = this.state.backgroundColor;
       drawingBoard.style.background = this.state.backgroundColor;
-      gridItems.forEach(function (e) {
+      gridItems.forEach(function (e, i) {
         if (_this2.state.shape === "round") e.style.borderRadius = "50%";else e.style.borderRadius = "0";
+        e.style.opacity = _this2.state.opacity[i];
+        e.style.backgroundColor = _this2.state.color[i];
       });
     }
   }, {
@@ -19404,6 +19411,7 @@ function (_Component) {
         gridItem.style.border = "2px solid white";
         gridItem.style.float = "left"; //gridItem.style.backgroundColor = this.state.mainColor;
 
+        gridItem.style.backgroundColor = "#008000";
         gridItem.style.opacity = 0;
         gridItem.className = "gridItem";
         if (_this3.state.shape === "round") gridItem.style.borderRadius = "50%";else gridItem.style.borderRadius = "0";
@@ -19456,8 +19464,7 @@ function (_Component) {
       fetch("/api/drawings/".concat(id)).then(function (response) {
         return response.json();
       }).then(function (data) {
-        console.log(data);
-        return data;
+        console.log(data); //return data;
       });
     }
   }, {
@@ -19495,9 +19502,9 @@ function (_Component) {
         mainColor: "#008000",
         backgroundColor: "#ffffff",
         shape: "square",
-        opacity: [],
-        color: []
-      });
+        opacity: new Array(400).fill(0),
+        color: new Array(400).fill("#008000")
+      }, this.updateGrid);
     }
   }, {
     key: "delete",
@@ -19603,7 +19610,9 @@ function (_Component) {
         });
       }).then(function () {
         document.getElementById("gridSizeSlider").value = _this5.state.gridSize;
+        document.getElementById("gridSizeValue").textContent = _this5.state.gridSize;
         document.getElementById("intensitySlider").value = _this5.state.intensity;
+        document.getElementById("intensityValue").textContent = _this5.state.intensity;
         document.getElementById("mainColorPicker").value = _this5.state.mainColor;
         document.getElementById("backgroundColorPicker").value = _this5.state.backgroundColor;
         document.getElementById("shape").value = _this5.state.shape;
@@ -19644,6 +19653,28 @@ function (_Component) {
       });
     }
   }, {
+    key: "openDrawing",
+    value: function openDrawing(e) {
+      this.setState({
+        content: "Drawingboard"
+      });
+      this.setState({
+        gridSize: e.grid_size
+      });
+      this.setState({
+        backgroundColor: e.background_color,
+        opacity: JSON.parse(e.opacity).split(","),
+        color: JSON.parse(e.color).split(","),
+        shape: e.shape
+      });
+      var newOpacity = this.state.opacity.slice().map(function (e) {
+        return Number(e);
+      });
+      this.setState({
+        opacity: newOpacity
+      }, this.updateGrid);
+    }
+  }, {
     key: "componentDidMount",
     value: function componentDidMount() {
       var _this6 = this;
@@ -19670,7 +19701,9 @@ function (_Component) {
       if (this.state.content === "Gallery") {
         content = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__Gallery__["a" /* default */], {
           loadAllDrawings: this.loadAllDrawings,
-          loadOneDrawing: this.loadOneDrawing
+          loadOneDrawing: this.loadOneDrawing,
+          home: this.state.content,
+          openDrawing: this.openDrawing
         });
       }
 
@@ -19700,7 +19733,58 @@ function (_Component) {
         mouseHold: this.state.mouseHold,
         opacity: this.state.opacity,
         shape: this.state.shape
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__Footer__["a" /* default */], null));
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__Footer__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+        id: "myModal",
+        className: "modal"
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+        className: "modal-content"
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+        className: "close"
+      }, "\xD7"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+        id: "account"
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", {
+        id: "registerForm"
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        name: "name",
+        placeholder: "Username"
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        type: "email",
+        name: "email",
+        placeholder: "Email"
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        type: "password",
+        name: "password",
+        placeholder: "Password"
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        type: "password",
+        name: "c_password",
+        placeholder: "Confirm Password"
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        type: "submit",
+        id: "submitRegister",
+        value: "Register"
+      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", {
+        id: "loginForm"
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        type: "email",
+        name: "email",
+        placeholder: "Email"
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        type: "password",
+        name: "password",
+        placeholder: "Password"
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        type: "submit",
+        id: "submitLogin",
+        value: "Login"
+      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
+        href: "/",
+        alt: "Logout"
+      }, "Logout"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
+        href: "/api/account",
+        alt: "Account",
+        id: "accountLink"
+      }, "Account")))));
     }
   }]);
 
@@ -42546,6 +42630,27 @@ function (_Component) {
 
         _this2.props.account();
       });
+      var modal = document.getElementById('myModal'); // Get the button that opens the modal
+
+      var btn = document.getElementById("myBtn"); // Get the <span> element that closes the modal
+
+      var span = document.getElementsByClassName("close")[0]; // When the user clicks on the button, open the modal 
+
+      btn.onclick = function () {
+        modal.style.display = "block";
+      }; // When the user clicks on <span> (x), close the modal
+
+
+      span.onclick = function () {
+        modal.style.display = "none";
+      }; // When the user clicks anywhere outside of the modal, close it
+
+
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
     }
   }, {
     key: "updateGridSizeSlider",
@@ -42674,49 +42779,9 @@ function (_Component) {
         alt: "Gallery",
         id: "galleryButton"
       }, home)), buttons, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
-        id: "account"
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", {
-        id: "registerForm"
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
-        name: "name",
-        placeholder: "Username"
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
-        type: "email",
-        name: "email",
-        placeholder: "Email"
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
-        type: "password",
-        name: "password",
-        placeholder: "Password"
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
-        type: "password",
-        name: "c_password",
-        placeholder: "Confirm Password"
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
-        type: "submit",
-        id: "submitRegister",
-        value: "Register"
-      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", {
-        id: "loginForm"
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
-        type: "email",
-        name: "email",
-        placeholder: "Email"
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
-        type: "password",
-        name: "password",
-        placeholder: "Password"
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
-        type: "submit",
-        id: "submitLogin",
-        value: "Login"
-      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
-        href: "/",
-        alt: "Logout"
-      }, "Logout"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
-        href: "/api/account",
-        alt: "Account",
-        id: "accountLink"
+        id: "accountButton"
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+        id: "myBtn"
       }, "Account")));
     }
   }]);
@@ -42868,6 +42933,8 @@ function (_Component) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
+      var _this = this;
+
       document.getElementById("galleryLatest").textContent = "Loading";
       document.getElementById("galleryPopular").textContent = "Loading";
       document.getElementById("drawingBoard").style.display = "none";
@@ -42897,6 +42964,8 @@ function (_Component) {
           document.getElementById("previewLatest" + i).addEventListener("click", function (f) {
             f.preventDefault();
             console.log("clicked " + e.id);
+
+            _this.props.openDrawing(e);
           });
 
           for (var j = 0; j < e.grid_size * e.grid_size; j++) {
@@ -43021,7 +43090,7 @@ exports = module.exports = __webpack_require__(51)(false);
 
 
 // module
-exports.push([module.i, "html, body, #app {\r\n  height: 100%;\r\n  margin: 0;\r\n  padding: 0;\r\n}\r\n\r\n.App {\r\n  justify-content: space-between;\r\n  height: 100%;\r\n  flex-direction: column;\r\n  display: flex;\r\n  align-items: center;\r\n}\r\n\r\n#navbar, #footer {\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n  border: 1px solid black;\r\n}\r\n\r\n#navbar {\r\n  display: flex;\r\n  justify-content: space-between;\r\n}\r\n\r\n#navbar div {\r\n  display: flex;\r\n  flex: 1;\r\n}\r\n\r\n#navbar #interface {\r\n  justify-content: center;\r\n}\r\n\r\n#navbar #account {\r\n  justify-content: flex-end;\r\n}\r\n\r\n#navbar a {\r\n  margin: 10px;\r\n  height: 30px;\r\n}\r\n\r\n#settingsForm {\r\n  width: 200px;\r\n}\r\n\r\n#gridSizeSlider, #intensitySlider {\r\n  width: 70%;\r\n}\r\n\r\n#galleryContainer {\r\n  display: flex;\r\n  flex-direction: column;\r\n}\r\n\r\n#galleryLatest, #galleryPopular, #galleryPersonal {\r\n  min-height: 100px;\r\n  border: 1px solid black;\r\n  margin: 20px;\r\n}\r\n\r\n#galleryLatestContainer, #galleryPopular {\r\n  display: flex;\r\n  flex-direction: row;\r\n  flex-wrap: wrap;\r\n  justify-content: space-around;\r\n}\r\n\r\n.previewPopular, .previewLatest {\r\n  margin: 20px;\r\n}\r\n\r\nh2 {\r\n  text-align: center;\r\n}", ""]);
+exports.push([module.i, "html, body, #app {\r\n  height: 100%;\r\n  margin: 0;\r\n  padding: 0;\r\n}\r\n\r\n.App {\r\n  justify-content: space-between;\r\n  height: 100%;\r\n  flex-direction: column;\r\n  display: flex;\r\n  align-items: center;\r\n}\r\n\r\n#navbar, #footer {\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n  border: 1px solid black;\r\n}\r\n\r\n#navbar {\r\n  display: flex;\r\n  justify-content: space-between;\r\n}\r\n\r\n#navbar div {\r\n  display: flex;\r\n  flex: 1;\r\n}\r\n\r\n#navbar #interface {\r\n  justify-content: center;\r\n}\r\n\r\n#navbar #accountButton {\r\n  justify-content: flex-end;\r\n  height: 40px;\r\n}\r\n\r\n#navbar a {\r\n  margin: 10px;\r\n  height: 30px;\r\n}\r\n\r\n#settingsForm {\r\n  width: 200px;\r\n}\r\n\r\n#gridSizeSlider, #intensitySlider {\r\n  width: 70%;\r\n}\r\n\r\n#galleryContainer {\r\n  display: flex;\r\n  flex-direction: column;\r\n}\r\n\r\n#galleryLatest, #galleryPopular, #galleryPersonal {\r\n  min-height: 100px;\r\n  border: 1px solid black;\r\n  margin: 20px;\r\n}\r\n\r\n#galleryLatestContainer, #galleryPopular {\r\n  display: flex;\r\n  flex-direction: row;\r\n  flex-wrap: wrap;\r\n  justify-content: space-around;\r\n}\r\n\r\n.previewPopular, .previewLatest {\r\n  margin: 20px;\r\n}\r\n\r\nh2 {\r\n  text-align: center;\r\n}\r\n\r\n#loginForm {\r\n  margin-top: 20px;\r\n  margin-bottom: 20px;\r\n}\r\n\r\n\r\n\r\n\r\n/* The Modal (background) */\r\n.modal {\r\n  display: none; /* Hidden by default */\r\n  position: fixed; /* Stay in place */\r\n  z-index: 1; /* Sit on top */\r\n  left: 0;\r\n  top: 0;\r\n  width: 100%; /* Full width */\r\n  height: 100%; /* Full height */\r\n  overflow: auto; /* Enable scroll if needed */\r\n  background-color: rgb(0,0,0); /* Fallback color */\r\n  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */\r\n}\r\n\r\n/* Modal Content/Box */\r\n.modal-content {\r\n  background-color: #fefefe;\r\n  margin: 15% auto; /* 15% from the top and centered */\r\n  padding: 20px;\r\n  border: 1px solid #888;\r\n  width: 80%; /* Could be more or less, depending on screen size */\r\n}\r\n\r\n/* The Close Button */\r\n.close {\r\n  color: #aaa;\r\n  float: right;\r\n  font-size: 28px;\r\n  font-weight: bold;\r\n}\r\n\r\n.close:hover,\r\n.close:focus {\r\n  color: black;\r\n  text-decoration: none;\r\n  cursor: pointer;\r\n}", ""]);
 
 // exports
 

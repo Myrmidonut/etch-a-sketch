@@ -56,6 +56,32 @@ class Navbar extends Component {
       e.preventDefault();
       this.props.account();
     });
+
+
+
+
+    var modal = document.getElementById('myModal');
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    // When the user clicks on the button, open the modal 
+    btn.onclick = function() {
+      modal.style.display = "block";
+    }
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+
+
+
   }
 
   updateGridSizeSlider() {
@@ -145,24 +171,8 @@ class Navbar extends Component {
 
         {buttons}
         
-        <div id="account">
-          <form id="registerForm">
-            <input name="name" placeholder="Username"></input>
-            <input type="email" name="email" placeholder="Email"></input>
-            <input type="password" name="password" placeholder="Password"></input>
-            <input type="password" name="c_password" placeholder="Confirm Password"></input>
-            <input type="submit" id="submitRegister" value="Register"></input>
-          </form>
-
-          <form id="loginForm">
-            <input type="email" name="email" placeholder="Email"></input>
-            <input type="password" name="password" placeholder="Password"></input>
-            <input type="submit" id="submitLogin" value="Login"></input>
-          </form>
-
-          <a href="/" alt="Logout">Logout</a>
-
-          <a href="/api/account" alt="Account" id="accountLink">Account</a>
+        <div id="accountButton">
+          <button id="myBtn">Account</button>
         </div>
       </div>
     )

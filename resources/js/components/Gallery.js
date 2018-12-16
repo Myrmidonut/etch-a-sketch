@@ -9,6 +9,8 @@ class Gallery extends Component {
     document.getElementById("drawingBoard").style.display = "block";
   }
 
+  
+
   componentDidMount() {
     document.getElementById("galleryLatest").textContent = "Loading";
     document.getElementById("galleryPopular").textContent = "Loading";
@@ -49,6 +51,8 @@ class Gallery extends Component {
         document.getElementById("previewLatest" + i).addEventListener("click", f => {
           f.preventDefault();
           console.log("clicked " + e.id)
+
+          this.props.openDrawing(e);
         })
 
         for (let j = 0; j < (e.grid_size * e.grid_size); j++) {

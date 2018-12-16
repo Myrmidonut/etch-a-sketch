@@ -40,6 +40,7 @@ class App extends Component {
     this.loadAllDrawings = this.loadAllDrawings.bind(this);
     this.loadOneDrawing = this.loadOneDrawing.bind(this);
 
+    this.openDrawing = this.openDrawing.bind(this);
     this.saveDrawing = this.saveDrawing.bind(this);
     this.delete = this.delete.bind(this);
     this.reset = this.reset.bind(this);
@@ -75,11 +76,19 @@ class App extends Component {
     const gridItems = document.querySelectorAll(".gridItem");
     const drawingBoard = document.getElementById("drawingBoard");
 
+    document.getElementById("gridSizeValue").textContent = this.state.gridSize;
+    document.getElementById("gridSizeSlider").value = this.state.gridSize;
+    document.getElementById("shape").value = this.state.shape;
+    document.getElementById("backgroundColorPicker").value = this.state.backgroundColor;
+
     drawingBoard.style.background = this.state.backgroundColor;
 
-    gridItems.forEach(e => {
+    gridItems.forEach((e, i) => {
       if (this.state.shape === "round") e.style.borderRadius = "50%";
       else e.style.borderRadius = "0";
+
+      e.style.opacity = this.state.opacity[i];
+      e.style.backgroundColor = this.state.color[i];
     })
   }
 
@@ -99,7 +108,10 @@ class App extends Component {
       gridItem.style.boxSizing = "border-box"
       gridItem.style.border = "2px solid white";
       gridItem.style.float = "left";
+
       //gridItem.style.backgroundColor = this.state.mainColor;
+      gridItem.style.backgroundColor = "#008000";
+
       gridItem.style.opacity = 0;
       gridItem.className = "gridItem";
 
@@ -153,7 +165,7 @@ class App extends Component {
     .then(response => response.json())
     .then(data => {
       console.log(data)
-      return data;
+      //return data;
     })
   }
 
@@ -192,9 +204,9 @@ class App extends Component {
       backgroundColor: "#ffffff",
       shape: "square",
       
-      opacity: [],
-      color: []
-    })
+      opacity: new Array(400).fill(0),
+      color: new Array(400).fill("#008000")
+    }, this.updateGrid)
   }
 
   delete() {
@@ -305,7 +317,9 @@ class App extends Component {
     })
     .then(() => {
       document.getElementById("gridSizeSlider").value = this.state.gridSize;
+      document.getElementById("gridSizeValue").textContent = this.state.gridSize;
       document.getElementById("intensitySlider").value = this.state.intensity;
+      document.getElementById("intensityValue").textContent = this.state.intensity;
       document.getElementById("mainColorPicker").value = this.state.mainColor;
       document.getElementById("backgroundColorPicker").value = this.state.backgroundColor;
       document.getElementById("shape").value = this.state.shape;
@@ -348,6 +362,29 @@ class App extends Component {
     })
   }
 
+  openDrawing(e) {
+    this.setState({
+      content: "Drawingboard"
+    })
+
+    this.setState({
+      gridSize: e.grid_size
+    })
+
+    this.setState({
+      backgroundColor: e.background_color,
+      opacity: JSON.parse(e.opacity).split(","),
+      color: JSON.parse(e.color).split(","),
+      shape: e.shape
+    })
+
+    const newOpacity = this.state.opacity.slice().map(e => Number(e))
+    
+    this.setState({
+      opacity: newOpacity
+    }, this.updateGrid)
+  }
+
   componentDidMount() {
     document.getElementById("galleryButton").addEventListener("click", e => {
       e.preventDefault();
@@ -365,7 +402,6 @@ class App extends Component {
   }
 
   render() {
-    
     let content = null;
 
     if (this.state.content === "Gallery") {
@@ -373,6 +409,8 @@ class App extends Component {
         <Gallery 
           loadAllDrawings={this.loadAllDrawings}
           loadOneDrawing={this.loadOneDrawing}
+          home={this.state.content}
+          openDrawing={this.openDrawing}
         />
       )
     }
@@ -415,6 +453,36 @@ class App extends Component {
         />
 
         <Footer />
+
+        <div id="myModal" className="modal">
+          <div className="modal-content">
+            <span className="close">&times;</span>
+
+            <div id="account">
+              <form id="registerForm">
+                <input name="name" placeholder="Username"></input>
+                <input type="email" name="email" placeholder="Email"></input>
+                <input type="password" name="password" placeholder="Password"></input>
+                <input type="password" name="c_password" placeholder="Confirm Password"></input>
+                <input type="submit" id="submitRegister" value="Register"></input>
+              </form>
+
+              <form id="loginForm">
+                <input type="email" name="email" placeholder="Email"></input>
+                <input type="password" name="password" placeholder="Password"></input>
+                <input type="submit" id="submitLogin" value="Login"></input>
+              </form>
+
+              <br />
+
+              <a href="/" alt="Logout">Logout</a>
+
+              <br />
+
+              <a href="/api/account" alt="Account" id="accountLink">Account</a>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
