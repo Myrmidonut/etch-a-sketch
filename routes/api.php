@@ -25,12 +25,14 @@ Route::group(["middleware" => "auth:api"], function() {
 
 // drawingboard:
 
-Route::get("/drawings/{id}", "DrawingController@one");
 Route::group(["middleware" => "auth:api"], function() {
   Route::post("/save", "DrawingController@save");
-  Route::delete("/delete", "DrawingController@delete");
+  Route::post("/delete/{id}", "DrawingController@delete");
+  
 });
 
 // gallery:
 
+Route::get("/drawings/{id}", "DrawingController@one");
 Route::get("/drawings", "DrawingController@all");
+Route::get("/drawings/personal/{id}", "DrawingController@personal");

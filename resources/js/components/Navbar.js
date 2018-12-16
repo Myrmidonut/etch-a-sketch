@@ -34,7 +34,7 @@ class Navbar extends Component {
 
     document.getElementById("delete").addEventListener("click", e => {
       e.preventDefault();
-      this.props.delete();
+      this.props.delete(this.props.drawingId);
     });
 
     document.getElementById("reset").addEventListener("click", e => {
@@ -141,7 +141,7 @@ class Navbar extends Component {
             <input type="checkbox" value="true" id="defaultcheckbox" />
             <br />
 
-            <input type="text" name="title" placeholder="Title" id="titleInput" />
+            <input type="text" name="title" placeholder="Title" id="titleInput" required />
 
             <input type="button" id="saveSettings" value="Save" onClick={this.saveSettings} />
             <input type="button" id="loadDefaultSettings" value="Load Default" onClick={this.props.loadDefaultSettings} />

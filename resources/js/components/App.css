@@ -6,7 +6,7 @@ html, body, #app {
 
 .App {
   justify-content: space-between;
-  height: 100%;
+  height: 2000px;
   flex-direction: column;
   display: flex;
   align-items: center;
@@ -61,14 +61,14 @@ html, body, #app {
   margin: 20px;
 }
 
-#galleryLatestContainer, #galleryPopular {
+#galleryLatestContainer, #galleryPopular, #galleryPopularContainer {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
 }
 
-.previewPopular, .previewLatest {
+.previewPopular, .previewLatest, .previewPersonal {
   margin: 20px;
 }
 

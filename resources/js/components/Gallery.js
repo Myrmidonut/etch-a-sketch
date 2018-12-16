@@ -9,13 +9,13 @@ class Gallery extends Component {
     document.getElementById("drawingBoard").style.display = "block";
   }
 
-  
-
   componentDidMount() {
     document.getElementById("galleryLatest").textContent = "Loading";
     document.getElementById("galleryPopular").textContent = "Loading";
 
     document.getElementById("drawingBoard").style.display = "none";
+
+    this.props.loadPersonalDrawings(this.props.accountId);
 
     fetch("/api/drawings")
     .then(response => response.json())
@@ -33,7 +33,8 @@ class Gallery extends Component {
       galleryLatestContainer.id = "galleryLatestContainer";
       document.getElementById("galleryLatest").appendChild(galleryLatestContainer);
 
-      data[1].forEach((e, i) => {
+      //data[1].forEach((e, i) => {
+      data.forEach((e, i) => {
         const drawing = document.createElement("div");
         drawing.id = "previewLatest" + i;
         drawing.className = "previewLatest";
@@ -75,8 +76,9 @@ class Gallery extends Component {
       })
       
       // -------------------
-/*
-      document.getElementById("galleryPopular").textContent = "";
+
+      /*
+      document.getElementById("galleryPersonal").textContent = "";
 
       data[0].forEach((e, i) => {
         const drawing = document.createElement("div");
@@ -118,8 +120,9 @@ class Gallery extends Component {
         }
       })
       */
+
     })
-    .then(e => {
+    .then(() => {
       console.log("done")
     })
   }

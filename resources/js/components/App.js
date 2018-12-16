@@ -20,6 +20,7 @@ class App extends Component {
       backgroundColor: "#ffffff",
       shape: "square",
       title: "",
+      drawingId: null,
       
       opacity: [],
       color: [],
@@ -39,6 +40,7 @@ class App extends Component {
 
     this.loadAllDrawings = this.loadAllDrawings.bind(this);
     this.loadOneDrawing = this.loadOneDrawing.bind(this);
+    this.loadPersonalDrawings = this.loadPersonalDrawings.bind(this);
 
     this.openDrawing = this.openDrawing.bind(this);
     this.saveDrawing = this.saveDrawing.bind(this);
@@ -169,6 +171,76 @@ class App extends Component {
     })
   }
 
+  loadPersonalDrawings(id) {
+    fetch(`/api/drawings/personal/${id}`)
+    .then(response => response.json())
+    .then(data => {
+      //console.log(data)
+      
+      document.getElementById("galleryPersonal").textContent = "";
+
+      const heading = document.createElement("h2");
+      heading.textContent = "Personal Drawings:"
+      document.getElementById("galleryPersonal").appendChild(heading);
+
+      const galleryPersonalContainer = document.createElement("div");
+      galleryPersonalContainer.id = "galleryPersonalContainer";
+      document.getElementById("galleryPersonal").appendChild(galleryPersonalContainer);
+
+      //data[1].forEach((e, i) => {
+      data.forEach((e, i) => {
+        const drawing = document.createElement("div");
+        drawing.id = "previewPersonal" + i;
+        drawing.className = "previewPersonal";
+
+        document.getElementById("galleryPersonalContainer").appendChild(drawing);
+
+        const gridHeight = 120;
+        const gridItemDimension = gridHeight/e.grid_size + "px";
+    
+        document.getElementById("previewPersonal" + i).style.backgroundColor = e.background_color;
+        document.getElementById("previewPersonal" + i).style.height = gridHeight + "px";
+        document.getElementById("previewPersonal" + i).style.width = gridHeight + "px";
+        document.getElementById("previewPersonal" + i).style.border = "2px solid green";
+
+        document.getElementById("previewPersonal" + i).addEventListener("click", f => {
+          f.preventDefault();
+          console.log("clicked " + e.id)
+
+          this.openDrawing(e);
+        })
+
+        for (let j = 0; j < (e.grid_size * e.grid_size); j++) {
+          const gridItem = document.createElement("div");
+    
+          gridItem.style.width = gridItemDimension;
+          gridItem.style.height = gridItemDimension;
+          gridItem.style.boxSizing = "border-box"
+          gridItem.style.border = "2px solid white";
+          gridItem.style.float = "left";
+          gridItem.style.backgroundColor = JSON.parse(e.color).split(",")[j];
+          gridItem.style.opacity = JSON.parse(e.opacity).split(",")[j];
+          gridItem.className = "gridItem";
+
+          if (e.shape === "round") gridItem.style.borderRadius = "50%";
+          else gridItem.style.borderRadius = "0";
+          
+          document.getElementById("previewPersonal" + i).appendChild(gridItem);
+        }
+      })
+
+
+
+
+
+
+
+
+
+
+    })
+  }
+
   saveDrawing() {
     document.getElementById("save").textContent = "Saving";
 
@@ -191,6 +263,7 @@ class App extends Component {
     .then(response => response.text())
     .then(data => {
       console.log("drawing saved")
+      console.log(data);
 
       document.getElementById("save").textContent = "Save";
     })
@@ -209,8 +282,28 @@ class App extends Component {
     }, this.updateGrid)
   }
 
-  delete() {
-    
+  delete(id) {
+    document.getElementById("delete").textContent = "Deleting";
+
+    console.log("deleting");
+
+    fetch(`/api/delete/${id}`, {
+      method: "post",
+      body: new URLSearchParams({
+        owner: this.state.accountId
+      }),
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': "Bearer " + this.state.token
+      }
+    })
+    .then(response => response.text())
+    .then(data => {
+      console.log("drawing deleted")
+      console.log(data);
+
+      document.getElementById("delete").textContent = "Delete";
+    })
   }
 
   setDefaultSettings() {
@@ -363,6 +456,8 @@ class App extends Component {
   }
 
   openDrawing(e) {
+    console.log(e);
+
     this.setState({
       content: "Drawingboard"
     })
@@ -375,7 +470,8 @@ class App extends Component {
       backgroundColor: e.background_color,
       opacity: JSON.parse(e.opacity).split(","),
       color: JSON.parse(e.color).split(","),
-      shape: e.shape
+      shape: e.shape,
+      drawingId: e.id
     })
 
     const newOpacity = this.state.opacity.slice().map(e => Number(e))
@@ -406,10 +502,13 @@ class App extends Component {
 
     if (this.state.content === "Gallery") {
       content = (
-        <Gallery 
+        <Gallery
+          home={this.state.content}
+          accountId={this.state.accountId}
+
           loadAllDrawings={this.loadAllDrawings}
           loadOneDrawing={this.loadOneDrawing}
-          home={this.state.content}
+          loadPersonalDrawings={this.loadPersonalDrawings}
           openDrawing={this.openDrawing}
         />
       )
@@ -420,6 +519,7 @@ class App extends Component {
         <Navbar 
           home={this.state.content}
           opacity={this.state.opacity}
+          drawingId={this.state.drawingId}
 
           updateGrid={this.updateGrid}
           createGrid={this.createGrid}
