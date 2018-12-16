@@ -12,7 +12,7 @@ class App extends Component {
     
     this.state = {
       content: "Drawingboard",
-      gridHeight: 700,
+      gridHeight: 600,
 
       gridSize: 20,
       intensity: "0.1",

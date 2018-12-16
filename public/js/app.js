@@ -19324,7 +19324,7 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(App).call(this, props));
     _this.state = {
       content: "Drawingboard",
-      gridHeight: 700,
+      gridHeight: 600,
       gridSize: 20,
       intensity: "0.1",
       mainColor: "#008000",
