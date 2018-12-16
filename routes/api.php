@@ -33,6 +33,7 @@ Route::group(["middleware" => "auth:api"], function() {
 
 // gallery:
 
-Route::get("/drawings/{id}", "DrawingController@one");
-Route::get("/drawings", "DrawingController@all");
+Route::get("/drawings/one/{id}", "DrawingController@one");
+Route::get("/drawings/latest", "DrawingController@latest");
 Route::get("/drawings/personal/{id}", "DrawingController@personal");
+Route::get("/drawings/all", "DrawingController@all");

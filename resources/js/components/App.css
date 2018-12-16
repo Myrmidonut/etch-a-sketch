@@ -5,11 +5,11 @@ html, body, #app {
 }
 
 .App {
-  justify-content: space-between;
-  height: 2000px;
-  flex-direction: column;
-  display: flex;
-  align-items: center;
+  xjustify-content: space-between;
+  xheight: 2000px;
+  xflex-direction: column;
+  xdisplay: flex;
+  xalign-items: center;
 }
 
 #navbar, #footer {
@@ -61,7 +61,7 @@ html, body, #app {
   margin: 20px;
 }
 
-#galleryLatestContainer, #galleryPopular, #galleryPopularContainer {
+#galleryLatestContainer, #galleryPopular, #galleryPersonalContainer {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

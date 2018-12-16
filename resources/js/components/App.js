@@ -39,6 +39,7 @@ class App extends Component {
     this.updateGrid = this.updateGrid.bind(this);
 
     this.loadAllDrawings = this.loadAllDrawings.bind(this);
+    this.loadLatestDrawings = this.loadLatestDrawings.bind(this);
     this.loadOneDrawing = this.loadOneDrawing.bind(this);
     this.loadPersonalDrawings = this.loadPersonalDrawings.bind(this);
 
@@ -154,20 +155,110 @@ class App extends Component {
   }
 
   loadAllDrawings() {
-    fetch("/api/drawings")
+    fetch("/api/drawings/all")
     .then(response => response.json())
     .then(data => {
-      console.log(data)
-      return data;
+      document.getElementById("galleryPersonal").textContent = "";
+
+      data.forEach((e, i) => {
+        const drawing = document.createElement("div");
+        drawing.id = "previewPopular" + i;
+        drawing.className = "previewPopular";
+
+        document.getElementById("galleryPopular").appendChild(drawing);
+
+        const gridHeight = 200;
+        const gridItemDimension = gridHeight/e.grid_size + "px";
+    
+        document.getElementById("previewPopular" + i).style.backgroundColor = e.background_color;
+        document.getElementById("previewPopular" + i).style.height = gridHeight + "px";
+        document.getElementById("previewPopular" + i).style.width = gridHeight + "px";
+        document.getElementById("previewPopular" + i).style.border = "2px solid green";
+
+        document.getElementById("previewPopular" + i).addEventListener("click", f => {
+          f.preventDefault();
+
+          console.log("clicked " + e.id)
+        })
+
+        for (let j = 0; j < (e.grid_size * e.grid_size); j++) {
+          const gridItem = document.createElement("div");
+    
+          gridItem.style.width = gridItemDimension;
+          gridItem.style.height = gridItemDimension;
+          gridItem.style.boxSizing = "border-box"
+          gridItem.style.border = "2px solid white";
+          gridItem.style.float = "left";
+          gridItem.style.backgroundColor = JSON.parse(e.color).split(",")[j];
+          gridItem.style.opacity = JSON.parse(e.opacity).split(",")[j];
+          gridItem.className = "gridItem";
+
+          if (e.shape === "round") gridItem.style.borderRadius = "50%";
+          else gridItem.style.borderRadius = "0";
+          
+          document.getElementById("previewPopular" + i).appendChild(gridItem);
+        }
+      })
+    })
+  }
+
+  loadLatestDrawings() {
+    fetch("/api/drawings/latest")
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById("galleryLatestContainer").textContent = "";
+
+      data.forEach((e, i) => {
+        const drawing = document.createElement("div");
+        drawing.id = "previewLatest" + i;
+        drawing.className = "previewLatest";
+
+        document.getElementById("galleryLatestContainer").appendChild(drawing);
+
+        const gridHeight = 120;
+        const gridItemDimension = gridHeight/e.grid_size + "px";
+    
+        document.getElementById("previewLatest" + i).style.backgroundColor = e.background_color;
+        document.getElementById("previewLatest" + i).style.height = gridHeight + "px";
+        document.getElementById("previewLatest" + i).style.width = gridHeight + "px";
+        document.getElementById("previewLatest" + i).style.border = "2px solid green";
+
+        document.getElementById("previewLatest" + i).addEventListener("click", f => {
+          f.preventDefault();
+          console.log("clicked " + e.id)
+
+          this.props.openDrawing(e);
+        })
+
+        for (let j = 0; j < (e.grid_size * e.grid_size); j++) {
+          const gridItem = document.createElement("div");
+    
+          gridItem.style.width = gridItemDimension;
+          gridItem.style.height = gridItemDimension;
+          gridItem.style.boxSizing = "border-box"
+          gridItem.style.border = "2px solid white";
+          gridItem.style.float = "left";
+          gridItem.style.backgroundColor = JSON.parse(e.color).split(",")[j];
+          gridItem.style.opacity = JSON.parse(e.opacity).split(",")[j];
+          gridItem.className = "gridItem";
+
+          if (e.shape === "round") gridItem.style.borderRadius = "50%";
+          else gridItem.style.borderRadius = "0";
+          
+          document.getElementById("previewLatest" + i).appendChild(gridItem);
+        }
+      })
+    })
+    .then(() => {
+      console.log("latest done")
     })
   }
 
   loadOneDrawing(id) {
-    fetch(`/api/drawings/${id}`)
+    fetch(`/api/drawings/one/${id}`)
     .then(response => response.json())
     .then(data => {
       console.log(data)
-      //return data;
     })
   }
 
@@ -175,19 +266,8 @@ class App extends Component {
     fetch(`/api/drawings/personal/${id}`)
     .then(response => response.json())
     .then(data => {
-      //console.log(data)
-      
-      document.getElementById("galleryPersonal").textContent = "";
+      document.getElementById("galleryPersonalContainer").textContent = "";
 
-      const heading = document.createElement("h2");
-      heading.textContent = "Personal Drawings:"
-      document.getElementById("galleryPersonal").appendChild(heading);
-
-      const galleryPersonalContainer = document.createElement("div");
-      galleryPersonalContainer.id = "galleryPersonalContainer";
-      document.getElementById("galleryPersonal").appendChild(galleryPersonalContainer);
-
-      //data[1].forEach((e, i) => {
       data.forEach((e, i) => {
         const drawing = document.createElement("div");
         drawing.id = "previewPersonal" + i;
@@ -228,16 +308,9 @@ class App extends Component {
           document.getElementById("previewPersonal" + i).appendChild(gridItem);
         }
       })
-
-
-
-
-
-
-
-
-
-
+    })
+    .then(() => {
+      console.log("personal done");
     })
   }
 
@@ -507,6 +580,7 @@ class App extends Component {
           accountId={this.state.accountId}
 
           loadAllDrawings={this.loadAllDrawings}
+          loadLatestDrawings={this.loadLatestDrawings}
           loadOneDrawing={this.loadOneDrawing}
           loadPersonalDrawings={this.loadPersonalDrawings}
           openDrawing={this.openDrawing}

@@ -156,9 +156,9 @@ class Navbar extends Component {
 
       buttons = (
         <div id="interface">
-          <a href="/" alt="My Drawings">My Drawings</a>
-          <a href="/" alt="Popular">Popular</a>
-          <a href="/" alt="Recent">Recent</a>
+          {/*<a href="/" alt="My Drawings">My Drawings</a>*/}
+          {/*<a href="/" alt="Popular">Popular</a>*/}
+          {/*<a href="/" alt="Recent">Recent</a>*/}
         </div>
       )
     }

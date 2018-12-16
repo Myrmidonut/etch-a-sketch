@@ -36,11 +36,14 @@ class DrawingController extends Controller {
   }
 
   public function all() {
-    //$alldrawings = Drawing::all();
+    $alldrawings = Drawing::all();
 
+    return response()->json($alldrawings);
+  }
+
+  public function latest() {
     $latestdrawings = Drawing::orderBy("created_at", "desc")->take(5)->get();
 
-    //return response()->json([$alldrawings, $latestdrawings]);
     return response()->json($latestdrawings);
   }
 

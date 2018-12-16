@@ -19344,6 +19344,7 @@ function (_Component) {
     _this.createGrid = _this.createGrid.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.updateGrid = _this.updateGrid.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.loadAllDrawings = _this.loadAllDrawings.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.loadLatestDrawings = _this.loadLatestDrawings.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.loadOneDrawing = _this.loadOneDrawing.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.loadPersonalDrawings = _this.loadPersonalDrawings.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.openDrawing = _this.openDrawing.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -19453,39 +19454,105 @@ function (_Component) {
   }, {
     key: "loadAllDrawings",
     value: function loadAllDrawings() {
-      fetch("/api/drawings").then(function (response) {
+      fetch("/api/drawings/all").then(function (response) {
         return response.json();
       }).then(function (data) {
-        console.log(data);
-        return data;
+        document.getElementById("galleryPersonal").textContent = "";
+        data.forEach(function (e, i) {
+          var drawing = document.createElement("div");
+          drawing.id = "previewPopular" + i;
+          drawing.className = "previewPopular";
+          document.getElementById("galleryPopular").appendChild(drawing);
+          var gridHeight = 200;
+          var gridItemDimension = gridHeight / e.grid_size + "px";
+          document.getElementById("previewPopular" + i).style.backgroundColor = e.background_color;
+          document.getElementById("previewPopular" + i).style.height = gridHeight + "px";
+          document.getElementById("previewPopular" + i).style.width = gridHeight + "px";
+          document.getElementById("previewPopular" + i).style.border = "2px solid green";
+          document.getElementById("previewPopular" + i).addEventListener("click", function (f) {
+            f.preventDefault();
+            console.log("clicked " + e.id);
+          });
+
+          for (var j = 0; j < e.grid_size * e.grid_size; j++) {
+            var gridItem = document.createElement("div");
+            gridItem.style.width = gridItemDimension;
+            gridItem.style.height = gridItemDimension;
+            gridItem.style.boxSizing = "border-box";
+            gridItem.style.border = "2px solid white";
+            gridItem.style.float = "left";
+            gridItem.style.backgroundColor = JSON.parse(e.color).split(",")[j];
+            gridItem.style.opacity = JSON.parse(e.opacity).split(",")[j];
+            gridItem.className = "gridItem";
+            if (e.shape === "round") gridItem.style.borderRadius = "50%";else gridItem.style.borderRadius = "0";
+            document.getElementById("previewPopular" + i).appendChild(gridItem);
+          }
+        });
+      });
+    }
+  }, {
+    key: "loadLatestDrawings",
+    value: function loadLatestDrawings() {
+      var _this4 = this;
+
+      fetch("/api/drawings/latest").then(function (response) {
+        return response.json();
+      }).then(function (data) {
+        document.getElementById("galleryLatestContainer").textContent = "";
+        data.forEach(function (e, i) {
+          var drawing = document.createElement("div");
+          drawing.id = "previewLatest" + i;
+          drawing.className = "previewLatest";
+          document.getElementById("galleryLatestContainer").appendChild(drawing);
+          var gridHeight = 120;
+          var gridItemDimension = gridHeight / e.grid_size + "px";
+          document.getElementById("previewLatest" + i).style.backgroundColor = e.background_color;
+          document.getElementById("previewLatest" + i).style.height = gridHeight + "px";
+          document.getElementById("previewLatest" + i).style.width = gridHeight + "px";
+          document.getElementById("previewLatest" + i).style.border = "2px solid green";
+          document.getElementById("previewLatest" + i).addEventListener("click", function (f) {
+            f.preventDefault();
+            console.log("clicked " + e.id);
+
+            _this4.props.openDrawing(e);
+          });
+
+          for (var j = 0; j < e.grid_size * e.grid_size; j++) {
+            var gridItem = document.createElement("div");
+            gridItem.style.width = gridItemDimension;
+            gridItem.style.height = gridItemDimension;
+            gridItem.style.boxSizing = "border-box";
+            gridItem.style.border = "2px solid white";
+            gridItem.style.float = "left";
+            gridItem.style.backgroundColor = JSON.parse(e.color).split(",")[j];
+            gridItem.style.opacity = JSON.parse(e.opacity).split(",")[j];
+            gridItem.className = "gridItem";
+            if (e.shape === "round") gridItem.style.borderRadius = "50%";else gridItem.style.borderRadius = "0";
+            document.getElementById("previewLatest" + i).appendChild(gridItem);
+          }
+        });
+      }).then(function () {
+        console.log("latest done");
       });
     }
   }, {
     key: "loadOneDrawing",
     value: function loadOneDrawing(id) {
-      fetch("/api/drawings/".concat(id)).then(function (response) {
+      fetch("/api/drawings/one/".concat(id)).then(function (response) {
         return response.json();
       }).then(function (data) {
-        console.log(data); //return data;
+        console.log(data);
       });
     }
   }, {
     key: "loadPersonalDrawings",
     value: function loadPersonalDrawings(id) {
-      var _this4 = this;
+      var _this5 = this;
 
       fetch("/api/drawings/personal/".concat(id)).then(function (response) {
         return response.json();
       }).then(function (data) {
-        //console.log(data)
-        document.getElementById("galleryPersonal").textContent = "";
-        var heading = document.createElement("h2");
-        heading.textContent = "Personal Drawings:";
-        document.getElementById("galleryPersonal").appendChild(heading);
-        var galleryPersonalContainer = document.createElement("div");
-        galleryPersonalContainer.id = "galleryPersonalContainer";
-        document.getElementById("galleryPersonal").appendChild(galleryPersonalContainer); //data[1].forEach((e, i) => {
-
+        document.getElementById("galleryPersonalContainer").textContent = "";
         data.forEach(function (e, i) {
           var drawing = document.createElement("div");
           drawing.id = "previewPersonal" + i;
@@ -19501,7 +19568,7 @@ function (_Component) {
             f.preventDefault();
             console.log("clicked " + e.id);
 
-            _this4.openDrawing(e);
+            _this5.openDrawing(e);
           });
 
           for (var j = 0; j < e.grid_size * e.grid_size; j++) {
@@ -19518,6 +19585,8 @@ function (_Component) {
             document.getElementById("previewPersonal" + i).appendChild(gridItem);
           }
         });
+      }).then(function () {
+        console.log("personal done");
       });
     }
   }, {
@@ -19624,7 +19693,7 @@ function (_Component) {
   }, {
     key: "loadDefaultSettings",
     value: function loadDefaultSettings() {
-      var _this5 = this;
+      var _this6 = this;
 
       var loadDefaultButton = document.getElementById("loadDefaultSettings");
       loadDefaultButton.value = "Loading";
@@ -19639,7 +19708,7 @@ function (_Component) {
       }).then(function (data) {
         loadDefaultButton.value = "Save";
 
-        _this5.setState({
+        _this6.setState({
           gridSize: data.default_grid_size,
           intensity: data.default_intensity,
           mainColor: data.default_main_color,
@@ -19647,18 +19716,18 @@ function (_Component) {
           shape: data.default_shape
         });
       }).then(function () {
-        document.getElementById("gridSizeSlider").value = _this5.state.gridSize;
-        document.getElementById("intensitySlider").value = _this5.state.intensity;
-        document.getElementById("mainColorPicker").value = _this5.state.mainColor;
-        document.getElementById("backgroundColorPicker").value = _this5.state.backgroundColor;
-        document.getElementById("shape").value = _this5.state.shape;
+        document.getElementById("gridSizeSlider").value = _this6.state.gridSize;
+        document.getElementById("intensitySlider").value = _this6.state.intensity;
+        document.getElementById("mainColorPicker").value = _this6.state.mainColor;
+        document.getElementById("backgroundColorPicker").value = _this6.state.backgroundColor;
+        document.getElementById("shape").value = _this6.state.shape;
         console.log("Defaults loaded");
       });
     }
   }, {
     key: "login",
     value: function login() {
-      var _this6 = this;
+      var _this7 = this;
 
       var loginForm = document.getElementById("loginForm");
       var submitLogin = document.getElementById("submitLogin");
@@ -19671,7 +19740,7 @@ function (_Component) {
       }).then(function (data) {
         submitLogin.value = "Login";
 
-        _this6.setState({
+        _this7.setState({
           gridSize: data.default_grid_size,
           intensity: data.default_intensity,
           mainColor: data.default_main_color,
@@ -19682,14 +19751,14 @@ function (_Component) {
           token: data.success.token
         });
       }).then(function () {
-        document.getElementById("gridSizeSlider").value = _this6.state.gridSize;
-        document.getElementById("gridSizeValue").textContent = _this6.state.gridSize;
-        document.getElementById("intensitySlider").value = _this6.state.intensity;
-        document.getElementById("intensityValue").textContent = _this6.state.intensity;
-        document.getElementById("mainColorPicker").value = _this6.state.mainColor;
-        document.getElementById("backgroundColorPicker").value = _this6.state.backgroundColor;
-        document.getElementById("shape").value = _this6.state.shape;
-        document.getElementById("accountLink").textContent = _this6.state.accountName;
+        document.getElementById("gridSizeSlider").value = _this7.state.gridSize;
+        document.getElementById("gridSizeValue").textContent = _this7.state.gridSize;
+        document.getElementById("intensitySlider").value = _this7.state.intensity;
+        document.getElementById("intensityValue").textContent = _this7.state.intensity;
+        document.getElementById("mainColorPicker").value = _this7.state.mainColor;
+        document.getElementById("backgroundColorPicker").value = _this7.state.backgroundColor;
+        document.getElementById("shape").value = _this7.state.shape;
+        document.getElementById("accountLink").textContent = _this7.state.accountName;
         console.log("Logged in");
       });
     }
@@ -19752,17 +19821,17 @@ function (_Component) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this7 = this;
+      var _this8 = this;
 
       document.getElementById("galleryButton").addEventListener("click", function (e) {
         e.preventDefault();
 
-        if (_this7.state.content === "Drawingboard") {
-          _this7.setState({
+        if (_this8.state.content === "Drawingboard") {
+          _this8.setState({
             content: "Gallery"
           });
         } else {
-          _this7.setState({
+          _this8.setState({
             content: "Drawingboard"
           });
         }
@@ -19778,6 +19847,7 @@ function (_Component) {
           home: this.state.content,
           accountId: this.state.accountId,
           loadAllDrawings: this.loadAllDrawings,
+          loadLatestDrawings: this.loadLatestDrawings,
           loadOneDrawing: this.loadOneDrawing,
           loadPersonalDrawings: this.loadPersonalDrawings,
           openDrawing: this.openDrawing
@@ -42837,16 +42907,7 @@ function (_Component) {
         home = "Drawingboard";
         buttons = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
           id: "interface"
-        }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
-          href: "/",
-          alt: "My Drawings"
-        }, "My Drawings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
-          href: "/",
-          alt: "Popular"
-        }, "Popular"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
-          href: "/",
-          alt: "Recent"
-        }, "Recent"));
+        });
       }
 
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
@@ -43012,95 +43073,18 @@ function (_Component) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this = this;
+      document.getElementById("galleryLatestContainer").textContent = "Loading"; //document.getElementById("galleryPopular").textContent = "Loading";
 
-      document.getElementById("galleryLatest").textContent = "Loading";
-      document.getElementById("galleryPopular").textContent = "Loading";
+      document.getElementById("galleryPersonalContainer").textContent = "Loading";
       document.getElementById("drawingBoard").style.display = "none";
-      this.props.loadPersonalDrawings(this.props.accountId);
-      fetch("/api/drawings").then(function (response) {
-        return response.json();
-      }).then(function (data) {
-        // data[0] all
-        // data[1] 5 latest
-        document.getElementById("galleryLatest").textContent = "";
-        var heading = document.createElement("h2");
-        heading.textContent = "Latest Drawings:";
-        document.getElementById("galleryLatest").appendChild(heading);
-        var galleryLatestContainer = document.createElement("div");
-        galleryLatestContainer.id = "galleryLatestContainer";
-        document.getElementById("galleryLatest").appendChild(galleryLatestContainer); //data[1].forEach((e, i) => {
 
-        data.forEach(function (e, i) {
-          var drawing = document.createElement("div");
-          drawing.id = "previewLatest" + i;
-          drawing.className = "previewLatest";
-          document.getElementById("galleryLatestContainer").appendChild(drawing);
-          var gridHeight = 120;
-          var gridItemDimension = gridHeight / e.grid_size + "px";
-          document.getElementById("previewLatest" + i).style.backgroundColor = e.background_color;
-          document.getElementById("previewLatest" + i).style.height = gridHeight + "px";
-          document.getElementById("previewLatest" + i).style.width = gridHeight + "px";
-          document.getElementById("previewLatest" + i).style.border = "2px solid green";
-          document.getElementById("previewLatest" + i).addEventListener("click", function (f) {
-            f.preventDefault();
-            console.log("clicked " + e.id);
+      if (this.props.accountId) {
+        this.props.loadPersonalDrawings(this.props.accountId);
+      } else {
+        document.getElementById("galleryPersonalContainer").textContent = "Not logged in";
+      }
 
-            _this.props.openDrawing(e);
-          });
-
-          for (var j = 0; j < e.grid_size * e.grid_size; j++) {
-            var gridItem = document.createElement("div");
-            gridItem.style.width = gridItemDimension;
-            gridItem.style.height = gridItemDimension;
-            gridItem.style.boxSizing = "border-box";
-            gridItem.style.border = "2px solid white";
-            gridItem.style.float = "left";
-            gridItem.style.backgroundColor = JSON.parse(e.color).split(",")[j];
-            gridItem.style.opacity = JSON.parse(e.opacity).split(",")[j];
-            gridItem.className = "gridItem";
-            if (e.shape === "round") gridItem.style.borderRadius = "50%";else gridItem.style.borderRadius = "0";
-            document.getElementById("previewLatest" + i).appendChild(gridItem);
-          }
-        }); // -------------------
-
-        /*
-        document.getElementById("galleryPersonal").textContent = "";
-          data[0].forEach((e, i) => {
-          const drawing = document.createElement("div");
-          drawing.id = "previewPopular" + i;
-          drawing.className = "previewPopular";
-            document.getElementById("galleryPopular").appendChild(drawing);
-            const gridHeight = 200;
-          const gridItemDimension = gridHeight/e.grid_size + "px";
-                document.getElementById("previewPopular" + i).style.backgroundColor = e.background_color;
-          document.getElementById("previewPopular" + i).style.height = gridHeight + "px";
-          document.getElementById("previewPopular" + i).style.width = gridHeight + "px";
-          document.getElementById("previewPopular" + i).style.border = "2px solid green";
-            document.getElementById("previewPopular" + i).addEventListener("click", f => {
-            f.preventDefault();
-              console.log("clicked " + e.id)
-          })
-            for (let j = 0; j < (e.grid_size * e.grid_size); j++) {
-            const gridItem = document.createElement("div");
-                  gridItem.style.width = gridItemDimension;
-            gridItem.style.height = gridItemDimension;
-            gridItem.style.boxSizing = "border-box"
-            gridItem.style.border = "2px solid white";
-            gridItem.style.float = "left";
-            gridItem.style.backgroundColor = JSON.parse(e.color).split(",")[j];
-            gridItem.style.opacity = JSON.parse(e.opacity).split(",")[j];
-            gridItem.className = "gridItem";
-              if (e.shape === "round") gridItem.style.borderRadius = "50%";
-            else gridItem.style.borderRadius = "0";
-            
-            document.getElementById("previewPopular" + i).appendChild(gridItem);
-          }
-        })
-        */
-      }).then(function () {
-        console.log("done");
-      });
+      this.props.loadLatestDrawings();
     }
   }, {
     key: "render",
@@ -43111,9 +43095,13 @@ function (_Component) {
         id: "galleryPopular"
       }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
         id: "galleryLatest"
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h2", null, "Latest Drawings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+        id: "galleryLatestContainer"
+      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
         id: "galleryPersonal"
-      }));
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h2", null, "Personal Drawings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+        id: "galleryPersonalContainer"
+      })));
     }
   }]);
 
@@ -43162,7 +43150,7 @@ exports = module.exports = __webpack_require__(51)(false);
 
 
 // module
-exports.push([module.i, "html, body, #app {\r\n  height: 100%;\r\n  margin: 0;\r\n  padding: 0;\r\n}\r\n\r\n.App {\r\n  justify-content: space-between;\r\n  height: 2000px;\r\n  flex-direction: column;\r\n  display: flex;\r\n  align-items: center;\r\n}\r\n\r\n#navbar, #footer {\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n  border: 1px solid black;\r\n}\r\n\r\n#navbar {\r\n  display: flex;\r\n  justify-content: space-between;\r\n}\r\n\r\n#navbar div {\r\n  display: flex;\r\n  flex: 1;\r\n}\r\n\r\n#navbar #interface {\r\n  justify-content: center;\r\n}\r\n\r\n#navbar #accountButton {\r\n  justify-content: flex-end;\r\n  height: 40px;\r\n}\r\n\r\n#navbar a {\r\n  margin: 10px;\r\n  height: 30px;\r\n}\r\n\r\n#settingsForm {\r\n  width: 200px;\r\n}\r\n\r\n#gridSizeSlider, #intensitySlider {\r\n  width: 70%;\r\n}\r\n\r\n#galleryContainer {\r\n  display: flex;\r\n  flex-direction: column;\r\n}\r\n\r\n#galleryLatest, #galleryPopular, #galleryPersonal {\r\n  min-height: 100px;\r\n  border: 1px solid black;\r\n  margin: 20px;\r\n}\r\n\r\n#galleryLatestContainer, #galleryPopular, #galleryPopularContainer {\r\n  display: flex;\r\n  flex-direction: row;\r\n  flex-wrap: wrap;\r\n  justify-content: space-around;\r\n}\r\n\r\n.previewPopular, .previewLatest, .previewPersonal {\r\n  margin: 20px;\r\n}\r\n\r\nh2 {\r\n  text-align: center;\r\n}\r\n\r\n#loginForm {\r\n  margin-top: 20px;\r\n  margin-bottom: 20px;\r\n}\r\n\r\n\r\n\r\n\r\n/* The Modal (background) */\r\n.modal {\r\n  display: none; /* Hidden by default */\r\n  position: fixed; /* Stay in place */\r\n  z-index: 1; /* Sit on top */\r\n  left: 0;\r\n  top: 0;\r\n  width: 100%; /* Full width */\r\n  height: 100%; /* Full height */\r\n  overflow: auto; /* Enable scroll if needed */\r\n  background-color: rgb(0,0,0); /* Fallback color */\r\n  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */\r\n}\r\n\r\n/* Modal Content/Box */\r\n.modal-content {\r\n  background-color: #fefefe;\r\n  margin: 15% auto; /* 15% from the top and centered */\r\n  padding: 20px;\r\n  border: 1px solid #888;\r\n  width: 80%; /* Could be more or less, depending on screen size */\r\n}\r\n\r\n/* The Close Button */\r\n.close {\r\n  color: #aaa;\r\n  float: right;\r\n  font-size: 28px;\r\n  font-weight: bold;\r\n}\r\n\r\n.close:hover,\r\n.close:focus {\r\n  color: black;\r\n  text-decoration: none;\r\n  cursor: pointer;\r\n}", ""]);
+exports.push([module.i, "html, body, #app {\r\n  height: 100%;\r\n  margin: 0;\r\n  padding: 0;\r\n}\r\n\r\n.App {\r\n  xjustify-content: space-between;\r\n  xheight: 2000px;\r\n  xflex-direction: column;\r\n  xdisplay: flex;\r\n  xalign-items: center;\r\n}\r\n\r\n#navbar, #footer {\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n  border: 1px solid black;\r\n}\r\n\r\n#navbar {\r\n  display: flex;\r\n  justify-content: space-between;\r\n}\r\n\r\n#navbar div {\r\n  display: flex;\r\n  flex: 1;\r\n}\r\n\r\n#navbar #interface {\r\n  justify-content: center;\r\n}\r\n\r\n#navbar #accountButton {\r\n  justify-content: flex-end;\r\n  height: 40px;\r\n}\r\n\r\n#navbar a {\r\n  margin: 10px;\r\n  height: 30px;\r\n}\r\n\r\n#settingsForm {\r\n  width: 200px;\r\n}\r\n\r\n#gridSizeSlider, #intensitySlider {\r\n  width: 70%;\r\n}\r\n\r\n#galleryContainer {\r\n  display: flex;\r\n  flex-direction: column;\r\n}\r\n\r\n#galleryLatest, #galleryPopular, #galleryPersonal {\r\n  min-height: 100px;\r\n  border: 1px solid black;\r\n  margin: 20px;\r\n}\r\n\r\n#galleryLatestContainer, #galleryPopular, #galleryPersonalContainer {\r\n  display: flex;\r\n  flex-direction: row;\r\n  flex-wrap: wrap;\r\n  justify-content: space-around;\r\n}\r\n\r\n.previewPopular, .previewLatest, .previewPersonal {\r\n  margin: 20px;\r\n}\r\n\r\nh2 {\r\n  text-align: center;\r\n}\r\n\r\n#loginForm {\r\n  margin-top: 20px;\r\n  margin-bottom: 20px;\r\n}\r\n\r\n\r\n\r\n\r\n/* The Modal (background) */\r\n.modal {\r\n  display: none; /* Hidden by default */\r\n  position: fixed; /* Stay in place */\r\n  z-index: 1; /* Sit on top */\r\n  left: 0;\r\n  top: 0;\r\n  width: 100%; /* Full width */\r\n  height: 100%; /* Full height */\r\n  overflow: auto; /* Enable scroll if needed */\r\n  background-color: rgb(0,0,0); /* Fallback color */\r\n  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */\r\n}\r\n\r\n/* Modal Content/Box */\r\n.modal-content {\r\n  background-color: #fefefe;\r\n  margin: 15% auto; /* 15% from the top and centered */\r\n  padding: 20px;\r\n  border: 1px solid #888;\r\n  width: 80%; /* Could be more or less, depending on screen size */\r\n}\r\n\r\n/* The Close Button */\r\n.close {\r\n  color: #aaa;\r\n  float: right;\r\n  font-size: 28px;\r\n  font-weight: bold;\r\n}\r\n\r\n.close:hover,\r\n.close:focus {\r\n  color: black;\r\n  text-decoration: none;\r\n  cursor: pointer;\r\n}", ""]);
 
 // exports
 
