@@ -6,42 +6,10 @@ class Navbar extends Component {
 
     this.updateGridSizeSlider = this.updateGridSizeSlider.bind(this);
     this.updateIntensitySlider = this.updateIntensitySlider.bind(this);
-    this.saveSettings = this.saveSettings.bind(this);
-  }
-
-  saveSettings() {
-    if (document.getElementById("defaultcheckbox").checked === true) {
-      console.log("default settings")
-
-      this.props.setDefaultSettings();
-    } else {
-      console.log("current settings");
-
-      this.props.setCurrentSettings();
-    }
-  }
-
-  componentDidUpdate() {
-    //this.updateGridSizeSlider();
-    //this.updateIntensitySlider();
+    this.createAccountModal = this.createAccountModal.bind(this);
   }
 
   componentDidMount() {
-    document.getElementById("save").addEventListener("click", e => {
-      e.preventDefault();
-      this.props.save();
-    });
-
-    document.getElementById("delete").addEventListener("click", e => {
-      e.preventDefault();
-      this.props.delete(this.props.drawingId);
-    });
-
-    document.getElementById("reset").addEventListener("click", e => {
-      e.preventDefault();
-      this.props.reset();
-    });
-
     document.getElementById("registerForm").addEventListener("submit", e => {
       e.preventDefault();
       this.props.register();
@@ -52,36 +20,16 @@ class Navbar extends Component {
       this.props.login();
     });
 
-    document.getElementById("accountLink").addEventListener("click", e => {
+    document.getElementById("gridSizeSlider").addEventListener("mouseup", (e) => {
       e.preventDefault();
-      this.props.account();
-    });
+      this.props.saveCurrentSettings();
+      this.props.clear();
+    })
 
-
-
-
-    var modal = document.getElementById('myModal');
-    // Get the button that opens the modal
-    var btn = document.getElementById("myBtn");
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-    // When the user clicks on the button, open the modal 
-    btn.onclick = function() {
-      modal.style.display = "block";
-    }
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-      modal.style.display = "none";
-    }
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-      if (event.target == modal) {
-        modal.style.display = "none";
-      }
-    }
-
-
-
+    document.getElementById("intensitySlider").addEventListener("mouseup", (e) => {
+      e.preventDefault();
+      this.props.saveCurrentSettings();
+    })
   }
 
   updateGridSizeSlider() {
@@ -90,6 +38,23 @@ class Navbar extends Component {
 
   updateIntensitySlider() {
     document.getElementById("intensityValue").textContent = document.getElementById("intensitySlider").value;
+  }
+
+  createAccountModal() {
+    const accountModal = document.getElementById("accountModal");
+    const closeModal = document.getElementById("closeModal");
+
+    accountModal.style.display = "block";
+
+    closeModal.onclick = () => {
+      accountModal.style.display = "none";
+    }
+
+    window.onclick = e => {
+      if (e.target === accountModal) {
+        accountModal.style.display = "none";
+      }
+    }
   }
 
   render() {
@@ -103,9 +68,11 @@ class Navbar extends Component {
 
       buttons = (
         <div id="interface">
-          <a href="/" alt="Save" id="save">Save</a>
-          <a href="/" alt="Delete" id="delete">Delete</a>
-          <a href="/" alt="Reset" id="reset">Reset</a>
+          <div id="buttonsDrawing">
+            <button id="save" onClick={this.props.save}>Save</button>
+            <button id="delete" onClick={() => this.props.delete(this.props.drawingId)}>Delete</button>
+            <button id="clear" onClick={this.props.clear}>Clear</button>
+          </div>
 
           <form id="settingsForm">
             <span>Grid Size: </span>
@@ -125,25 +92,21 @@ class Navbar extends Component {
             <br />
 
             <span>Main Color: </span>
-            <input type="color" name="main_color" id="mainColorPicker" defaultValue="#008000" />
+            <input type="color" name="main_color" id="mainColorPicker" defaultValue="#008000" onChange={this.props.saveCurrentSettings} />
 
             <span>Background Color: </span>
-            <input type="color" name="background_color" id="backgroundColorPicker" defaultValue="#ffffff" />
+            <input type="color" name="background_color" id="backgroundColorPicker" defaultValue="#ffffff" onChange={this.props.saveCurrentSettings} />
 
             <span>Shape: </span>
-            <select name="shape" id="shape">
+            <select name="shape" id="shape" onChange={this.props.saveCurrentSettings} >
               <option value="square" className="shape">Square</option>
               <option value="round" className="shape">Round</option>
             </select>
             <br />
 
-            <span>Set as Default: </span>
-            <input type="checkbox" value="true" id="defaultcheckbox" />
-            <br />
+            <input type="text" name="title" placeholder="Title" id="titleInput" required onChange={this.props.saveCurrentSettings} />
 
-            <input type="text" name="title" placeholder="Title" id="titleInput" required />
-
-            <input type="button" id="saveSettings" value="Save" onClick={this.saveSettings} />
+            <input type="button" id="saveDefaultSettings" value="Save Default" onClick={this.props.saveDefaultSettings} />
             <input type="button" id="loadDefaultSettings" value="Load Default" onClick={this.props.loadDefaultSettings} />
           </form>
 
@@ -166,13 +129,13 @@ class Navbar extends Component {
     return (
       <div id="navbar">
         <div id="gallery">
-          <a href="/" alt="Gallery" id="galleryButton">{home}</a>
+          <button id="galleryButton">{home}</button>
         </div>
 
         {buttons}
         
-        <div id="accountButton">
-          <button id="myBtn">Account</button>
+        <div id="account">
+          <button id="openAccountModal" onClick={this.createAccountModal}>Account</button>
         </div>
       </div>
     )

@@ -11,9 +11,7 @@ class Gallery extends Component {
 
   componentDidMount() {
     document.getElementById("galleryLatestContainer").textContent = "Loading";
-    //document.getElementById("galleryPopular").textContent = "Loading";
     document.getElementById("galleryPersonalContainer").textContent = "Loading";
-
     document.getElementById("drawingBoard").style.display = "none";
 
     if (this.props.accountId) {

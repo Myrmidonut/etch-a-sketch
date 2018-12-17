@@ -48,14 +48,15 @@ class App extends Component {
     this.saveDrawing = this.saveDrawing.bind(this);
     this.delete = this.delete.bind(this);
     this.reset = this.reset.bind(this);
+    this.clear = this.clear.bind(this);
 
-    this.setDefaultSettings = this.setDefaultSettings.bind(this);
-    this.setCurrentSettings = this.setCurrentSettings.bind(this);
+    this.saveDefaultSettings = this.saveDefaultSettings.bind(this);
+    this.saveCurrentSettings = this.saveCurrentSettings.bind(this);
     this.loadDefaultSettings = this.loadDefaultSettings.bind(this);
 
     this.login = this.login.bind(this);
     this.register = this.register.bind(this);
-    this.account = this.account.bind(this);
+    this.accountDetails = this.accountDetails.bind(this);
   }
 
   mousedown(e) {
@@ -112,8 +113,6 @@ class App extends Component {
       gridItem.style.boxSizing = "border-box"
       gridItem.style.border = "2px solid white";
       gridItem.style.float = "left";
-
-      //gridItem.style.backgroundColor = this.state.mainColor;
       gridItem.style.backgroundColor = "#008000";
 
       gridItem.style.opacity = 0;
@@ -316,31 +315,39 @@ class App extends Component {
   }
 
   saveDrawing() {
-    document.getElementById("save").textContent = "Saving";
+    if (this.state.accountName) {
+      document.getElementById("save").textContent = "Saving";
 
-    fetch("/api/save", {
-      method: "post",
-      body: new URLSearchParams({
-        grid_size: this.state.gridSize,
-        opacity: this.state.opacity,
-        color: this.state.color,
-        background_color: this.state.backgroundColor,
-        shape: this.state.shape,
-        owner: this.state.accountId,
-        title: this.state.title
-      }),
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': "Bearer " + this.state.token
+      if (this.state.title === "") {
+        this.setState({
+          title: "no title"
+        })
       }
-    })
-    .then(response => response.text())
-    .then(data => {
-      console.log("drawing saved")
-      console.log(data);
 
-      document.getElementById("save").textContent = "Save";
-    })
+      fetch("/api/save", {
+        method: "post",
+        body: new URLSearchParams({
+          grid_size: this.state.gridSize,
+          opacity: this.state.opacity,
+          color: this.state.color,
+          background_color: this.state.backgroundColor,
+          shape: this.state.shape,
+          owner: this.state.accountId,
+          title: this.state.title
+        }),
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': "Bearer " + this.state.token
+        }
+      })
+      .then(response => response.text())
+      .then(data => {
+        console.log("drawing saved")
+        console.log(data);
+
+        document.getElementById("save").textContent = "Save";
+      })
+    }
   }
 
   reset() {
@@ -356,53 +363,64 @@ class App extends Component {
     }, this.updateGrid)
   }
 
+  clear() {
+    this.setState({
+      opacity: new Array(this.state.gridSize * this.state.gridSize).fill(0),
+      color: new Array(this.state.gridSize * this.state.gridSize).fill("#008000")
+    }, this.updateGrid)
+  }
+
   delete(id) {
-    document.getElementById("delete").textContent = "Deleting";
+    if (this.state.accountName) {
+      document.getElementById("delete").textContent = "Deleting";
 
-    console.log("deleting");
+      console.log("deleting");
 
-    fetch(`/api/delete/${id}`, {
-      method: "post",
-      body: new URLSearchParams({
-        owner: this.state.accountId
-      }),
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': "Bearer " + this.state.token
-      }
-    })
-    .then(response => response.text())
-    .then(data => {
-      console.log("drawing deleted")
-      console.log(data);
+      fetch(`/api/delete/${id}`, {
+        method: "post",
+        body: new URLSearchParams({
+          owner: this.state.accountId
+        }),
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': "Bearer " + this.state.token
+        }
+      })
+      .then(response => response.text())
+      .then(data => {
+        console.log("drawing deleted")
+        console.log(data);
 
-      document.getElementById("delete").textContent = "Delete";
-    })
+        document.getElementById("delete").textContent = "Delete";
+      })
+    }
   }
 
-  setDefaultSettings() {
-    const settingsForm = document.getElementById("settingsForm");
-    const saveButton = document.getElementById("saveSettings");
+  saveDefaultSettings() {
+    if (this.state.accountName) {
+      const settingsForm = document.getElementById("settingsForm");
+      const saveDefaultSettings = document.getElementById("saveDefaultSettings");
 
-    saveButton.value = "Saving";
+      saveDefaultSettings.value = "Saving";
 
-    fetch("/api/settings", {
-      method: "post",
-      body: new URLSearchParams(new FormData(settingsForm)),
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': "Bearer " + this.state.token
-      }
-    })
-    .then(response => response.json())
-    .then(data => {
-      saveButton.value = "Save";
+      fetch("/api/settings", {
+        method: "post",
+        body: new URLSearchParams(new FormData(settingsForm)),
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': "Bearer " + this.state.token
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        saveDefaultSettings.value = "Save Default";
 
-      console.log("default settings loaded")
-    })
+        console.log("default settings loaded")
+      })
+    }
   }
 
-  setCurrentSettings() {
+  saveCurrentSettings() {
     const gridSize = Number(document.getElementById("gridSizeSlider").value);
     const intensity = document.getElementById("intensitySlider").value;
     const mainColor = document.getElementById("mainColorPicker").value;
@@ -423,38 +441,42 @@ class App extends Component {
   }
 
   loadDefaultSettings() {
-    const loadDefaultButton = document.getElementById("loadDefaultSettings");
+    if (this.state.accountName) {
+      const loadDefaultSettings = document.getElementById("loadDefaultSettings");
 
-    loadDefaultButton.value = "Loading";
+      loadDefaultSettings.value = "Loading";
 
-    fetch("/api/settings", {
-      method: "get",
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': "Bearer " + this.state.token
-      }
-    })
-    .then(response => response.json())
-    .then(data => {
-      loadDefaultButton.value = "Save";
-
-      this.setState({
-        gridSize: data.default_grid_size,
-        intensity: data.default_intensity,
-        mainColor: data.default_main_color,
-        backgroundColor: data.default_background_color,
-        shape: data.default_shape
+      fetch("/api/settings", {
+        method: "get",
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': "Bearer " + this.state.token
+        }
       })
-    })
-    .then(() => {
-      document.getElementById("gridSizeSlider").value = this.state.gridSize;
-      document.getElementById("intensitySlider").value = this.state.intensity;
-      document.getElementById("mainColorPicker").value = this.state.mainColor;
-      document.getElementById("backgroundColorPicker").value = this.state.backgroundColor;
-      document.getElementById("shape").value = this.state.shape;
+      .then(response => response.json())
+      .then(data => {
+        loadDefaultSettings.value = "Save";
 
-      console.log("Defaults loaded")
-    })
+        this.setState({
+          gridSize: data.default_grid_size,
+          intensity: data.default_intensity,
+          mainColor: data.default_main_color,
+          backgroundColor: data.default_background_color,
+          shape: data.default_shape
+        })
+      })
+      .then(() => {
+        document.getElementById("gridSizeSlider").value = this.state.gridSize;
+        document.getElementById("gridSizeValue").textContent = this.state.gridSize;
+        document.getElementById("intensitySlider").value = this.state.intensity;
+        document.getElementById("intensityValue").textContent = this.state.intensity;
+        document.getElementById("mainColorPicker").value = this.state.mainColor;
+        document.getElementById("backgroundColorPicker").value = this.state.backgroundColor;
+        document.getElementById("shape").value = this.state.shape;
+
+        console.log("Defaults loaded")
+      })
+    }
   }
 
   login() {
@@ -472,17 +494,18 @@ class App extends Component {
       submitLogin.value = "Login"
 
       this.setState({
-        gridSize: data.default_grid_size,
-        intensity: data.default_intensity,
-        mainColor: data.default_main_color,
-        backgroundColor: data.default_background_color,
-        shape: data.default_shape,
+        //gridSize: data.default_grid_size,
+        //intensity: data.default_intensity,
+        //mainColor: data.default_main_color,
+        //backgroundColor: data.default_background_color,
+        //shape: data.default_shape,
         accountName: data.name,
         accountId: data.id,
         token: data.success.token
       })
     })
     .then(() => {
+      /*
       document.getElementById("gridSizeSlider").value = this.state.gridSize;
       document.getElementById("gridSizeValue").textContent = this.state.gridSize;
       document.getElementById("intensitySlider").value = this.state.intensity;
@@ -490,7 +513,9 @@ class App extends Component {
       document.getElementById("mainColorPicker").value = this.state.mainColor;
       document.getElementById("backgroundColorPicker").value = this.state.backgroundColor;
       document.getElementById("shape").value = this.state.shape;
-      document.getElementById("accountLink").textContent = this.state.accountName;
+      */
+
+      //document.getElementById("accountLink").textContent = this.state.accountName;
 
       console.log("Logged in")
     })
@@ -514,19 +539,21 @@ class App extends Component {
     })
   }
 
-  account() {
-    fetch("/api/account", {
-      method: "get",
-      headers: {
-          'Accept': 'application/json',
-          'Authorization': "Bearer " + this.state.token
-      }
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data)
-      console.log("Account");
-    })
+  accountDetails() {
+    if (this.state.accountName) {
+      fetch("/api/account", {
+        method: "get",
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': "Bearer " + this.state.token
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        console.log("Account");
+      })
+    }
   }
 
   openDrawing(e) {
@@ -602,9 +629,10 @@ class App extends Component {
           save={this.saveDrawing}
           delete={this.delete}
           reset={this.reset}
+          clear={this.clear}
 
-          setCurrentSettings={this.setCurrentSettings}
-          setDefaultSettings={this.setDefaultSettings}
+          saveCurrentSettings={this.saveCurrentSettings}
+          saveDefaultSettings={this.saveDefaultSettings}
           loadDefaultSettings={this.loadDefaultSettings}
 
           login={this.login}
@@ -616,22 +644,24 @@ class App extends Component {
           {content}
 
           <Drawingboard
-            mouseup={this.mouseup}
-            mousedown={this.mousedown}
-            createGrid={this.createGrid}
-            updateGrid={this.updateGrid}
-
             gridSize={this.state.gridSize}
             gridHeight={this.state.gridHeight}
             mouseHold={this.state.mouseHold}
             opacity={this.state.opacity}
             shape={this.state.shape}
+
+            mouseup={this.mouseup}
+            mousedown={this.mousedown}
+            createGrid={this.createGrid}
+            updateGrid={this.updateGrid}
+          />
+
+          <Modal 
+            accountDetails={this.accountDetails}
           />
         </div>
 
         <Footer />
-
-        <Modal />
       </div>
     );
   }

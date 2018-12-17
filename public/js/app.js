@@ -986,7 +986,7 @@ module.exports = checkPropTypes;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(12);
-module.exports = __webpack_require__(54);
+module.exports = __webpack_require__(55);
 
 
 /***/ }),
@@ -19283,8 +19283,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Drawingboard__ = __webpack_require__(46);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Footer__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Gallery__ = __webpack_require__(48);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Modal__ = __webpack_require__(56);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__App_css__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Modal__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__App_css__ = __webpack_require__(50);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__App_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__App_css__);
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -19353,12 +19353,13 @@ function (_Component) {
     _this.saveDrawing = _this.saveDrawing.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.delete = _this.delete.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.reset = _this.reset.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.setDefaultSettings = _this.setDefaultSettings.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.setCurrentSettings = _this.setCurrentSettings.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.clear = _this.clear.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.saveDefaultSettings = _this.saveDefaultSettings.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.saveCurrentSettings = _this.saveCurrentSettings.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.loadDefaultSettings = _this.loadDefaultSettings.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.login = _this.login.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.register = _this.register.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.account = _this.account.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.accountDetails = _this.accountDetails.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
   }
 
@@ -19414,8 +19415,7 @@ function (_Component) {
         gridItem.style.height = gridItemDimension;
         gridItem.style.boxSizing = "border-box";
         gridItem.style.border = "2px solid white";
-        gridItem.style.float = "left"; //gridItem.style.backgroundColor = this.state.mainColor;
-
+        gridItem.style.float = "left";
         gridItem.style.backgroundColor = "#008000";
         gridItem.style.opacity = 0;
         gridItem.className = "gridItem";
@@ -19594,29 +19594,38 @@ function (_Component) {
   }, {
     key: "saveDrawing",
     value: function saveDrawing() {
-      document.getElementById("save").textContent = "Saving";
-      fetch("/api/save", {
-        method: "post",
-        body: new URLSearchParams({
-          grid_size: this.state.gridSize,
-          opacity: this.state.opacity,
-          color: this.state.color,
-          background_color: this.state.backgroundColor,
-          shape: this.state.shape,
-          owner: this.state.accountId,
-          title: this.state.title
-        }),
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': "Bearer " + this.state.token
+      if (this.state.accountName) {
+        document.getElementById("save").textContent = "Saving";
+
+        if (this.state.title === "") {
+          this.setState({
+            title: "no title"
+          });
         }
-      }).then(function (response) {
-        return response.text();
-      }).then(function (data) {
-        console.log("drawing saved");
-        console.log(data);
-        document.getElementById("save").textContent = "Save";
-      });
+
+        fetch("/api/save", {
+          method: "post",
+          body: new URLSearchParams({
+            grid_size: this.state.gridSize,
+            opacity: this.state.opacity,
+            color: this.state.color,
+            background_color: this.state.backgroundColor,
+            shape: this.state.shape,
+            owner: this.state.accountId,
+            title: this.state.title
+          }),
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': "Bearer " + this.state.token
+          }
+        }).then(function (response) {
+          return response.text();
+        }).then(function (data) {
+          console.log("drawing saved");
+          console.log(data);
+          document.getElementById("save").textContent = "Save";
+        });
+      }
     }
   }, {
     key: "reset",
@@ -19632,50 +19641,62 @@ function (_Component) {
       }, this.updateGrid);
     }
   }, {
+    key: "clear",
+    value: function clear() {
+      this.setState({
+        opacity: new Array(this.state.gridSize * this.state.gridSize).fill(0),
+        color: new Array(this.state.gridSize * this.state.gridSize).fill("#008000")
+      }, this.updateGrid);
+    }
+  }, {
     key: "delete",
     value: function _delete(id) {
-      document.getElementById("delete").textContent = "Deleting";
-      console.log("deleting");
-      fetch("/api/delete/".concat(id), {
-        method: "post",
-        body: new URLSearchParams({
-          owner: this.state.accountId
-        }),
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': "Bearer " + this.state.token
-        }
-      }).then(function (response) {
-        return response.text();
-      }).then(function (data) {
-        console.log("drawing deleted");
-        console.log(data);
-        document.getElementById("delete").textContent = "Delete";
-      });
+      if (this.state.accountName) {
+        document.getElementById("delete").textContent = "Deleting";
+        console.log("deleting");
+        fetch("/api/delete/".concat(id), {
+          method: "post",
+          body: new URLSearchParams({
+            owner: this.state.accountId
+          }),
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': "Bearer " + this.state.token
+          }
+        }).then(function (response) {
+          return response.text();
+        }).then(function (data) {
+          console.log("drawing deleted");
+          console.log(data);
+          document.getElementById("delete").textContent = "Delete";
+        });
+      }
     }
   }, {
-    key: "setDefaultSettings",
-    value: function setDefaultSettings() {
-      var settingsForm = document.getElementById("settingsForm");
-      var saveButton = document.getElementById("saveSettings");
-      saveButton.value = "Saving";
-      fetch("/api/settings", {
-        method: "post",
-        body: new URLSearchParams(new FormData(settingsForm)),
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': "Bearer " + this.state.token
-        }
-      }).then(function (response) {
-        return response.json();
-      }).then(function (data) {
-        saveButton.value = "Save";
-        console.log("default settings loaded");
-      });
+    key: "saveDefaultSettings",
+    value: function saveDefaultSettings() {
+      if (this.state.accountName) {
+        var settingsForm = document.getElementById("settingsForm");
+        var saveDefaultSettings = document.getElementById("saveDefaultSettings");
+        saveDefaultSettings.value = "Saving";
+        fetch("/api/settings", {
+          method: "post",
+          body: new URLSearchParams(new FormData(settingsForm)),
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': "Bearer " + this.state.token
+          }
+        }).then(function (response) {
+          return response.json();
+        }).then(function (data) {
+          saveDefaultSettings.value = "Save Default";
+          console.log("default settings loaded");
+        });
+      }
     }
   }, {
-    key: "setCurrentSettings",
-    value: function setCurrentSettings() {
+    key: "saveCurrentSettings",
+    value: function saveCurrentSettings() {
       var gridSize = Number(document.getElementById("gridSizeSlider").value);
       var intensity = document.getElementById("intensitySlider").value;
       var mainColor = document.getElementById("mainColorPicker").value;
@@ -19697,34 +19718,38 @@ function (_Component) {
     value: function loadDefaultSettings() {
       var _this6 = this;
 
-      var loadDefaultButton = document.getElementById("loadDefaultSettings");
-      loadDefaultButton.value = "Loading";
-      fetch("/api/settings", {
-        method: "get",
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': "Bearer " + this.state.token
-        }
-      }).then(function (response) {
-        return response.json();
-      }).then(function (data) {
-        loadDefaultButton.value = "Save";
+      if (this.state.accountName) {
+        var loadDefaultSettings = document.getElementById("loadDefaultSettings");
+        loadDefaultSettings.value = "Loading";
+        fetch("/api/settings", {
+          method: "get",
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': "Bearer " + this.state.token
+          }
+        }).then(function (response) {
+          return response.json();
+        }).then(function (data) {
+          loadDefaultSettings.value = "Save";
 
-        _this6.setState({
-          gridSize: data.default_grid_size,
-          intensity: data.default_intensity,
-          mainColor: data.default_main_color,
-          backgroundColor: data.default_background_color,
-          shape: data.default_shape
+          _this6.setState({
+            gridSize: data.default_grid_size,
+            intensity: data.default_intensity,
+            mainColor: data.default_main_color,
+            backgroundColor: data.default_background_color,
+            shape: data.default_shape
+          });
+        }).then(function () {
+          document.getElementById("gridSizeSlider").value = _this6.state.gridSize;
+          document.getElementById("gridSizeValue").textContent = _this6.state.gridSize;
+          document.getElementById("intensitySlider").value = _this6.state.intensity;
+          document.getElementById("intensityValue").textContent = _this6.state.intensity;
+          document.getElementById("mainColorPicker").value = _this6.state.mainColor;
+          document.getElementById("backgroundColorPicker").value = _this6.state.backgroundColor;
+          document.getElementById("shape").value = _this6.state.shape;
+          console.log("Defaults loaded");
         });
-      }).then(function () {
-        document.getElementById("gridSizeSlider").value = _this6.state.gridSize;
-        document.getElementById("intensitySlider").value = _this6.state.intensity;
-        document.getElementById("mainColorPicker").value = _this6.state.mainColor;
-        document.getElementById("backgroundColorPicker").value = _this6.state.backgroundColor;
-        document.getElementById("shape").value = _this6.state.shape;
-        console.log("Defaults loaded");
-      });
+      }
     }
   }, {
     key: "login",
@@ -19743,24 +19768,26 @@ function (_Component) {
         submitLogin.value = "Login";
 
         _this7.setState({
-          gridSize: data.default_grid_size,
-          intensity: data.default_intensity,
-          mainColor: data.default_main_color,
-          backgroundColor: data.default_background_color,
-          shape: data.default_shape,
+          //gridSize: data.default_grid_size,
+          //intensity: data.default_intensity,
+          //mainColor: data.default_main_color,
+          //backgroundColor: data.default_background_color,
+          //shape: data.default_shape,
           accountName: data.name,
           accountId: data.id,
           token: data.success.token
         });
       }).then(function () {
-        document.getElementById("gridSizeSlider").value = _this7.state.gridSize;
-        document.getElementById("gridSizeValue").textContent = _this7.state.gridSize;
-        document.getElementById("intensitySlider").value = _this7.state.intensity;
-        document.getElementById("intensityValue").textContent = _this7.state.intensity;
-        document.getElementById("mainColorPicker").value = _this7.state.mainColor;
-        document.getElementById("backgroundColorPicker").value = _this7.state.backgroundColor;
-        document.getElementById("shape").value = _this7.state.shape;
-        document.getElementById("accountLink").textContent = _this7.state.accountName;
+        /*
+        document.getElementById("gridSizeSlider").value = this.state.gridSize;
+        document.getElementById("gridSizeValue").textContent = this.state.gridSize;
+        document.getElementById("intensitySlider").value = this.state.intensity;
+        document.getElementById("intensityValue").textContent = this.state.intensity;
+        document.getElementById("mainColorPicker").value = this.state.mainColor;
+        document.getElementById("backgroundColorPicker").value = this.state.backgroundColor;
+        document.getElementById("shape").value = this.state.shape;
+        */
+        //document.getElementById("accountLink").textContent = this.state.accountName;
         console.log("Logged in");
       });
     }
@@ -19781,20 +19808,22 @@ function (_Component) {
       });
     }
   }, {
-    key: "account",
-    value: function account() {
-      fetch("/api/account", {
-        method: "get",
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': "Bearer " + this.state.token
-        }
-      }).then(function (response) {
-        return response.json();
-      }).then(function (data) {
-        console.log(data);
-        console.log("Account");
-      });
+    key: "accountDetails",
+    value: function accountDetails() {
+      if (this.state.accountName) {
+        fetch("/api/account", {
+          method: "get",
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': "Bearer " + this.state.token
+          }
+        }).then(function (response) {
+          return response.json();
+        }).then(function (data) {
+          console.log(data);
+          console.log("Account");
+        });
+      }
     }
   }, {
     key: "openDrawing",
@@ -19867,8 +19896,9 @@ function (_Component) {
         save: this.saveDrawing,
         delete: this.delete,
         reset: this.reset,
-        setCurrentSettings: this.setCurrentSettings,
-        setDefaultSettings: this.setDefaultSettings,
+        clear: this.clear,
+        saveCurrentSettings: this.saveCurrentSettings,
+        saveDefaultSettings: this.saveDefaultSettings,
         loadDefaultSettings: this.loadDefaultSettings,
         login: this.login,
         register: this.register,
@@ -19876,16 +19906,18 @@ function (_Component) {
       }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
         id: "main"
       }, content, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Drawingboard__["a" /* default */], {
-        mouseup: this.mouseup,
-        mousedown: this.mousedown,
-        createGrid: this.createGrid,
-        updateGrid: this.updateGrid,
         gridSize: this.state.gridSize,
         gridHeight: this.state.gridHeight,
         mouseHold: this.state.mouseHold,
         opacity: this.state.opacity,
-        shape: this.state.shape
-      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__Footer__["a" /* default */], null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__Modal__["a" /* default */], null));
+        shape: this.state.shape,
+        mouseup: this.mouseup,
+        mousedown: this.mousedown,
+        createGrid: this.createGrid,
+        updateGrid: this.updateGrid
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__Modal__["a" /* default */], {
+        accountDetails: this.accountDetails
+      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__Footer__["a" /* default */], null));
     }
   }]);
 
@@ -42676,46 +42708,15 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Navbar).call(this, props));
     _this.updateGridSizeSlider = _this.updateGridSizeSlider.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.updateIntensitySlider = _this.updateIntensitySlider.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.saveSettings = _this.saveSettings.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.createAccountModal = _this.createAccountModal.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
   }
 
   _createClass(Navbar, [{
-    key: "saveSettings",
-    value: function saveSettings() {
-      if (document.getElementById("defaultcheckbox").checked === true) {
-        console.log("default settings");
-        this.props.setDefaultSettings();
-      } else {
-        console.log("current settings");
-        this.props.setCurrentSettings();
-      }
-    }
-  }, {
-    key: "componentDidUpdate",
-    value: function componentDidUpdate() {//this.updateGridSizeSlider();
-      //this.updateIntensitySlider();
-    }
-  }, {
     key: "componentDidMount",
     value: function componentDidMount() {
       var _this2 = this;
 
-      document.getElementById("save").addEventListener("click", function (e) {
-        e.preventDefault();
-
-        _this2.props.save();
-      });
-      document.getElementById("delete").addEventListener("click", function (e) {
-        e.preventDefault();
-
-        _this2.props.delete(_this2.props.drawingId);
-      });
-      document.getElementById("reset").addEventListener("click", function (e) {
-        e.preventDefault();
-
-        _this2.props.reset();
-      });
       document.getElementById("registerForm").addEventListener("submit", function (e) {
         e.preventDefault();
 
@@ -42726,32 +42727,18 @@ function (_Component) {
 
         _this2.props.login();
       });
-      document.getElementById("accountLink").addEventListener("click", function (e) {
+      document.getElementById("gridSizeSlider").addEventListener("mouseup", function (e) {
         e.preventDefault();
 
-        _this2.props.account();
+        _this2.props.saveCurrentSettings();
+
+        _this2.props.clear();
       });
-      var modal = document.getElementById('myModal'); // Get the button that opens the modal
+      document.getElementById("intensitySlider").addEventListener("mouseup", function (e) {
+        e.preventDefault();
 
-      var btn = document.getElementById("myBtn"); // Get the <span> element that closes the modal
-
-      var span = document.getElementsByClassName("close")[0]; // When the user clicks on the button, open the modal 
-
-      btn.onclick = function () {
-        modal.style.display = "block";
-      }; // When the user clicks on <span> (x), close the modal
-
-
-      span.onclick = function () {
-        modal.style.display = "none";
-      }; // When the user clicks anywhere outside of the modal, close it
-
-
-      window.onclick = function (event) {
-        if (event.target == modal) {
-          modal.style.display = "none";
-        }
-      };
+        _this2.props.saveCurrentSettings();
+      });
     }
   }, {
     key: "updateGridSizeSlider",
@@ -42764,8 +42751,27 @@ function (_Component) {
       document.getElementById("intensityValue").textContent = document.getElementById("intensitySlider").value;
     }
   }, {
+    key: "createAccountModal",
+    value: function createAccountModal() {
+      var accountModal = document.getElementById("accountModal");
+      var closeModal = document.getElementById("closeModal");
+      accountModal.style.display = "block";
+
+      closeModal.onclick = function () {
+        accountModal.style.display = "none";
+      };
+
+      window.onclick = function (e) {
+        if (e.target === accountModal) {
+          accountModal.style.display = "none";
+        }
+      };
+    }
+  }, {
     key: "render",
     value: function render() {
+      var _this3 = this;
+
       var buttons = null;
       var home = null;
 
@@ -42773,19 +42779,20 @@ function (_Component) {
         home = "Gallery";
         buttons = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
           id: "interface"
-        }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
-          href: "/",
-          alt: "Save",
-          id: "save"
-        }, "Save"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
-          href: "/",
-          alt: "Delete",
-          id: "delete"
-        }, "Delete"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
-          href: "/",
-          alt: "Reset",
-          id: "reset"
-        }, "Reset"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", {
+        }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+          id: "buttonsDrawing"
+        }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+          id: "save",
+          onClick: this.props.save
+        }, "Save"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+          id: "delete",
+          onClick: function onClick() {
+            return _this3.props.delete(_this3.props.drawingId);
+          }
+        }, "Delete"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+          id: "clear",
+          onClick: this.props.clear
+        }, "Clear")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", {
           id: "settingsForm"
         }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Grid Size: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
           id: "gridSizeValue"
@@ -42820,36 +42827,36 @@ function (_Component) {
           type: "color",
           name: "main_color",
           id: "mainColorPicker",
-          defaultValue: "#008000"
+          defaultValue: "#008000",
+          onChange: this.props.saveCurrentSettings
         }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Background Color: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
           type: "color",
           name: "background_color",
           id: "backgroundColorPicker",
-          defaultValue: "#ffffff"
+          defaultValue: "#ffffff",
+          onChange: this.props.saveCurrentSettings
         }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Shape: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("select", {
           name: "shape",
-          id: "shape"
+          id: "shape",
+          onChange: this.props.saveCurrentSettings
         }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("option", {
           value: "square",
           className: "shape"
         }, "Square"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("option", {
           value: "round",
           className: "shape"
-        }, "Round")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Set as Default: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
-          type: "checkbox",
-          value: "true",
-          id: "defaultcheckbox"
-        }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        }, "Round")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
           type: "text",
           name: "title",
           placeholder: "Title",
           id: "titleInput",
-          required: true
+          required: true,
+          onChange: this.props.saveCurrentSettings
         }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
           type: "button",
-          id: "saveSettings",
-          value: "Save",
-          onClick: this.saveSettings
+          id: "saveDefaultSettings",
+          value: "Save Default",
+          onClick: this.props.saveDefaultSettings
         }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
           type: "button",
           id: "loadDefaultSettings",
@@ -42867,14 +42874,13 @@ function (_Component) {
         id: "navbar"
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
         id: "gallery"
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
-        href: "/",
-        alt: "Gallery",
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
         id: "galleryButton"
       }, home)), buttons, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
-        id: "accountButton"
+        id: "account"
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
-        id: "myBtn"
+        id: "openAccountModal",
+        onClick: this.createAccountModal
       }, "Account")));
     }
   }]);
@@ -43027,8 +43033,7 @@ function (_Component) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      document.getElementById("galleryLatestContainer").textContent = "Loading"; //document.getElementById("galleryPopular").textContent = "Loading";
-
+      document.getElementById("galleryLatestContainer").textContent = "Loading";
       document.getElementById("galleryPersonalContainer").textContent = "Loading";
       document.getElementById("drawingBoard").style.display = "none";
 
@@ -43066,12 +43071,110 @@ function (_Component) {
 
 /***/ }),
 /* 49 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+var Modal =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(Modal, _Component);
+
+  function Modal() {
+    _classCallCheck(this, Modal);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(Modal).apply(this, arguments));
+  }
+
+  _createClass(Modal, [{
+    key: "render",
+    value: function render() {
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+        id: "accountModal"
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+        id: "modal-content"
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+        id: "closeModal"
+      }, "\xD7"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+        id: "accountForms"
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", {
+        id: "registerForm"
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        name: "name",
+        placeholder: "Username"
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        type: "email",
+        name: "email",
+        placeholder: "Email"
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        type: "password",
+        name: "password",
+        placeholder: "Password"
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        type: "password",
+        name: "c_password",
+        placeholder: "Confirm Password"
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        type: "submit",
+        id: "submitRegister",
+        value: "Register"
+      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", {
+        id: "loginForm"
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        type: "email",
+        name: "email",
+        placeholder: "Email"
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        type: "password",
+        name: "password",
+        placeholder: "Password"
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        type: "submit",
+        id: "submitLogin",
+        value: "Login"
+      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+        id: "logout"
+      }, "Logout"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+        id: "accountDetails",
+        onClick: this.props.accountDetails
+      }, "Account"))));
+    }
+  }]);
+
+  return Modal;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (Modal);
+
+/***/ }),
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(50);
+var content = __webpack_require__(51);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -43079,7 +43182,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(52)(content, options);
+var update = __webpack_require__(53)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -43096,21 +43199,21 @@ if(false) {
 }
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(51)(false);
+exports = module.exports = __webpack_require__(52)(false);
 // imports
 
 
 // module
-exports.push([module.i, "html, body, #app {\r\n  height: 100%;\r\n  margin: 0;\r\n  padding: 0;\r\n}\r\n\r\n#navbar, #footer {\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n  border: 1px solid black;\r\n}\r\n\r\n#navbar {\r\n  display: flex;\r\n  justify-content: space-between;\r\n}\r\n\r\n#navbar div {\r\n  display: flex;\r\n  flex: 1;\r\n}\r\n\r\n#navbar #interface {\r\n  justify-content: center;\r\n}\r\n\r\n#navbar #accountButton {\r\n  justify-content: flex-end;\r\n  height: 40px;\r\n}\r\n\r\n#navbar a {\r\n  margin: 10px;\r\n  height: 30px;\r\n}\r\n\r\n#footer {\r\n  position: fixed;\r\n  bottom: 0;\r\n}\r\n\r\n#main {\r\n  display: flex;\r\n  justify-content: center;\r\n}\r\n\r\n#settingsForm {\r\n  width: 200px;\r\n  border: 1px solid black;\r\n  padding: 5px;\r\n}\r\n\r\n#gridSizeSlider, #intensitySlider {\r\n  width: 70%;\r\n}\r\n\r\n#galleryContainer {\r\n  display: flex;\r\n  flex-direction: column;\r\n  max-width: 1000px;\r\n}\r\n\r\n#galleryLatest, #galleryPopular, #galleryPersonal {\r\n  min-height: 100px;\r\n  border: 1px solid black;\r\n  margin: 20px;\r\n}\r\n\r\n#galleryLatestContainer, #galleryPopular, #galleryPersonalContainer {\r\n  display: flex;\r\n  flex-direction: row;\r\n  flex-wrap: wrap;\r\n  justify-content: space-around;\r\n}\r\n\r\n.previewPopular, .previewLatest, .previewPersonal {\r\n  margin: 20px;\r\n}\r\n\r\nh2 {\r\n  text-align: center;\r\n}\r\n\r\n#registerForm, #loginForm {\r\n  margin: auto;\r\n  flex-direction: column;\r\n  display: flex;\r\n  width: 300px;\r\n}\r\n\r\n#loginForm {\r\n  margin-top: 20px;\r\n  margin-bottom: 20px;\r\n}\r\n\r\n/* The Modal (background) */\r\n.modal {\r\n  display: none; /* Hidden by default */\r\n  position: fixed; /* Stay in place */\r\n  z-index: 1; /* Sit on top */\r\n  left: 0;\r\n  top: 0;\r\n  width: 100%; /* Full width */\r\n  height: 100%; /* Full height */\r\n  overflow: auto; /* Enable scroll if needed */\r\n  background-color: rgb(0,0,0); /* Fallback color */\r\n  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */\r\n}\r\n\r\n/* Modal Content/Box */\r\n.modal-content {\r\n  background-color: #fefefe;\r\n  margin: 15% auto; /* 15% from the top and centered */\r\n  padding: 20px;\r\n  border: 1px solid #888;\r\n  width: 400px;\r\n}\r\n\r\n/* The Close Button */\r\n.close {\r\n  color: #aaa;\r\n  xfloat: right;\r\n  font-size: 28px;\r\n  font-weight: bold;\r\n}\r\n\r\n.close:hover,\r\n.close:focus {\r\n  color: black;\r\n  text-decoration: none;\r\n  cursor: pointer;\r\n}", ""]);
+exports.push([module.i, "html, body, #app {\r\n  height: 100%;\r\n  margin: 0;\r\n  padding: 0;\r\n}\r\n\r\n.App {\r\n  height:100%;\r\n}\r\n\r\n#navbar, #footer {\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n  border: 1px solid black;\r\n}\r\n\r\n#navbar {\r\n  position: fixed;\r\n  top: 0;\r\n  display: flex;\r\n  justify-content: space-between;\r\n}\r\n\r\n#gallery, #interface, #account {\r\n  display: flex;\r\n  flex: 1;\r\n}\r\n\r\n#gallery {\r\n  align-items: flex-start;\r\n}\r\n\r\n#interface {\r\n  justify-content: center;\r\n}\r\n\r\n#account {\r\n  justify-content: flex-end;\r\n  align-items: flex-start;\r\n}\r\n\r\n#footer {\r\n  position: fixed;\r\n  bottom: 0;\r\n}\r\n\r\n#buttonsDrawing {\r\n  display: flex;\r\n  align-items: flex-start;\r\n}\r\n\r\n#main {\r\n  margin-top: 20px;\r\n  display: flex;\r\n  justify-content: center;\r\n  height: 100%;\r\n  align-items: center;\r\n}\r\n\r\n#settingsForm {\r\n  width: 200px;\r\n  border: 1px solid black;\r\n  padding: 5px;\r\n}\r\n\r\n#gridSizeSlider, #intensitySlider {\r\n  width: 70%;\r\n}\r\n\r\n#galleryContainer {\r\n  display: flex;\r\n  flex-direction: column;\r\n  max-width: 1000px;\r\n}\r\n\r\n#galleryLatest, #galleryPopular, #galleryPersonal {\r\n  min-height: 100px;\r\n  border: 1px solid black;\r\n  margin: 20px;\r\n}\r\n\r\n#galleryLatestContainer, #galleryPopular, #galleryPersonalContainer {\r\n  display: flex;\r\n  flex-direction: row;\r\n  flex-wrap: wrap;\r\n  justify-content: space-around;\r\n}\r\n\r\n.previewPopular, .previewLatest, .previewPersonal {\r\n  margin: 20px;\r\n}\r\n\r\nh2 {\r\n  text-align: center;\r\n}\r\n\r\n#registerForm, #loginForm {\r\n  margin: auto;\r\n  flex-direction: column;\r\n  display: flex;\r\n}\r\n\r\n#logout, #accountDetails {\r\n  margin: auto;\r\n  width: 100%;\r\n  text-align: center;\r\n}\r\n\r\n#registerForm, #loginForm, #logout {\r\n  margin-bottom: 20px;\r\n}\r\n\r\n/* The Modal (background) */\r\n#accountModal {\r\n  display: none; /* Hidden by default */\r\n  position: fixed; /* Stay in place */\r\n  z-index: 1; /* Sit on top */\r\n  left: 0;\r\n  top: 0;\r\n  width: 100%; /* Full width */\r\n  height: 100%; /* Full height */\r\n  overflow: auto; /* Enable scroll if needed */\r\n  background-color: rgb(0,0,0); /* Fallback color */\r\n  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */\r\n}\r\n\r\n/* Modal Content/Box */\r\n#modal-content {\r\n  background-color: #fefefe;\r\n  margin: 15% auto; /* 15% from the top and centered */\r\n  padding: 20px;\r\n  border: 1px solid #888;\r\n  width: 400px;\r\n}\r\n\r\n#accountForms {\r\n  padding: 50px;\r\n}\r\n\r\n/* The Close Button */\r\n#closeModal {\r\n  color: #aaa;\r\n  float: right;\r\n  font-size: 28px;\r\n  font-weight: bold;\r\n}\r\n\r\n#closeModal:hover,\r\n#closeModal:focus {\r\n  color: black;\r\n  text-decoration: none;\r\n  cursor: pointer;\r\n}", ""]);
 
 // exports
 
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports) {
 
 /*
@@ -43192,7 +43295,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -43238,7 +43341,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(53);
+var	fixUrls = __webpack_require__(54);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -43551,7 +43654,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports) {
 
 
@@ -43646,112 +43749,10 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 55 */,
-/* 56 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-
-
-var Modal =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(Modal, _Component);
-
-  function Modal() {
-    _classCallCheck(this, Modal);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(Modal).apply(this, arguments));
-  }
-
-  _createClass(Modal, [{
-    key: "render",
-    value: function render() {
-      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
-        id: "myModal",
-        className: "modal"
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
-        className: "modal-content"
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
-        className: "close"
-      }, "\xD7"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
-        id: "account"
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", {
-        id: "registerForm"
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
-        name: "name",
-        placeholder: "Username"
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
-        type: "email",
-        name: "email",
-        placeholder: "Email"
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
-        type: "password",
-        name: "password",
-        placeholder: "Password"
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
-        type: "password",
-        name: "c_password",
-        placeholder: "Confirm Password"
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
-        type: "submit",
-        id: "submitRegister",
-        value: "Register"
-      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", {
-        id: "loginForm"
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
-        type: "email",
-        name: "email",
-        placeholder: "Email"
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
-        type: "password",
-        name: "password",
-        placeholder: "Password"
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
-        type: "submit",
-        id: "submitLogin",
-        value: "Login"
-      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
-        href: "/",
-        alt: "Logout"
-      }, "Logout"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("a", {
-        href: "/api/account",
-        alt: "Account",
-        id: "accountLink"
-      }, "Account"))));
-    }
-  }]);
-
-  return Modal;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-/* harmony default export */ __webpack_exports__["a"] = (Modal);
 
 /***/ })
 /******/ ]);

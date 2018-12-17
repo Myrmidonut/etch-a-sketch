@@ -3,11 +3,11 @@ import React, { Component } from "react";
 class Modal extends Component {
   render() {
     return (
-      <div id="myModal" className="modal">
-        <div className="modal-content">
-          <span className="close">&times;</span>
+      <div id="accountModal">
+        <div id="modal-content">
+          <span id="closeModal">&times;</span>
 
-          <div id="account">
+          <div id="accountForms">
             <form id="registerForm">
               <input name="name" placeholder="Username"></input>
               <input type="email" name="email" placeholder="Email"></input>
@@ -24,11 +24,11 @@ class Modal extends Component {
 
             <br />
 
-            <a href="/" alt="Logout">Logout</a>
+            <button id="logout">Logout</button>
 
             <br />
 
-            <a href="/api/account" alt="Account" id="accountLink">Account</a>
+            <button id="accountDetails" onClick={this.props.accountDetails}>Account</button>
           </div>
         </div>
       </div>
