@@ -4,14 +4,6 @@ html, body, #app {
   padding: 0;
 }
 
-.App {
-  xjustify-content: space-between;
-  xheight: 2000px;
-  xflex-direction: column;
-  xdisplay: flex;
-  xalign-items: center;
-}
-
 #navbar, #footer {
   box-sizing: border-box;
   width: 100%;
@@ -42,8 +34,20 @@ html, body, #app {
   height: 30px;
 }
 
+#footer {
+  position: fixed;
+  bottom: 0;
+}
+
+#main {
+  display: flex;
+  justify-content: center;
+}
+
 #settingsForm {
   width: 200px;
+  border: 1px solid black;
+  padding: 5px;
 }
 
 #gridSizeSlider, #intensitySlider {
@@ -53,6 +57,7 @@ html, body, #app {
 #galleryContainer {
   display: flex;
   flex-direction: column;
+  max-width: 1000px;
 }
 
 #galleryLatest, #galleryPopular, #galleryPersonal {
@@ -76,13 +81,17 @@ h2 {
   text-align: center;
 }
 
+#registerForm, #loginForm {
+  margin: auto;
+  flex-direction: column;
+  display: flex;
+  width: 300px;
+}
+
 #loginForm {
   margin-top: 20px;
   margin-bottom: 20px;
 }
-
-
-
 
 /* The Modal (background) */
 .modal {
@@ -104,13 +113,13 @@ h2 {
   margin: 15% auto; /* 15% from the top and centered */
   padding: 20px;
   border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
+  width: 400px;
 }
 
 /* The Close Button */
 .close {
   color: #aaa;
-  float: right;
+  xfloat: right;
   font-size: 28px;
   font-weight: bold;
 }

@@ -4,6 +4,7 @@ import Navbar from "./Navbar";
 import Drawingboard from "./Drawingboard";
 import Footer from "./Footer";
 import Gallery from "./Gallery";
+import Modal from "./Modal";
 import './App.css';
 
 class App extends Component {
@@ -227,7 +228,7 @@ class App extends Component {
           f.preventDefault();
           console.log("clicked " + e.id)
 
-          this.props.openDrawing(e);
+          this.openDrawing(e);
         })
 
         for (let j = 0; j < (e.grid_size * e.grid_size); j++) {
@@ -611,52 +612,26 @@ class App extends Component {
           account={this.account}
         />
 
-        {content}
+        <div id="main">
+          {content}
 
-        <Drawingboard
-          mouseup={this.mouseup}
-          mousedown={this.mousedown}
-          createGrid={this.createGrid}
-          updateGrid={this.updateGrid}
+          <Drawingboard
+            mouseup={this.mouseup}
+            mousedown={this.mousedown}
+            createGrid={this.createGrid}
+            updateGrid={this.updateGrid}
 
-          gridSize={this.state.gridSize}
-          gridHeight={this.state.gridHeight}
-          mouseHold={this.state.mouseHold}
-          opacity={this.state.opacity}
-          shape={this.state.shape}
-        />
+            gridSize={this.state.gridSize}
+            gridHeight={this.state.gridHeight}
+            mouseHold={this.state.mouseHold}
+            opacity={this.state.opacity}
+            shape={this.state.shape}
+          />
+        </div>
 
         <Footer />
 
-        <div id="myModal" className="modal">
-          <div className="modal-content">
-            <span className="close">&times;</span>
-
-            <div id="account">
-              <form id="registerForm">
-                <input name="name" placeholder="Username"></input>
-                <input type="email" name="email" placeholder="Email"></input>
-                <input type="password" name="password" placeholder="Password"></input>
-                <input type="password" name="c_password" placeholder="Confirm Password"></input>
-                <input type="submit" id="submitRegister" value="Register"></input>
-              </form>
-
-              <form id="loginForm">
-                <input type="email" name="email" placeholder="Email"></input>
-                <input type="password" name="password" placeholder="Password"></input>
-                <input type="submit" id="submitLogin" value="Login"></input>
-              </form>
-
-              <br />
-
-              <a href="/" alt="Logout">Logout</a>
-
-              <br />
-
-              <a href="/api/account" alt="Account" id="accountLink">Account</a>
-            </div>
-          </div>
-        </div>
+        <Modal />
       </div>
     );
   }
