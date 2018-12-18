@@ -19396,6 +19396,7 @@ function (_Component) {
         if (_this2.state.shape === "round") e.style.borderRadius = "50%";else e.style.borderRadius = "0";
         e.style.opacity = _this2.state.opacity[i];
         e.style.backgroundColor = _this2.state.color[i];
+        e.style.border = "1px solid ".concat(_this2.state.backgroundColor);
       });
     }
   }, {
@@ -19414,7 +19415,7 @@ function (_Component) {
         gridItem.style.width = gridItemDimension;
         gridItem.style.height = gridItemDimension;
         gridItem.style.boxSizing = "border-box";
-        gridItem.style.border = "2px solid white";
+        gridItem.style.border = "1px solid ".concat(_this3.state.backgroundColor);
         gridItem.style.float = "left";
         gridItem.style.backgroundColor = "#008000";
         gridItem.style.opacity = 0;
@@ -19470,7 +19471,7 @@ function (_Component) {
           document.getElementById("previewPopular" + i).style.backgroundColor = e.background_color;
           document.getElementById("previewPopular" + i).style.height = gridHeight + "px";
           document.getElementById("previewPopular" + i).style.width = gridHeight + "px";
-          document.getElementById("previewPopular" + i).style.border = "2px solid green";
+          document.getElementById("previewPopular" + i).style.border = "2px solid white";
           document.getElementById("previewPopular" + i).addEventListener("click", function (f) {
             f.preventDefault();
             console.log("clicked " + e.id);
@@ -19481,7 +19482,7 @@ function (_Component) {
             gridItem.style.width = gridItemDimension;
             gridItem.style.height = gridItemDimension;
             gridItem.style.boxSizing = "border-box";
-            gridItem.style.border = "2px solid white";
+            gridItem.style.border = "1px solid ".concat(e.background_color);
             gridItem.style.float = "left";
             gridItem.style.backgroundColor = JSON.parse(e.color).split(",")[j];
             gridItem.style.opacity = JSON.parse(e.opacity).split(",")[j];
@@ -19511,7 +19512,7 @@ function (_Component) {
           document.getElementById("previewLatest" + i).style.backgroundColor = e.background_color;
           document.getElementById("previewLatest" + i).style.height = gridHeight + "px";
           document.getElementById("previewLatest" + i).style.width = gridHeight + "px";
-          document.getElementById("previewLatest" + i).style.border = "2px solid green";
+          document.getElementById("previewLatest" + i).style.border = "2px solid #03A9F4";
           document.getElementById("previewLatest" + i).addEventListener("click", function (f) {
             f.preventDefault();
             console.log("clicked " + e.id);
@@ -19524,7 +19525,7 @@ function (_Component) {
             gridItem.style.width = gridItemDimension;
             gridItem.style.height = gridItemDimension;
             gridItem.style.boxSizing = "border-box";
-            gridItem.style.border = "2px solid white";
+            gridItem.style.border = "1px solid ".concat(e.background_color);
             gridItem.style.float = "left";
             gridItem.style.backgroundColor = JSON.parse(e.color).split(",")[j];
             gridItem.style.opacity = JSON.parse(e.opacity).split(",")[j];
@@ -19565,7 +19566,7 @@ function (_Component) {
           document.getElementById("previewPersonal" + i).style.backgroundColor = e.background_color;
           document.getElementById("previewPersonal" + i).style.height = gridHeight + "px";
           document.getElementById("previewPersonal" + i).style.width = gridHeight + "px";
-          document.getElementById("previewPersonal" + i).style.border = "2px solid green";
+          document.getElementById("previewPersonal" + i).style.border = "2px solid #03A9F4";
           document.getElementById("previewPersonal" + i).addEventListener("click", function (f) {
             f.preventDefault();
             console.log("clicked " + e.id);
@@ -19578,7 +19579,7 @@ function (_Component) {
             gridItem.style.width = gridItemDimension;
             gridItem.style.height = gridItemDimension;
             gridItem.style.boxSizing = "border-box";
-            gridItem.style.border = "2px solid white";
+            gridItem.style.border = "1px solid ".concat(e.background_color);
             gridItem.style.float = "left";
             gridItem.style.backgroundColor = JSON.parse(e.color).split(",")[j];
             gridItem.style.opacity = JSON.parse(e.opacity).split(",")[j];
@@ -42746,7 +42747,7 @@ function (_Component) {
     key: "showSettings",
     value: function showSettings() {
       var settingsForm = document.getElementById("settingsForm");
-      if (settingsForm.style.display == "none") settingsForm.style.display = "block";else settingsForm.style.display = "none";
+      if (settingsForm.style.display == "none") settingsForm.style.display = "flex";else settingsForm.style.display = "none";
     }
   }, {
     key: "updateGridSizeSlider",
@@ -42809,9 +42810,9 @@ function (_Component) {
           onClick: this.showSettings
         }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", {
           id: "settingsForm"
-        }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Grid Size: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+        }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Grid Size: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
           id: "gridSizeValue"
-        }, "20"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+        }, "20")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
           id: "gridSizeMin"
         }, "5"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
           type: "range",
@@ -42823,9 +42824,9 @@ function (_Component) {
           onChange: this.updateGridSizeSlider
         }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
           id: "gridSizeMax"
-        }, "50"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Intensity: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+        }, "50")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Intensity: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
           id: "intensityValue"
-        }, "0.1"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+        }, "0.1")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
           id: "intensityMin"
         }, "0.1"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
           type: "range",
@@ -42838,19 +42839,19 @@ function (_Component) {
           onChange: this.updateIntensitySlider
         }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
           id: "intensityMax"
-        }, "1"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Main Color: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        }, "1")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Main Color: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
           type: "color",
           name: "main_color",
           id: "mainColorPicker",
           defaultValue: "#008000",
           onChange: this.props.saveCurrentSettings
-        }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Background Color: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Background Color: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
           type: "color",
           name: "background_color",
           id: "backgroundColorPicker",
           defaultValue: "#ffffff",
           onChange: this.props.saveCurrentSettings
-        }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Shape: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("select", {
+        })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Shape: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("select", {
           name: "shape",
           id: "shape",
           onChange: this.props.saveCurrentSettings
@@ -42860,14 +42861,14 @@ function (_Component) {
         }, "Square"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("option", {
           value: "round",
           className: "shape"
-        }, "Round")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        }, "Round"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
           type: "text",
           name: "title",
           placeholder: "Title",
           id: "titleInput",
           required: true,
           onChange: this.props.saveCurrentSettings
-        }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
           type: "button",
           id: "saveDefaultSettings",
           value: "Save Default",
@@ -42877,7 +42878,7 @@ function (_Component) {
           id: "loadDefaultSettings",
           value: "Load Default",
           onClick: this.props.loadDefaultSettings
-        })));
+        }))));
       } else if (this.props.home === "Gallery") {
         home = "Drawingboard";
         buttons = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
@@ -42955,7 +42956,7 @@ function (_Component) {
       var drawingBoard = document.getElementById("drawingBoard");
       drawingBoard.style.height = this.props.gridHeight + "px";
       drawingBoard.style.width = this.props.gridHeight + "px";
-      drawingBoard.style.border = "2px solid green";
+      drawingBoard.style.border = "2px solid #03A9F4";
       drawingBoard.style.margin = "20px";
       document.getElementById("drawingBoard").addEventListener("mousedown", this.props.mousedown);
       document.addEventListener("mouseup", this.props.mouseup);
@@ -43071,8 +43072,6 @@ function (_Component) {
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
         id: "galleryContainer"
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
-        id: "galleryPopular"
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
         id: "galleryLatest"
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("h2", null, "Latest Drawings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
         id: "galleryLatestContainer"
@@ -43173,12 +43172,12 @@ function (_Component) {
         type: "submit",
         id: "submitLogin",
         value: "Login"
-      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
         id: "logout"
-      }, "Logout"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+      }, "Logout"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
         id: "accountDetails",
         onClick: this.props.accountDetails
-      }, "Account"))));
+      }, "Account")))));
     }
   }]);
 
@@ -43222,12 +43221,13 @@ if(false) {
 /* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var escape = __webpack_require__(57);
 exports = module.exports = __webpack_require__(52)(false);
 // imports
 
 
 // module
-exports.push([module.i, "html, body, #app {\r\n  height: 100%;\r\n  margin: 0;\r\n  padding: 0;\r\n}\r\n\r\n.App {\r\n  height:100%;\r\n}\r\n\r\n#navbar, #footer {\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n  border: 1px solid black;\r\n}\r\n\r\n#navbar {\r\n  position: fixed;\r\n  top: 0;\r\n  height: 44px;\r\n  z-index: 2;\r\n}\r\n\r\n#navbarButtons {\r\n  display: flex;\r\n  justify-content: space-between;\r\n}\r\n\r\n#settingsDrawing {\r\n  justify-content: center;\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n}\r\n\r\n#gallery, #interface, #account {\r\n  display: flex;\r\n  flex: 1;\r\n}\r\n\r\n#gallery {\r\n  align-items: flex-start;\r\n}\r\n\r\n#interface {\r\n  justify-content: center;\r\n}\r\n\r\n#account {\r\n  justify-content: flex-end;\r\n  align-items: flex-start;\r\n}\r\n\r\n#footer {\r\n  position: fixed;\r\n  bottom: 0;\r\n}\r\n\r\n#buttonsDrawing {\r\n  display: flex;\r\n  align-items: flex-start;\r\n}\r\n\r\n#main {\r\n  margin-top: 20px;\r\n  display: flex;\r\n  justify-content: center;\r\n  height: 100%;\r\n  align-items: center;\r\n}\r\n\r\n#settingsForm {\r\n  width: 200px;\r\n  border: 1px solid black;\r\n  padding: 5px;\r\n  background: white;\r\n}\r\n\r\n#gridSizeSlider, #intensitySlider {\r\n  width: 70%;\r\n}\r\n\r\n#galleryContainer {\r\n  display: flex;\r\n  flex-direction: column;\r\n  max-width: 1000px;\r\n}\r\n\r\n#galleryLatest, #galleryPopular, #galleryPersonal {\r\n  min-height: 100px;\r\n  border: 1px solid black;\r\n  margin: 20px;\r\n}\r\n\r\n#galleryLatestContainer, #galleryPopular, #galleryPersonalContainer {\r\n  display: flex;\r\n  flex-direction: row;\r\n  flex-wrap: wrap;\r\n  justify-content: space-around;\r\n}\r\n\r\n.previewPopular, .previewLatest, .previewPersonal {\r\n  margin: 20px;\r\n}\r\n\r\nh2 {\r\n  text-align: center;\r\n}\r\n\r\n#registerForm, #loginForm {\r\n  margin: auto;\r\n  flex-direction: column;\r\n  display: flex;\r\n}\r\n\r\n#logout, #accountDetails {\r\n  margin: auto;\r\n  width: 100%;\r\n  text-align: center;\r\n}\r\n\r\n#registerForm, #loginForm, #logout {\r\n  margin-bottom: 20px;\r\n}\r\n\r\n/* The Modal (background) */\r\n#accountModal {\r\n  display: none; /* Hidden by default */\r\n  position: fixed; /* Stay in place */\r\n  z-index: 1; /* Sit on top */\r\n  left: 0;\r\n  top: 0;\r\n  width: 100%; /* Full width */\r\n  height: 100%; /* Full height */\r\n  overflow: auto; /* Enable scroll if needed */\r\n  background-color: rgb(0,0,0); /* Fallback color */\r\n  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */\r\n}\r\n\r\n/* Modal Content/Box */\r\n#modal-content {\r\n  background-color: #fefefe;\r\n  margin: 15% auto; /* 15% from the top and centered */\r\n  padding: 20px;\r\n  border: 1px solid #888;\r\n  width: 400px;\r\n}\r\n\r\n#accountForms {\r\n  padding: 50px;\r\n}\r\n\r\n/* The Close Button */\r\n#closeModal {\r\n  color: #aaa;\r\n  float: right;\r\n  font-size: 28px;\r\n  font-weight: bold;\r\n}\r\n\r\n#closeModal:hover,\r\n#closeModal:focus {\r\n  color: black;\r\n  text-decoration: none;\r\n  cursor: pointer;\r\n}", ""]);
+exports.push([module.i, "html, body, #app {\r\n  height: 100%;\r\n  margin: 0;\r\n  padding: 0;\r\n  font-family: \"pixel\";\r\n}\r\n\r\n.App {\r\n  height:100%;\r\n}\r\n\r\n@font-face {\r\n  font-family: \"pixel\";\r\n  src: url(" + escape(__webpack_require__(59)) + ");\r\n}\r\n\r\nbutton, input {\r\n  font-family: \"pixel\", Arial;\r\n}\r\n\r\nbutton {\r\n  height: 40px;\r\n  background: none;\r\n  border: none;\r\n  cursor: pointer;\r\n}\r\n\r\n#navbar, #footer {\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n  border: 1px solid black;\r\n  background: #03A9F4;\r\n}\r\n\r\n#navbar {\r\n  position: fixed;\r\n  top: 0;\r\n  height: 42px;\r\n  z-index: 2;\r\n}\r\n\r\n#footer {\r\n  position: fixed;\r\n  bottom: 0;\r\n  height: 42px;\r\n  line-height: 42px;\r\n}\r\n\r\n#navbarButtons {\r\n  height: 40px;\r\n  display: flex;\r\n  justify-content: space-between;\r\n}\r\n\r\n#navbarSettings {\r\n  justify-content: center;\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n}\r\n\r\n#settingsDrawing {\r\n  background: #03A9F4;\r\n  border: 1px solid black;\r\n}\r\n\r\n#drawingBoard {\r\n  border: 6px solid #03A9F4;\r\n}\r\n\r\n#gallery, #interface, #account {\r\n  display: flex;\r\n  flex: 1;\r\n}\r\n\r\n#gallery {\r\n  align-items: flex-start;\r\n}\r\n\r\n#interface {\r\n  justify-content: center;\r\n}\r\n\r\n#account {\r\n  justify-content: flex-end;\r\n  align-items: flex-start;\r\n}\r\n\r\n#buttonsDrawing {\r\n  display: flex;\r\n  width: 100%;\r\n  justify-content: space-around;\r\n}\r\n\r\n#main {\r\n  margin-top: 20px;\r\n  display: flex;\r\n  justify-content: center;\r\n  height: 100%;\r\n  align-items: center;\r\n  background: #00BCD4;\r\n}\r\n\r\ninput, select {\r\n  cursor: pointer;\r\n}\r\n\r\n#settingsButton {\r\n  width: 100%;\r\n}\r\n\r\n#settingsForm {\r\n  width: 300px;\r\n  padding: 5px;\r\n  background: #03A9F4;\r\n  display: flex;\r\n  flex-direction: column;\r\n  font-size: 14px;\r\n}\r\n\r\n#settingsForm div {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n}\r\n\r\n#settingsForm div span {\r\n  line-height: 40px;\r\n}\r\n\r\n#gridSizeMin, #gridSizeMax, #intensityMin, #intensityMax {\r\n  width: 30px;\r\n}\r\n\r\n#gridSizeMax, #intensityMax {\r\n  text-align: right;\r\n}\r\n\r\ninput[type=color] {\r\n  background: white;\r\n  border: none;\r\n}\r\n\r\ninput[type=text] {\r\n  height: 35px;\r\n  text-align: center;\r\n  margin-bottom: 20px;\r\n  border: none;\r\n}\r\n\r\ninput[type=button] {\r\n  background: none;\r\n  border: none;\r\n}\r\n\r\nselect {\r\n  font-family: pixel;\r\n  border: none;\r\n  background: #03A9F4;\r\n}\r\n\r\noption {\r\n  height: 40px;\r\n}\r\n\r\n#gridSizeSlider, #intensitySlider {\r\n  width: 70%;\r\n}\r\n\r\n#galleryContainer {\r\n  display: flex;\r\n  flex-direction: column;\r\n  max-width: 1000px;\r\n}\r\n\r\n#galleryLatest, #galleryPopular, #galleryPersonal {\r\n  min-height: 230px;\r\n  min-width: 820px;\r\n  border: 1px solid black;\r\n  margin: 20px;\r\n  background: #03A9F4;\r\n}\r\n\r\n#galleryLatestContainer, #galleryPopular, #galleryPersonalContainer {\r\n  display: flex;\r\n  flex-direction: row;\r\n  flex-wrap: wrap;\r\n  justify-content: space-around;\r\n}\r\n\r\n.previewPopular, .previewLatest, .previewPersonal {\r\n  margin: 20px;\r\n}\r\n\r\nh2 {\r\n  text-align: center;\r\n}\r\n\r\n#registerForm, #loginForm {\r\n  margin: auto;\r\n  flex-direction: column;\r\n  display: flex;\r\n}\r\n\r\n#logout, #accountDetails {\r\n  margin-bottom: 0;\r\n  height: 0;\r\n}\r\n\r\n#registerForm, #loginForm {\r\n  margin-bottom: 20px;\r\n}\r\n\r\n#registerForm input, #loginForm input {\r\n  height: 30px;\r\n  padding: 5px;\r\n}\r\n\r\n#registerForm input[type=submit], #loginForm input[type=submit] {\r\n  height: 44px;\r\n  background: none;\r\n  border: none;\r\n}\r\n\r\n#accountForms div {\r\n  justify-content: space-between;\r\n  display: flex;\r\n  margin-bottom: 0;\r\n}\r\n\r\n/* The Modal (background) */\r\n#accountModal {\r\n  display: none; /* Hidden by default */\r\n  position: fixed; /* Stay in place */\r\n  z-index: 1; /* Sit on top */\r\n  left: 0;\r\n  top: 0;\r\n  width: 100%; /* Full width */\r\n  height: 100%; /* Full height */\r\n  overflow: auto; /* Enable scroll if needed */\r\n  background-color: rgb(0,0,0); /* Fallback color */\r\n  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */\r\n}\r\n\r\n/* Modal Content/Box */\r\n#modal-content {\r\n  background-color: #03A9F4;\r\n  margin: 15% auto; /* 15% from the top and centered */\r\n  padding: 20px;\r\n  border: 1px solid #888;\r\n  width: 400px;\r\n}\r\n\r\n#accountForms {\r\n  padding: 50px;\r\n}\r\n\r\n/* The Close Button */\r\n#closeModal {\r\n  color: #aaa;\r\n  float: right;\r\n  font-size: 28px;\r\n  font-weight: bold;\r\n}\r\n\r\n#closeModal:hover,\r\n#closeModal:focus {\r\n  color: black;\r\n  text-decoration: none;\r\n  cursor: pointer;\r\n}", ""]);
 
 // exports
 
@@ -43773,6 +43773,36 @@ module.exports = function (css) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 56 */,
+/* 57 */
+/***/ (function(module, exports) {
+
+module.exports = function escape(url) {
+    if (typeof url !== 'string') {
+        return url
+    }
+    // If url is already wrapped in quotes, remove them
+    if (/^['"].*['"]$/.test(url)) {
+        url = url.slice(1, -1);
+    }
+    // Should url be wrapped?
+    // See https://drafts.csswg.org/css-values-3/#urls
+    if (/["'() \t\n]/.test(url)) {
+        return '"' + url.replace(/"/g, '\\"').replace(/\n/g, '\\n') + '"'
+    }
+
+    return url
+}
+
+
+/***/ }),
+/* 58 */,
+/* 59 */
+/***/ (function(module, exports) {
+
+module.exports = "/fonts/Pixel-Miners.otf?8e6ab260815581795908e8c463355780";
 
 /***/ })
 /******/ ]);

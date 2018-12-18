@@ -26,8 +26,6 @@ class Gallery extends Component {
   render() {
     return (
       <div id="galleryContainer">
-        <div id="galleryPopular"></div>
-
         <div id="galleryLatest">
           <h2>Latest Drawings</h2>
           <div id="galleryLatestContainer" />

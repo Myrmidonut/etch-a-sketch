@@ -38,7 +38,7 @@ class Navbar extends Component {
   showSettings() {
     const settingsForm = document.getElementById("settingsForm");
       
-    if (settingsForm.style.display == "none") settingsForm.style.display = "block";
+    if (settingsForm.style.display == "none") settingsForm.style.display = "flex";
     else settingsForm.style.display = "none";
   }
 
@@ -92,39 +92,52 @@ class Navbar extends Component {
           <button id="settingsButton" onClick={this.showSettings}>Settings</button>
 
           <form id="settingsForm">
-            <span>Grid Size: </span>
-            <span id="gridSizeValue">20</span>
-            <br />
-            <span id="gridSizeMin">5</span>
-            <input type="range" min="5" max="50" defaultValue="20" name="grid_size" id="gridSizeSlider" onChange={this.updateGridSizeSlider} />
-            <span id="gridSizeMax">50</span>
-            <br />
+            <div>
+              <span>Grid Size: </span>
+              <span id="gridSizeValue">20</span>
+            </div>
 
-            <span>Intensity: </span>
-            <span id="intensityValue">0.1</span>
-            <br />
-            <span id="intensityMin">0.1</span>
-            <input type="range" min="0.1" max="1.0" step="0.1" defaultValue="0.1" name="intensity" id="intensitySlider" onChange={this.updateIntensitySlider} />
-            <span id="intensityMax">1</span>
-            <br />
+            <div>
+              <span id="gridSizeMin">5</span>
+              <input type="range" min="5" max="50" defaultValue="20" name="grid_size" id="gridSizeSlider" onChange={this.updateGridSizeSlider} />
+              <span id="gridSizeMax">50</span>
+            </div>
 
-            <span>Main Color: </span>
-            <input type="color" name="main_color" id="mainColorPicker" defaultValue="#008000" onChange={this.props.saveCurrentSettings} />
+            <div>
+              <span>Intensity: </span>
+              <span id="intensityValue">0.1</span>
+            </div>
 
-            <span>Background Color: </span>
-            <input type="color" name="background_color" id="backgroundColorPicker" defaultValue="#ffffff" onChange={this.props.saveCurrentSettings} />
+            <div>
+              <span id="intensityMin">0.1</span>
+              <input type="range" min="0.1" max="1.0" step="0.1" defaultValue="0.1" name="intensity" id="intensitySlider" onChange={this.updateIntensitySlider} />
+              <span id="intensityMax">1</span>
+            </div>
 
-            <span>Shape: </span>
-            <select name="shape" id="shape" onChange={this.props.saveCurrentSettings} >
-              <option value="square" className="shape">Square</option>
-              <option value="round" className="shape">Round</option>
-            </select>
-            <br />
+            <div>
+              <span>Main Color: </span>
+              <input type="color" name="main_color" id="mainColorPicker" defaultValue="#008000" onChange={this.props.saveCurrentSettings} />
+            </div>
+
+            <div>
+              <span>Background Color: </span>
+              <input type="color" name="background_color" id="backgroundColorPicker" defaultValue="#ffffff" onChange={this.props.saveCurrentSettings} />
+            </div>
+
+            <div>
+              <span>Shape: </span>
+              <select name="shape" id="shape" onChange={this.props.saveCurrentSettings} >
+                <option value="square" className="shape">Square</option>
+                <option value="round" className="shape">Round</option>
+              </select>
+            </div>
 
             <input type="text" name="title" placeholder="Title" id="titleInput" required onChange={this.props.saveCurrentSettings} />
 
-            <input type="button" id="saveDefaultSettings" value="Save Default" onClick={this.props.saveDefaultSettings} />
-            <input type="button" id="loadDefaultSettings" value="Load Default" onClick={this.props.loadDefaultSettings} />
+            <div>
+              <input type="button" id="saveDefaultSettings" value="Save Default" onClick={this.props.saveDefaultSettings} />
+              <input type="button" id="loadDefaultSettings" value="Load Default" onClick={this.props.loadDefaultSettings} />
+            </div>
           </form>
         </div>
       )
@@ -134,11 +147,7 @@ class Navbar extends Component {
       )
 
       buttons = (
-        <div id="interface">
-          {/*<a href="/" alt="My Drawings">My Drawings</a>*/}
-          {/*<a href="/" alt="Popular">Popular</a>*/}
-          {/*<a href="/" alt="Recent">Recent</a>*/}
-        </div>
+        <div id="interface" />
       )
 
       settings = (

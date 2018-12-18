@@ -2,35 +2,70 @@ html, body, #app {
   height: 100%;
   margin: 0;
   padding: 0;
+  font-family: "pixel";
 }
 
 .App {
   height:100%;
 }
 
+@font-face {
+  font-family: "pixel";
+  src: url("Pixel-Miners.otf");
+}
+
+button, input {
+  font-family: "pixel", Arial;
+}
+
+button {
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
 #navbar, #footer {
   box-sizing: border-box;
   width: 100%;
   border: 1px solid black;
+  background: #03A9F4;
 }
 
 #navbar {
   position: fixed;
   top: 0;
-  height: 44px;
+  height: 42px;
   z-index: 2;
 }
 
+#footer {
+  position: fixed;
+  bottom: 0;
+  height: 42px;
+  line-height: 42px;
+}
+
 #navbarButtons {
+  height: 40px;
   display: flex;
   justify-content: space-between;
 }
 
-#settingsDrawing {
+#navbarSettings {
   justify-content: center;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+#settingsDrawing {
+  background: #03A9F4;
+  border: 1px solid black;
+}
+
+#drawingBoard {
+  border: 6px solid #03A9F4;
 }
 
 #gallery, #interface, #account {
@@ -51,14 +86,10 @@ html, body, #app {
   align-items: flex-start;
 }
 
-#footer {
-  position: fixed;
-  bottom: 0;
-}
-
 #buttonsDrawing {
   display: flex;
-  align-items: flex-start;
+  width: 100%;
+  justify-content: space-around;
 }
 
 #main {
@@ -67,13 +98,69 @@ html, body, #app {
   justify-content: center;
   height: 100%;
   align-items: center;
+  background: #00BCD4;
+}
+
+input, select {
+  cursor: pointer;
+}
+
+#settingsButton {
+  width: 100%;
 }
 
 #settingsForm {
-  width: 200px;
-  border: 1px solid black;
+  width: 300px;
   padding: 5px;
+  background: #03A9F4;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+}
+
+#settingsForm div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#settingsForm div span {
+  line-height: 40px;
+}
+
+#gridSizeMin, #gridSizeMax, #intensityMin, #intensityMax {
+  width: 30px;
+}
+
+#gridSizeMax, #intensityMax {
+  text-align: right;
+}
+
+input[type=color] {
   background: white;
+  border: none;
+}
+
+input[type=text] {
+  height: 35px;
+  text-align: center;
+  margin-bottom: 20px;
+  border: none;
+}
+
+input[type=button] {
+  background: none;
+  border: none;
+}
+
+select {
+  font-family: pixel;
+  border: none;
+  background: #03A9F4;
+}
+
+option {
+  height: 40px;
 }
 
 #gridSizeSlider, #intensitySlider {
@@ -87,9 +174,11 @@ html, body, #app {
 }
 
 #galleryLatest, #galleryPopular, #galleryPersonal {
-  min-height: 100px;
+  min-height: 230px;
+  min-width: 820px;
   border: 1px solid black;
   margin: 20px;
+  background: #03A9F4;
 }
 
 #galleryLatestContainer, #galleryPopular, #galleryPersonalContainer {
@@ -114,13 +203,29 @@ h2 {
 }
 
 #logout, #accountDetails {
-  margin: auto;
-  width: 100%;
-  text-align: center;
+  margin-bottom: 0;
+  height: 0;
 }
 
-#registerForm, #loginForm, #logout {
+#registerForm, #loginForm {
   margin-bottom: 20px;
+}
+
+#registerForm input, #loginForm input {
+  height: 30px;
+  padding: 5px;
+}
+
+#registerForm input[type=submit], #loginForm input[type=submit] {
+  height: 44px;
+  background: none;
+  border: none;
+}
+
+#accountForms div {
+  justify-content: space-between;
+  display: flex;
+  margin-bottom: 0;
 }
 
 /* The Modal (background) */
@@ -139,7 +244,7 @@ h2 {
 
 /* Modal Content/Box */
 #modal-content {
-  background-color: #fefefe;
+  background-color: #03A9F4;
   margin: 15% auto; /* 15% from the top and centered */
   padding: 20px;
   border: 1px solid #888;

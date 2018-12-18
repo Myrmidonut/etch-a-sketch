@@ -94,6 +94,7 @@ class App extends Component {
 
       e.style.opacity = this.state.opacity[i];
       e.style.backgroundColor = this.state.color[i];
+      e.style.border = `1px solid ${this.state.backgroundColor}`
     })
   }
 
@@ -111,10 +112,9 @@ class App extends Component {
       gridItem.style.width = gridItemDimension;
       gridItem.style.height = gridItemDimension;
       gridItem.style.boxSizing = "border-box"
-      gridItem.style.border = "2px solid white";
+      gridItem.style.border = `1px solid ${this.state.backgroundColor}`;
       gridItem.style.float = "left";
       gridItem.style.backgroundColor = "#008000";
-
       gridItem.style.opacity = 0;
       gridItem.className = "gridItem";
 
@@ -173,7 +173,7 @@ class App extends Component {
         document.getElementById("previewPopular" + i).style.backgroundColor = e.background_color;
         document.getElementById("previewPopular" + i).style.height = gridHeight + "px";
         document.getElementById("previewPopular" + i).style.width = gridHeight + "px";
-        document.getElementById("previewPopular" + i).style.border = "2px solid green";
+        document.getElementById("previewPopular" + i).style.border = "2px solid white";
 
         document.getElementById("previewPopular" + i).addEventListener("click", f => {
           f.preventDefault();
@@ -187,7 +187,7 @@ class App extends Component {
           gridItem.style.width = gridItemDimension;
           gridItem.style.height = gridItemDimension;
           gridItem.style.boxSizing = "border-box"
-          gridItem.style.border = "2px solid white";
+          gridItem.style.border = `1px solid ${e.background_color}`;
           gridItem.style.float = "left";
           gridItem.style.backgroundColor = JSON.parse(e.color).split(",")[j];
           gridItem.style.opacity = JSON.parse(e.opacity).split(",")[j];
@@ -221,7 +221,7 @@ class App extends Component {
         document.getElementById("previewLatest" + i).style.backgroundColor = e.background_color;
         document.getElementById("previewLatest" + i).style.height = gridHeight + "px";
         document.getElementById("previewLatest" + i).style.width = gridHeight + "px";
-        document.getElementById("previewLatest" + i).style.border = "2px solid green";
+        document.getElementById("previewLatest" + i).style.border = "2px solid #03A9F4";
 
         document.getElementById("previewLatest" + i).addEventListener("click", f => {
           f.preventDefault();
@@ -236,7 +236,7 @@ class App extends Component {
           gridItem.style.width = gridItemDimension;
           gridItem.style.height = gridItemDimension;
           gridItem.style.boxSizing = "border-box"
-          gridItem.style.border = "2px solid white";
+          gridItem.style.border = `1px solid ${e.background_color}`;
           gridItem.style.float = "left";
           gridItem.style.backgroundColor = JSON.parse(e.color).split(",")[j];
           gridItem.style.opacity = JSON.parse(e.opacity).split(",")[j];
@@ -281,7 +281,7 @@ class App extends Component {
         document.getElementById("previewPersonal" + i).style.backgroundColor = e.background_color;
         document.getElementById("previewPersonal" + i).style.height = gridHeight + "px";
         document.getElementById("previewPersonal" + i).style.width = gridHeight + "px";
-        document.getElementById("previewPersonal" + i).style.border = "2px solid green";
+        document.getElementById("previewPersonal" + i).style.border = "2px solid #03A9F4";
 
         document.getElementById("previewPersonal" + i).addEventListener("click", f => {
           f.preventDefault();
@@ -296,7 +296,7 @@ class App extends Component {
           gridItem.style.width = gridItemDimension;
           gridItem.style.height = gridItemDimension;
           gridItem.style.boxSizing = "border-box"
-          gridItem.style.border = "2px solid white";
+          gridItem.style.border = `1px solid ${e.background_color}`;
           gridItem.style.float = "left";
           gridItem.style.backgroundColor = JSON.parse(e.color).split(",")[j];
           gridItem.style.opacity = JSON.parse(e.opacity).split(",")[j];

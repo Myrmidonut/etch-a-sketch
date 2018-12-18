@@ -22,13 +22,10 @@ class Modal extends Component {
               <input type="submit" id="submitLogin" value="Login"></input>
             </form>
 
-            <br />
-
-            <button id="logout">Logout</button>
-
-            <br />
-
-            <button id="accountDetails" onClick={this.props.accountDetails}>Account</button>
+            <div>
+              <button id="logout">Logout</button>
+              <button id="accountDetails" onClick={this.props.accountDetails}>Account</button>
+            </div>
           </div>
         </div>
       </div>
