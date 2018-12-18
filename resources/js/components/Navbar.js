@@ -40,6 +40,16 @@ class Navbar extends Component {
       
     if (settingsForm.style.display == "none") settingsForm.style.display = "flex";
     else settingsForm.style.display = "none";
+
+
+
+    const navbarSettings = document.getElementById("navbarSettings");
+
+    window.onclick = e => {
+      if (e.target === navbarSettings) {
+        settingsForm.style.display = "none";
+      }
+    }
   }
 
   updateGridSizeSlider() {

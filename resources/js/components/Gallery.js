@@ -7,6 +7,7 @@ class Gallery extends Component {
 
   componentWillUnmount() {
     document.getElementById("drawingBoard").style.display = "block";
+    document.getElementById("settingsForm").style.display = "none";
   }
 
   componentDidMount() {

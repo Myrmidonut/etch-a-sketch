@@ -151,6 +151,30 @@ class App extends Component {
           if (this.style.opacity < 1) this.style.opacity = self.state.opacity[i];
         }
       })
+
+
+      gridItem.addEventListener("click", function() {
+        if (self.state.mouseHold) {
+          this.style.backgroundColor = self.state.mainColor;
+
+          let newOpacity = self.state.opacity.slice();
+          let newColor = self.state.color.slice();
+
+          newOpacity[i] += Number(self.state.intensity);
+          newColor[i] = self.state.mainColor;
+
+          self.setState({
+            opacity: newOpacity,
+            color: newColor
+          })
+
+          if (this.style.opacity < 1) this.style.opacity = self.state.opacity[i];
+        }
+      })
+
+
+
+
     }
   }
 
@@ -318,12 +342,6 @@ class App extends Component {
     if (this.state.accountName) {
       document.getElementById("save").textContent = "Saving";
 
-      if (this.state.title === "") {
-        this.setState({
-          title: "no title"
-        })
-      }
-
       fetch("/api/save", {
         method: "post",
         body: new URLSearchParams({
@@ -333,7 +351,7 @@ class App extends Component {
           background_color: this.state.backgroundColor,
           shape: this.state.shape,
           owner: this.state.accountId,
-          title: this.state.title
+          title: this.state.title === "" ? "no title" : this.state.title
         }),
         headers: {
           'Accept': 'application/json',
@@ -518,6 +536,8 @@ class App extends Component {
       //document.getElementById("accountLink").textContent = this.state.accountName;
 
       console.log("Logged in")
+
+      document.getElementById("accountModal").style.display = "none";
     })
   }
 

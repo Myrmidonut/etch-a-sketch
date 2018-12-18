@@ -986,7 +986,7 @@ module.exports = checkPropTypes;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(12);
-module.exports = __webpack_require__(55);
+module.exports = __webpack_require__(57);
 
 
 /***/ }),
@@ -19448,6 +19448,23 @@ function (_Component) {
             if (this.style.opacity < 1) this.style.opacity = self.state.opacity[i];
           }
         });
+        gridItem.addEventListener("click", function () {
+          if (self.state.mouseHold) {
+            this.style.backgroundColor = self.state.mainColor;
+
+            var _newOpacity2 = self.state.opacity.slice();
+
+            var _newColor2 = self.state.color.slice();
+
+            _newOpacity2[i] += Number(self.state.intensity);
+            _newColor2[i] = self.state.mainColor;
+            self.setState({
+              opacity: _newOpacity2,
+              color: _newColor2
+            });
+            if (this.style.opacity < 1) this.style.opacity = self.state.opacity[i];
+          }
+        });
       };
 
       for (var i = 0; i < this.state.gridSize * this.state.gridSize; i++) {
@@ -19597,13 +19614,6 @@ function (_Component) {
     value: function saveDrawing() {
       if (this.state.accountName) {
         document.getElementById("save").textContent = "Saving";
-
-        if (this.state.title === "") {
-          this.setState({
-            title: "no title"
-          });
-        }
-
         fetch("/api/save", {
           method: "post",
           body: new URLSearchParams({
@@ -19613,7 +19623,7 @@ function (_Component) {
             background_color: this.state.backgroundColor,
             shape: this.state.shape,
             owner: this.state.accountId,
-            title: this.state.title
+            title: this.state.title === "" ? "no title" : this.state.title
           }),
           headers: {
             'Accept': 'application/json',
@@ -19790,6 +19800,7 @@ function (_Component) {
         */
         //document.getElementById("accountLink").textContent = this.state.accountName;
         console.log("Logged in");
+        document.getElementById("accountModal").style.display = "none";
       });
     }
   }, {
@@ -42748,6 +42759,13 @@ function (_Component) {
     value: function showSettings() {
       var settingsForm = document.getElementById("settingsForm");
       if (settingsForm.style.display == "none") settingsForm.style.display = "flex";else settingsForm.style.display = "none";
+      var navbarSettings = document.getElementById("navbarSettings");
+
+      window.onclick = function (e) {
+        if (e.target === navbarSettings) {
+          settingsForm.style.display = "none";
+        }
+      };
     }
   }, {
     key: "updateGridSizeSlider",
@@ -42955,8 +42973,8 @@ function (_Component) {
       console.log("Drawingboard mount");
       var drawingBoard = document.getElementById("drawingBoard");
       drawingBoard.style.height = this.props.gridHeight + "px";
-      drawingBoard.style.width = this.props.gridHeight + "px";
-      drawingBoard.style.border = "2px solid #03A9F4";
+      drawingBoard.style.width = this.props.gridHeight + "px"; //drawingBoard.style.border = "2px solid #03A9F4";
+
       drawingBoard.style.margin = "20px";
       document.getElementById("drawingBoard").addEventListener("mousedown", this.props.mousedown);
       document.addEventListener("mouseup", this.props.mouseup);
@@ -42965,7 +42983,6 @@ function (_Component) {
   }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
-      console.log("Drawingboard unmount");
       document.getElementById("drawingBoard").removeEventListener("mousedown", this.mousedown);
       document.getElementById("drawingBoard").removeEventListener("mouseup", this.mouseup);
     }
@@ -43050,6 +43067,7 @@ function (_Component) {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
       document.getElementById("drawingBoard").style.display = "block";
+      document.getElementById("settingsForm").style.display = "none";
     }
   }, {
     key: "componentDidMount",
@@ -43201,7 +43219,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(53)(content, options);
+var update = __webpack_require__(55)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -43221,19 +43239,41 @@ if(false) {
 /* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var escape = __webpack_require__(57);
-exports = module.exports = __webpack_require__(52)(false);
+var escape = __webpack_require__(52);
+exports = module.exports = __webpack_require__(53)(false);
 // imports
 
 
 // module
-exports.push([module.i, "html, body, #app {\r\n  height: 100%;\r\n  margin: 0;\r\n  padding: 0;\r\n  font-family: \"pixel\";\r\n}\r\n\r\n.App {\r\n  height:100%;\r\n}\r\n\r\n@font-face {\r\n  font-family: \"pixel\";\r\n  src: url(" + escape(__webpack_require__(59)) + ");\r\n}\r\n\r\nbutton, input {\r\n  font-family: \"pixel\", Arial;\r\n}\r\n\r\nbutton {\r\n  height: 40px;\r\n  background: none;\r\n  border: none;\r\n  cursor: pointer;\r\n}\r\n\r\n#navbar, #footer {\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n  border: 1px solid black;\r\n  background: #03A9F4;\r\n}\r\n\r\n#navbar {\r\n  position: fixed;\r\n  top: 0;\r\n  height: 42px;\r\n  z-index: 2;\r\n}\r\n\r\n#footer {\r\n  position: fixed;\r\n  bottom: 0;\r\n  height: 42px;\r\n  line-height: 42px;\r\n}\r\n\r\n#navbarButtons {\r\n  height: 40px;\r\n  display: flex;\r\n  justify-content: space-between;\r\n}\r\n\r\n#navbarSettings {\r\n  justify-content: center;\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n}\r\n\r\n#settingsDrawing {\r\n  background: #03A9F4;\r\n  border: 1px solid black;\r\n}\r\n\r\n#drawingBoard {\r\n  border: 6px solid #03A9F4;\r\n}\r\n\r\n#gallery, #interface, #account {\r\n  display: flex;\r\n  flex: 1;\r\n}\r\n\r\n#gallery {\r\n  align-items: flex-start;\r\n}\r\n\r\n#interface {\r\n  justify-content: center;\r\n}\r\n\r\n#account {\r\n  justify-content: flex-end;\r\n  align-items: flex-start;\r\n}\r\n\r\n#buttonsDrawing {\r\n  display: flex;\r\n  width: 100%;\r\n  justify-content: space-around;\r\n}\r\n\r\n#main {\r\n  margin-top: 20px;\r\n  display: flex;\r\n  justify-content: center;\r\n  height: 100%;\r\n  align-items: center;\r\n  background: #00BCD4;\r\n}\r\n\r\ninput, select {\r\n  cursor: pointer;\r\n}\r\n\r\n#settingsButton {\r\n  width: 100%;\r\n}\r\n\r\n#settingsForm {\r\n  width: 300px;\r\n  padding: 5px;\r\n  background: #03A9F4;\r\n  display: flex;\r\n  flex-direction: column;\r\n  font-size: 14px;\r\n}\r\n\r\n#settingsForm div {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n}\r\n\r\n#settingsForm div span {\r\n  line-height: 40px;\r\n}\r\n\r\n#gridSizeMin, #gridSizeMax, #intensityMin, #intensityMax {\r\n  width: 30px;\r\n}\r\n\r\n#gridSizeMax, #intensityMax {\r\n  text-align: right;\r\n}\r\n\r\ninput[type=color] {\r\n  background: white;\r\n  border: none;\r\n}\r\n\r\ninput[type=text] {\r\n  height: 35px;\r\n  text-align: center;\r\n  margin-bottom: 20px;\r\n  border: none;\r\n}\r\n\r\ninput[type=button] {\r\n  background: none;\r\n  border: none;\r\n}\r\n\r\nselect {\r\n  font-family: pixel;\r\n  border: none;\r\n  background: #03A9F4;\r\n}\r\n\r\noption {\r\n  height: 40px;\r\n}\r\n\r\n#gridSizeSlider, #intensitySlider {\r\n  width: 70%;\r\n}\r\n\r\n#galleryContainer {\r\n  display: flex;\r\n  flex-direction: column;\r\n  max-width: 1000px;\r\n}\r\n\r\n#galleryLatest, #galleryPopular, #galleryPersonal {\r\n  min-height: 230px;\r\n  min-width: 820px;\r\n  border: 1px solid black;\r\n  margin: 20px;\r\n  background: #03A9F4;\r\n}\r\n\r\n#galleryLatestContainer, #galleryPopular, #galleryPersonalContainer {\r\n  display: flex;\r\n  flex-direction: row;\r\n  flex-wrap: wrap;\r\n  justify-content: space-around;\r\n}\r\n\r\n.previewPopular, .previewLatest, .previewPersonal {\r\n  margin: 20px;\r\n}\r\n\r\nh2 {\r\n  text-align: center;\r\n}\r\n\r\n#registerForm, #loginForm {\r\n  margin: auto;\r\n  flex-direction: column;\r\n  display: flex;\r\n}\r\n\r\n#logout, #accountDetails {\r\n  margin-bottom: 0;\r\n  height: 0;\r\n}\r\n\r\n#registerForm, #loginForm {\r\n  margin-bottom: 20px;\r\n}\r\n\r\n#registerForm input, #loginForm input {\r\n  height: 30px;\r\n  padding: 5px;\r\n}\r\n\r\n#registerForm input[type=submit], #loginForm input[type=submit] {\r\n  height: 44px;\r\n  background: none;\r\n  border: none;\r\n}\r\n\r\n#accountForms div {\r\n  justify-content: space-between;\r\n  display: flex;\r\n  margin-bottom: 0;\r\n}\r\n\r\n/* The Modal (background) */\r\n#accountModal {\r\n  display: none; /* Hidden by default */\r\n  position: fixed; /* Stay in place */\r\n  z-index: 1; /* Sit on top */\r\n  left: 0;\r\n  top: 0;\r\n  width: 100%; /* Full width */\r\n  height: 100%; /* Full height */\r\n  overflow: auto; /* Enable scroll if needed */\r\n  background-color: rgb(0,0,0); /* Fallback color */\r\n  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */\r\n}\r\n\r\n/* Modal Content/Box */\r\n#modal-content {\r\n  background-color: #03A9F4;\r\n  margin: 15% auto; /* 15% from the top and centered */\r\n  padding: 20px;\r\n  border: 1px solid #888;\r\n  width: 400px;\r\n}\r\n\r\n#accountForms {\r\n  padding: 50px;\r\n}\r\n\r\n/* The Close Button */\r\n#closeModal {\r\n  color: #aaa;\r\n  float: right;\r\n  font-size: 28px;\r\n  font-weight: bold;\r\n}\r\n\r\n#closeModal:hover,\r\n#closeModal:focus {\r\n  color: black;\r\n  text-decoration: none;\r\n  cursor: pointer;\r\n}", ""]);
+exports.push([module.i, "html, body, #app {\r\n  height: 100%;\r\n  margin: 0;\r\n  padding: 0;\r\n  font-family: \"pixel\";\r\n}\r\n\r\n.App {\r\n  height:100%;\r\n}\r\n\r\n@font-face {\r\n  font-family: \"pixel\";\r\n  src: url(" + escape(__webpack_require__(54)) + ");\r\n}\r\n\r\nbutton, input {\r\n  font-family: \"pixel\", Arial;\r\n}\r\n\r\nbutton {\r\n  height: 40px;\r\n  background: none;\r\n  border: none;\r\n  cursor: pointer;\r\n}\r\n\r\n#navbar, #footer {\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n}\r\n\r\n#navbar {\r\n  position: fixed;\r\n  top: 0;\r\n  height: 100%;\r\n  z-index: 1;\r\n}\r\n\r\n#footer {\r\n  position: fixed;\r\n  bottom: 0;\r\n  height: 42px;\r\n  line-height: 42px;\r\n  background: #03A9F4;\r\n  border: 1px solid black;\r\n}\r\n\r\n#navbarButtons {\r\n  height: 40px;\r\n  display: flex;\r\n  justify-content: space-between;\r\n  background: #03A9F4;\r\n  box-shadow: 0 1px 5px gray;\r\n  border: 1px solid black;\r\n}\r\n\r\n#navbarSettings {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  height: 100%;\r\n}\r\n\r\n#settingsDrawing {\r\n  background: #03A9F4;\r\n  border-bottom: 1px solid black;\r\n  border-left: 1px solid black;\r\n  border-right: 1px solid black;\r\n  box-shadow: 0px 0px 5px gray;\r\n}\r\n\r\n#drawingBoard {\r\n  box-shadow: 0px 0px 10px gray;\r\n}\r\n\r\n#gallery, #interface, #account {\r\n  display: flex;\r\n  flex: 1;\r\n}\r\n\r\n#gallery {\r\n  align-items: flex-start;\r\n}\r\n\r\n#interface {\r\n  justify-content: center;\r\n}\r\n\r\n#account {\r\n  justify-content: flex-end;\r\n  align-items: flex-start;\r\n}\r\n\r\n#buttonsDrawing {\r\n  display: flex;\r\n  width: 100%;\r\n  justify-content: space-around;\r\n}\r\n\r\n#main {\r\n  margin-top: 20px;\r\n  display: flex;\r\n  justify-content: center;\r\n  height: 100%;\r\n  align-items: center;\r\n  xbackground: #00BCD4;\r\n  background: #00bcd433;\r\n}\r\n\r\ninput, select {\r\n  cursor: pointer;\r\n}\r\n\r\n#settingsButton {\r\n  width: 100%;\r\n}\r\n\r\n#settingsForm {\r\n  width: 300px;\r\n  padding: 5px;\r\n  background: #03A9F4;\r\n  display: flex;\r\n  flex-direction: column;\r\n  font-size: 14px;\r\n}\r\n\r\n#settingsForm div {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n}\r\n\r\n#settingsForm div span {\r\n  line-height: 40px;\r\n}\r\n\r\n#gridSizeMin, #gridSizeMax, #intensityMin, #intensityMax {\r\n  width: 30px;\r\n}\r\n\r\n#gridSizeMax, #intensityMax {\r\n  text-align: right;\r\n}\r\n\r\ninput[type=color] {\r\n  background: white;\r\n  border: none;\r\n}\r\n\r\ninput[type=text] {\r\n  height: 35px;\r\n  text-align: center;\r\n  margin-bottom: 20px;\r\n  border: none;\r\n}\r\n\r\ninput[type=button] {\r\n  background: none;\r\n  border: none;\r\n}\r\n\r\nselect {\r\n  font-family: pixel;\r\n  border: none;\r\n  background: #03A9F4;\r\n}\r\n\r\noption {\r\n  height: 40px;\r\n}\r\n\r\n#gridSizeSlider, #intensitySlider {\r\n  width: 70%;\r\n}\r\n\r\n#galleryContainer {\r\n  display: flex;\r\n  flex-direction: column;\r\n  max-width: 1000px;\r\n}\r\n\r\n#galleryLatest, #galleryPopular, #galleryPersonal {\r\n  min-height: 230px;\r\n  min-width: 820px;\r\n  border: 1px solid black;\r\n  margin: 20px;\r\n  background: #03A9F4;\r\n}\r\n\r\n#galleryLatestContainer, #galleryPopular, #galleryPersonalContainer {\r\n  display: flex;\r\n  flex-direction: row;\r\n  flex-wrap: wrap;\r\n  justify-content: space-around;\r\n}\r\n\r\n.previewPopular, .previewLatest, .previewPersonal {\r\n  margin: 20px;\r\n}\r\n\r\nh2 {\r\n  text-align: center;\r\n}\r\n\r\n#registerForm, #loginForm {\r\n  margin: auto;\r\n  flex-direction: column;\r\n  display: flex;\r\n}\r\n\r\n#logout, #accountDetails {\r\n  margin-bottom: 0;\r\n  height: 0;\r\n}\r\n\r\n#registerForm, #loginForm {\r\n  margin-bottom: 20px;\r\n}\r\n\r\n#registerForm input, #loginForm input {\r\n  height: 30px;\r\n  padding: 5px;\r\n}\r\n\r\n#registerForm input[type=submit], #loginForm input[type=submit] {\r\n  height: 44px;\r\n  background: none;\r\n  border: none;\r\n}\r\n\r\n#accountForms div {\r\n  justify-content: space-between;\r\n  display: flex;\r\n  margin-bottom: 0;\r\n}\r\n\r\n/* The Modal (background) */\r\n#accountModal {\r\n  display: none; /* Hidden by default */\r\n  position: fixed; /* Stay in place */\r\n  z-index: 1; /* Sit on top */\r\n  left: 0;\r\n  top: 0;\r\n  width: 100%; /* Full width */\r\n  height: 100%; /* Full height */\r\n  overflow: auto; /* Enable scroll if needed */\r\n  background-color: rgb(0,0,0); /* Fallback color */\r\n  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */\r\n}\r\n\r\n/* Modal Content/Box */\r\n#modal-content {\r\n  background-color: #03A9F4;\r\n  margin: 15% auto; /* 15% from the top and centered */\r\n  padding: 20px;\r\n  border: 1px solid #888;\r\n  width: 400px;\r\n}\r\n\r\n#accountForms {\r\n  padding: 50px;\r\n}\r\n\r\n/* The Close Button */\r\n#closeModal {\r\n  color: #aaa;\r\n  float: right;\r\n  font-size: 28px;\r\n  font-weight: bold;\r\n}\r\n\r\n#closeModal:hover,\r\n#closeModal:focus {\r\n  color: black;\r\n  text-decoration: none;\r\n  cursor: pointer;\r\n}", ""]);
 
 // exports
 
 
 /***/ }),
 /* 52 */
+/***/ (function(module, exports) {
+
+module.exports = function escape(url) {
+    if (typeof url !== 'string') {
+        return url
+    }
+    // If url is already wrapped in quotes, remove them
+    if (/^['"].*['"]$/.test(url)) {
+        url = url.slice(1, -1);
+    }
+    // Should url be wrapped?
+    // See https://drafts.csswg.org/css-values-3/#urls
+    if (/["'() \t\n]/.test(url)) {
+        return '"' + url.replace(/"/g, '\\"').replace(/\n/g, '\\n') + '"'
+    }
+
+    return url
+}
+
+
+/***/ }),
+/* 53 */
 /***/ (function(module, exports) {
 
 /*
@@ -43315,7 +43355,13 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 53 */
+/* 54 */
+/***/ (function(module, exports) {
+
+module.exports = "/fonts/Pixel-Miners.otf?8e6ab260815581795908e8c463355780";
+
+/***/ }),
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -43361,7 +43407,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(54);
+var	fixUrls = __webpack_require__(56);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -43674,7 +43720,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 54 */
+/* 56 */
 /***/ (function(module, exports) {
 
 
@@ -43769,40 +43815,10 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 55 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 56 */,
 /* 57 */
 /***/ (function(module, exports) {
 
-module.exports = function escape(url) {
-    if (typeof url !== 'string') {
-        return url
-    }
-    // If url is already wrapped in quotes, remove them
-    if (/^['"].*['"]$/.test(url)) {
-        url = url.slice(1, -1);
-    }
-    // Should url be wrapped?
-    // See https://drafts.csswg.org/css-values-3/#urls
-    if (/["'() \t\n]/.test(url)) {
-        return '"' + url.replace(/"/g, '\\"').replace(/\n/g, '\\n') + '"'
-    }
-
-    return url
-}
-
-
-/***/ }),
-/* 58 */,
-/* 59 */
-/***/ (function(module, exports) {
-
-module.exports = "/fonts/Pixel-Miners.otf?8e6ab260815581795908e8c463355780";
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);
