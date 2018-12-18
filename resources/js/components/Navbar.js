@@ -37,17 +37,22 @@ class Navbar extends Component {
 
   showSettings() {
     const settingsForm = document.getElementById("settingsForm");
+    const navbar = document.getElementById("navbar");
       
-    if (settingsForm.style.display == "none") settingsForm.style.display = "flex";
-    else settingsForm.style.display = "none";
-
-
+    if (settingsForm.style.display == "none") {
+      settingsForm.style.display = "flex";
+      navbar.style.height = "100%";
+    } else {
+      settingsForm.style.display = "none";
+      navbar.style.height = "83px";
+    }
 
     const navbarSettings = document.getElementById("navbarSettings");
 
     window.onclick = e => {
       if (e.target === navbarSettings) {
         settingsForm.style.display = "none";
+        navbar.style.height = "83px";
       }
     }
   }
