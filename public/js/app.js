@@ -42709,6 +42709,7 @@ function (_Component) {
     _this.updateGridSizeSlider = _this.updateGridSizeSlider.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.updateIntensitySlider = _this.updateIntensitySlider.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.createAccountModal = _this.createAccountModal.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.showSettings = _this.showSettings.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
   }
 
@@ -42739,6 +42740,13 @@ function (_Component) {
 
         _this2.props.saveCurrentSettings();
       });
+      document.getElementById("settingsForm").style.display = "none";
+    }
+  }, {
+    key: "showSettings",
+    value: function showSettings() {
+      var settingsForm = document.getElementById("settingsForm");
+      if (settingsForm.style.display == "none") settingsForm.style.display = "block";else settingsForm.style.display = "none";
     }
   }, {
     key: "updateGridSizeSlider",
@@ -42774,6 +42782,7 @@ function (_Component) {
 
       var buttons = null;
       var home = null;
+      var settings = null;
 
       if (this.props.home === "Drawingboard") {
         home = "Gallery";
@@ -42792,7 +42801,13 @@ function (_Component) {
         }, "Delete"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
           id: "clear",
           onClick: this.props.clear
-        }, "Clear")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", {
+        }, "Clear")));
+        settings = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+          id: "settingsDrawing"
+        }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+          id: "settingsButton",
+          onClick: this.showSettings
+        }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", {
           id: "settingsForm"
         }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Grid Size: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
           id: "gridSizeValue"
@@ -42868,10 +42883,13 @@ function (_Component) {
         buttons = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
           id: "interface"
         });
+        settings = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null);
       }
 
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
         id: "navbar"
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+        id: "navbarButtons"
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
         id: "gallery"
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
@@ -42881,7 +42899,9 @@ function (_Component) {
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
         id: "openAccountModal",
         onClick: this.createAccountModal
-      }, "Account")));
+      }, "Account"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+        id: "navbarSettings"
+      }, settings));
     }
   }]);
 
@@ -43207,7 +43227,7 @@ exports = module.exports = __webpack_require__(52)(false);
 
 
 // module
-exports.push([module.i, "html, body, #app {\r\n  height: 100%;\r\n  margin: 0;\r\n  padding: 0;\r\n}\r\n\r\n.App {\r\n  height:100%;\r\n}\r\n\r\n#navbar, #footer {\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n  border: 1px solid black;\r\n}\r\n\r\n#navbar {\r\n  position: fixed;\r\n  top: 0;\r\n  display: flex;\r\n  justify-content: space-between;\r\n}\r\n\r\n#gallery, #interface, #account {\r\n  display: flex;\r\n  flex: 1;\r\n}\r\n\r\n#gallery {\r\n  align-items: flex-start;\r\n}\r\n\r\n#interface {\r\n  justify-content: center;\r\n}\r\n\r\n#account {\r\n  justify-content: flex-end;\r\n  align-items: flex-start;\r\n}\r\n\r\n#footer {\r\n  position: fixed;\r\n  bottom: 0;\r\n}\r\n\r\n#buttonsDrawing {\r\n  display: flex;\r\n  align-items: flex-start;\r\n}\r\n\r\n#main {\r\n  margin-top: 20px;\r\n  display: flex;\r\n  justify-content: center;\r\n  height: 100%;\r\n  align-items: center;\r\n}\r\n\r\n#settingsForm {\r\n  width: 200px;\r\n  border: 1px solid black;\r\n  padding: 5px;\r\n}\r\n\r\n#gridSizeSlider, #intensitySlider {\r\n  width: 70%;\r\n}\r\n\r\n#galleryContainer {\r\n  display: flex;\r\n  flex-direction: column;\r\n  max-width: 1000px;\r\n}\r\n\r\n#galleryLatest, #galleryPopular, #galleryPersonal {\r\n  min-height: 100px;\r\n  border: 1px solid black;\r\n  margin: 20px;\r\n}\r\n\r\n#galleryLatestContainer, #galleryPopular, #galleryPersonalContainer {\r\n  display: flex;\r\n  flex-direction: row;\r\n  flex-wrap: wrap;\r\n  justify-content: space-around;\r\n}\r\n\r\n.previewPopular, .previewLatest, .previewPersonal {\r\n  margin: 20px;\r\n}\r\n\r\nh2 {\r\n  text-align: center;\r\n}\r\n\r\n#registerForm, #loginForm {\r\n  margin: auto;\r\n  flex-direction: column;\r\n  display: flex;\r\n}\r\n\r\n#logout, #accountDetails {\r\n  margin: auto;\r\n  width: 100%;\r\n  text-align: center;\r\n}\r\n\r\n#registerForm, #loginForm, #logout {\r\n  margin-bottom: 20px;\r\n}\r\n\r\n/* The Modal (background) */\r\n#accountModal {\r\n  display: none; /* Hidden by default */\r\n  position: fixed; /* Stay in place */\r\n  z-index: 1; /* Sit on top */\r\n  left: 0;\r\n  top: 0;\r\n  width: 100%; /* Full width */\r\n  height: 100%; /* Full height */\r\n  overflow: auto; /* Enable scroll if needed */\r\n  background-color: rgb(0,0,0); /* Fallback color */\r\n  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */\r\n}\r\n\r\n/* Modal Content/Box */\r\n#modal-content {\r\n  background-color: #fefefe;\r\n  margin: 15% auto; /* 15% from the top and centered */\r\n  padding: 20px;\r\n  border: 1px solid #888;\r\n  width: 400px;\r\n}\r\n\r\n#accountForms {\r\n  padding: 50px;\r\n}\r\n\r\n/* The Close Button */\r\n#closeModal {\r\n  color: #aaa;\r\n  float: right;\r\n  font-size: 28px;\r\n  font-weight: bold;\r\n}\r\n\r\n#closeModal:hover,\r\n#closeModal:focus {\r\n  color: black;\r\n  text-decoration: none;\r\n  cursor: pointer;\r\n}", ""]);
+exports.push([module.i, "html, body, #app {\r\n  height: 100%;\r\n  margin: 0;\r\n  padding: 0;\r\n}\r\n\r\n.App {\r\n  height:100%;\r\n}\r\n\r\n#navbar, #footer {\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n  border: 1px solid black;\r\n}\r\n\r\n#navbar {\r\n  position: fixed;\r\n  top: 0;\r\n  height: 44px;\r\n  z-index: 2;\r\n}\r\n\r\n#navbarButtons {\r\n  display: flex;\r\n  justify-content: space-between;\r\n}\r\n\r\n#settingsDrawing {\r\n  justify-content: center;\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n}\r\n\r\n#gallery, #interface, #account {\r\n  display: flex;\r\n  flex: 1;\r\n}\r\n\r\n#gallery {\r\n  align-items: flex-start;\r\n}\r\n\r\n#interface {\r\n  justify-content: center;\r\n}\r\n\r\n#account {\r\n  justify-content: flex-end;\r\n  align-items: flex-start;\r\n}\r\n\r\n#footer {\r\n  position: fixed;\r\n  bottom: 0;\r\n}\r\n\r\n#buttonsDrawing {\r\n  display: flex;\r\n  align-items: flex-start;\r\n}\r\n\r\n#main {\r\n  margin-top: 20px;\r\n  display: flex;\r\n  justify-content: center;\r\n  height: 100%;\r\n  align-items: center;\r\n}\r\n\r\n#settingsForm {\r\n  width: 200px;\r\n  border: 1px solid black;\r\n  padding: 5px;\r\n  background: white;\r\n}\r\n\r\n#gridSizeSlider, #intensitySlider {\r\n  width: 70%;\r\n}\r\n\r\n#galleryContainer {\r\n  display: flex;\r\n  flex-direction: column;\r\n  max-width: 1000px;\r\n}\r\n\r\n#galleryLatest, #galleryPopular, #galleryPersonal {\r\n  min-height: 100px;\r\n  border: 1px solid black;\r\n  margin: 20px;\r\n}\r\n\r\n#galleryLatestContainer, #galleryPopular, #galleryPersonalContainer {\r\n  display: flex;\r\n  flex-direction: row;\r\n  flex-wrap: wrap;\r\n  justify-content: space-around;\r\n}\r\n\r\n.previewPopular, .previewLatest, .previewPersonal {\r\n  margin: 20px;\r\n}\r\n\r\nh2 {\r\n  text-align: center;\r\n}\r\n\r\n#registerForm, #loginForm {\r\n  margin: auto;\r\n  flex-direction: column;\r\n  display: flex;\r\n}\r\n\r\n#logout, #accountDetails {\r\n  margin: auto;\r\n  width: 100%;\r\n  text-align: center;\r\n}\r\n\r\n#registerForm, #loginForm, #logout {\r\n  margin-bottom: 20px;\r\n}\r\n\r\n/* The Modal (background) */\r\n#accountModal {\r\n  display: none; /* Hidden by default */\r\n  position: fixed; /* Stay in place */\r\n  z-index: 1; /* Sit on top */\r\n  left: 0;\r\n  top: 0;\r\n  width: 100%; /* Full width */\r\n  height: 100%; /* Full height */\r\n  overflow: auto; /* Enable scroll if needed */\r\n  background-color: rgb(0,0,0); /* Fallback color */\r\n  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */\r\n}\r\n\r\n/* Modal Content/Box */\r\n#modal-content {\r\n  background-color: #fefefe;\r\n  margin: 15% auto; /* 15% from the top and centered */\r\n  padding: 20px;\r\n  border: 1px solid #888;\r\n  width: 400px;\r\n}\r\n\r\n#accountForms {\r\n  padding: 50px;\r\n}\r\n\r\n/* The Close Button */\r\n#closeModal {\r\n  color: #aaa;\r\n  float: right;\r\n  font-size: 28px;\r\n  font-weight: bold;\r\n}\r\n\r\n#closeModal:hover,\r\n#closeModal:focus {\r\n  color: black;\r\n  text-decoration: none;\r\n  cursor: pointer;\r\n}", ""]);
 
 // exports
 

@@ -7,6 +7,7 @@ class Navbar extends Component {
     this.updateGridSizeSlider = this.updateGridSizeSlider.bind(this);
     this.updateIntensitySlider = this.updateIntensitySlider.bind(this);
     this.createAccountModal = this.createAccountModal.bind(this);
+    this.showSettings = this.showSettings.bind(this);
   }
 
   componentDidMount() {
@@ -30,6 +31,15 @@ class Navbar extends Component {
       e.preventDefault();
       this.props.saveCurrentSettings();
     })
+
+    document.getElementById("settingsForm").style.display = "none";
+  }
+
+  showSettings() {
+    const settingsForm = document.getElementById("settingsForm");
+      
+    if (settingsForm.style.display == "none") settingsForm.style.display = "block";
+    else settingsForm.style.display = "none";
   }
 
   updateGridSizeSlider() {
@@ -60,6 +70,7 @@ class Navbar extends Component {
   render() {
     let buttons = null;
     let home = null;
+    let settings = null;
 
     if (this.props.home === "Drawingboard") {
       home = (
@@ -73,6 +84,12 @@ class Navbar extends Component {
             <button id="delete" onClick={() => this.props.delete(this.props.drawingId)}>Delete</button>
             <button id="clear" onClick={this.props.clear}>Clear</button>
           </div>
+        </div>
+      )
+
+      settings = (
+        <div id="settingsDrawing">
+          <button id="settingsButton" onClick={this.showSettings}>Settings</button>
 
           <form id="settingsForm">
             <span>Grid Size: </span>
@@ -109,7 +126,6 @@ class Navbar extends Component {
             <input type="button" id="saveDefaultSettings" value="Save Default" onClick={this.props.saveDefaultSettings} />
             <input type="button" id="loadDefaultSettings" value="Load Default" onClick={this.props.loadDefaultSettings} />
           </form>
-
         </div>
       )
     } else if (this.props.home === "Gallery") {
@@ -124,18 +140,30 @@ class Navbar extends Component {
           {/*<a href="/" alt="Recent">Recent</a>*/}
         </div>
       )
+
+      settings = (
+        <div />
+      )
     }
 
     return (
       <div id="navbar">
-        <div id="gallery">
-          <button id="galleryButton">{home}</button>
+        <div id="navbarButtons">
+
+          <div id="gallery">
+            <button id="galleryButton">{home}</button>
+          </div>
+
+          {buttons}
+          
+          <div id="account">
+            <button id="openAccountModal" onClick={this.createAccountModal}>Account</button>
+          </div>
+
         </div>
 
-        {buttons}
-        
-        <div id="account">
-          <button id="openAccountModal" onClick={this.createAccountModal}>Account</button>
+        <div id="navbarSettings">
+          {settings}
         </div>
       </div>
     )

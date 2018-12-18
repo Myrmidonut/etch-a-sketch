@@ -17,8 +17,20 @@ html, body, #app {
 #navbar {
   position: fixed;
   top: 0;
+  height: 44px;
+  z-index: 2;
+}
+
+#navbarButtons {
   display: flex;
   justify-content: space-between;
+}
+
+#settingsDrawing {
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #gallery, #interface, #account {
@@ -61,6 +73,7 @@ html, body, #app {
   width: 200px;
   border: 1px solid black;
   padding: 5px;
+  background: white;
 }
 
 #gridSizeSlider, #intensitySlider {
