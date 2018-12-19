@@ -107,37 +107,42 @@ class Navbar extends Component {
           <button id="settingsButton" onClick={this.showSettings}>Settings</button>
 
           <form id="settingsForm">
+            <hr />
+
             <div>
               <span>Grid Size: </span>
               <span id="gridSizeValue">20</span>
             </div>
-
             <div>
               <span id="gridSizeMin">5</span>
               <input type="range" min="5" max="50" defaultValue="20" name="grid_size" id="gridSizeSlider" onChange={this.updateGridSizeSlider} />
               <span id="gridSizeMax">50</span>
             </div>
 
-            <div>
-              <span>Intensity: </span>
-              <span id="intensityValue">0.1</span>
-            </div>
+            <hr />
 
             <div>
+              <span>Intensity: </span>
+              <span id="intensityValue">0.3</span>
+            </div>
+            <div>
               <span id="intensityMin">0.1</span>
-              <input type="range" min="0.1" max="1.0" step="0.1" defaultValue="0.1" name="intensity" id="intensitySlider" onChange={this.updateIntensitySlider} />
+              <input type="range" min="0.1" max="1.0" step="0.1" defaultValue="0.3" name="intensity" id="intensitySlider" onChange={this.updateIntensitySlider} />
               <span id="intensityMax">1</span>
             </div>
+
+            <hr />
 
             <div>
               <span>Main Color: </span>
               <input type="color" name="main_color" id="mainColorPicker" defaultValue="#008000" onChange={this.props.saveCurrentSettings} />
             </div>
-
             <div>
               <span>Background Color: </span>
               <input type="color" name="background_color" id="backgroundColorPicker" defaultValue="#ffffff" onChange={this.props.saveCurrentSettings} />
             </div>
+
+            <hr />
 
             <div>
               <span>Shape: </span>
@@ -146,6 +151,8 @@ class Navbar extends Component {
                 <option value="round" className="shape">Round</option>
               </select>
             </div>
+
+            <hr />
 
             <input type="text" name="title" placeholder="Title" id="titleInput" required onChange={this.props.saveCurrentSettings} />
 

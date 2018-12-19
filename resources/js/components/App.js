@@ -16,7 +16,7 @@ class App extends Component {
       gridHeight: 600,
 
       gridSize: 20,
-      intensity: "0.1",
+      intensity: "0.3",
       mainColor: "#008000",
       backgroundColor: "#ffffff",
       shape: "square",
@@ -364,7 +364,7 @@ class App extends Component {
   reset() {
     this.setState({
       gridSize: 20,
-      intensity: "0.1",
+      intensity: "0.3",
       mainColor: "#008000",
       backgroundColor: "#ffffff",
       shape: "square",

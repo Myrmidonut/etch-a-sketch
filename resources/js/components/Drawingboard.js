@@ -12,8 +12,6 @@ class Drawingboard extends Component {
 
     drawingBoard.style.height = this.props.gridHeight + "px";
     drawingBoard.style.width = this.props.gridHeight + "px";
-    //drawingBoard.style.border = "2px solid #03A9F4";
-    drawingBoard.style.margin = "20px";
 
     document.getElementById("drawingBoard").addEventListener("mousedown", this.props.mousedown)
     document.addEventListener("mouseup", this.props.mouseup)

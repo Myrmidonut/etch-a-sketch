@@ -6,12 +6,16 @@ html, body, #app {
   font-size: 18px;
 }
 
+*:focus {
+  outline: none;
+}
+
 .App {
   height:100%;
 }
 
 @font-face {
-  font-family: "pixel";
+  font-family: "spixel";
   src: url("LCD_Solid.ttf");
 }
 
@@ -100,7 +104,7 @@ button {
 }
 
 #main {
-  margin-top: 20px;
+  xmargin-top: 20px;
   display: flex;
   justify-content: center;
   height: 100%;
@@ -161,7 +165,7 @@ input[type=button] {
 }
 
 select {
-  font-family: "pixel";
+  font-family: "pixel", Arial;
   border: none;
   background: #03A9F4;
   font-size: 18px;
@@ -179,6 +183,8 @@ option {
   display: flex;
   flex-direction: column;
   max-width: 1000px;
+  margin-bottom: 60px;
+  margin-top: 80px;
 }
 
 #galleryLatest, #galleryPopular, #galleryPersonal {
@@ -276,4 +282,8 @@ h2 {
   color: black;
   text-decoration: none;
   cursor: pointer;
+}
+
+hr {
+  width: 100%;
 }
