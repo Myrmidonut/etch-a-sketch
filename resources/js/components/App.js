@@ -152,29 +152,22 @@ class App extends Component {
         }
       })
 
+      gridItem.addEventListener("mousedown", function() {
+        this.style.backgroundColor = self.state.mainColor;
 
-      gridItem.addEventListener("click", function() {
-        if (self.state.mouseHold) {
-          this.style.backgroundColor = self.state.mainColor;
+        let newOpacity = self.state.opacity.slice();
+        let newColor = self.state.color.slice();
 
-          let newOpacity = self.state.opacity.slice();
-          let newColor = self.state.color.slice();
+        newOpacity[i] += Number(self.state.intensity);
+        newColor[i] = self.state.mainColor;
 
-          newOpacity[i] += Number(self.state.intensity);
-          newColor[i] = self.state.mainColor;
+        self.setState({
+          opacity: newOpacity,
+          color: newColor
+        })
 
-          self.setState({
-            opacity: newOpacity,
-            color: newColor
-          })
-
-          if (this.style.opacity < 1) this.style.opacity = self.state.opacity[i];
-        }
+        if (this.style.opacity < 1) this.style.opacity = self.state.opacity[i];
       })
-
-
-
-
     }
   }
 

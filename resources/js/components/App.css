@@ -2,7 +2,8 @@ html, body, #app {
   height: 100%;
   margin: 0;
   padding: 0;
-  font-family: "pixel";
+  font-family: "pixel", Arial;
+  font-size: 18px;
 }
 
 .App {
@@ -11,11 +12,12 @@ html, body, #app {
 
 @font-face {
   font-family: "pixel";
-  src: url("Pixel-Miners.otf");
+  src: url("LCD_Solid.ttf");
 }
 
 button, input {
   font-family: "pixel", Arial;
+  font-size: 18px;
 }
 
 button {
@@ -103,7 +105,6 @@ button {
   justify-content: center;
   height: 100%;
   align-items: center;
-  xbackground: #00BCD4;
   background: #00bcd433;
 }
 
@@ -121,7 +122,6 @@ input, select {
   background: #03A9F4;
   display: flex;
   flex-direction: column;
-  font-size: 14px;
 }
 
 #settingsForm div {
@@ -152,6 +152,7 @@ input[type=text] {
   text-align: center;
   margin-bottom: 20px;
   border: none;
+  cursor: text;
 }
 
 input[type=button] {
@@ -160,9 +161,10 @@ input[type=button] {
 }
 
 select {
-  font-family: pixel;
+  font-family: "pixel";
   border: none;
   background: #03A9F4;
+  font-size: 18px;
 }
 
 option {
