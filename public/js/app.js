@@ -19384,7 +19384,7 @@ function (_Component) {
     value: function updateGrid() {
       var _this2 = this;
 
-      console.log("update grid");
+      //console.log("update grid")
       var gridItems = document.querySelectorAll(".gridItem");
       var drawingBoard = document.getElementById("drawingBoard");
       document.getElementById("gridSizeValue").textContent = this.state.gridSize;
@@ -19483,10 +19483,8 @@ function (_Component) {
           document.getElementById("previewPopular" + i).style.backgroundColor = e.background_color;
           document.getElementById("previewPopular" + i).style.height = gridHeight + "px";
           document.getElementById("previewPopular" + i).style.width = gridHeight + "px";
-          document.getElementById("previewPopular" + i).style.border = "2px solid white";
           document.getElementById("previewPopular" + i).addEventListener("click", function (f) {
-            f.preventDefault();
-            console.log("clicked " + e.id);
+            f.preventDefault(); //console.log("clicked " + e.id)
           });
 
           for (var j = 0; j < e.grid_size * e.grid_size; j++) {
@@ -19524,10 +19522,8 @@ function (_Component) {
           document.getElementById("previewLatest" + i).style.backgroundColor = e.background_color;
           document.getElementById("previewLatest" + i).style.height = gridHeight + "px";
           document.getElementById("previewLatest" + i).style.width = gridHeight + "px";
-          document.getElementById("previewLatest" + i).style.border = "2px solid #03A9F4";
           document.getElementById("previewLatest" + i).addEventListener("click", function (f) {
-            f.preventDefault();
-            console.log("clicked " + e.id);
+            f.preventDefault(); //console.log("clicked " + e.id)
 
             _this4.openDrawing(e);
           });
@@ -19546,8 +19542,7 @@ function (_Component) {
             document.getElementById("previewLatest" + i).appendChild(gridItem);
           }
         });
-      }).then(function () {
-        console.log("latest done");
+      }).then(function () {//console.log("latest done")
       });
     }
   }, {
@@ -19555,8 +19550,7 @@ function (_Component) {
     value: function loadOneDrawing(id) {
       fetch("/api/drawings/one/".concat(id)).then(function (response) {
         return response.json();
-      }).then(function (data) {
-        console.log(data);
+      }).then(function (data) {//console.log(data)
       });
     }
   }, {
@@ -19578,10 +19572,8 @@ function (_Component) {
           document.getElementById("previewPersonal" + i).style.backgroundColor = e.background_color;
           document.getElementById("previewPersonal" + i).style.height = gridHeight + "px";
           document.getElementById("previewPersonal" + i).style.width = gridHeight + "px";
-          document.getElementById("previewPersonal" + i).style.border = "2px solid #03A9F4";
           document.getElementById("previewPersonal" + i).addEventListener("click", function (f) {
-            f.preventDefault();
-            console.log("clicked " + e.id);
+            f.preventDefault(); //console.log("clicked " + e.id)
 
             _this5.openDrawing(e);
           });
@@ -19600,8 +19592,7 @@ function (_Component) {
             document.getElementById("previewPersonal" + i).appendChild(gridItem);
           }
         });
-      }).then(function () {
-        console.log("personal done");
+      }).then(function () {//console.log("personal done");
       });
     }
   }, {
@@ -19627,10 +19618,17 @@ function (_Component) {
         }).then(function (response) {
           return response.text();
         }).then(function (data) {
-          console.log("drawing saved");
-          console.log(data);
+          //console.log("drawing saved")
+          //console.log(data);
           document.getElementById("save").textContent = "Save";
         });
+      } else {
+        document.getElementById("save").textContent = "Login first";
+        document.getElementById("save").style.background = "#ccf2f6";
+        setTimeout(function (e) {
+          document.getElementById("save").textContent = "Save";
+          document.getElementById("save").style.background = "#03A9F4";
+        }, 3000);
       }
     }
   }, {
@@ -19658,8 +19656,8 @@ function (_Component) {
     key: "delete",
     value: function _delete(id) {
       if (this.state.accountName) {
-        document.getElementById("delete").textContent = "Deleting";
-        console.log("deleting");
+        document.getElementById("delete").textContent = "Deleting"; //console.log("deleting");
+
         fetch("/api/delete/".concat(id), {
           method: "post",
           body: new URLSearchParams({
@@ -19672,10 +19670,17 @@ function (_Component) {
         }).then(function (response) {
           return response.text();
         }).then(function (data) {
-          console.log("drawing deleted");
-          console.log(data);
+          //console.log("drawing deleted")
+          //console.log(data);
           document.getElementById("delete").textContent = "Delete";
         });
+      } else {
+        document.getElementById("delete").textContent = "Login first";
+        document.getElementById("delete").style.background = "#ccf2f6";
+        setTimeout(function (e) {
+          document.getElementById("delete").textContent = "Delete";
+          document.getElementById("delete").style.background = "#03A9F4";
+        }, 3000);
       }
     }
   }, {
@@ -19695,9 +19700,14 @@ function (_Component) {
         }).then(function (response) {
           return response.json();
         }).then(function (data) {
-          saveDefaultSettings.value = "Save Default";
-          console.log("default settings loaded");
+          saveDefaultSettings.value = "Save Default"; //console.log("default settings loaded")
         });
+      } else {
+        var loginFirst = document.getElementById("loginFirst");
+        loginFirst.style.display = "block";
+        setTimeout(function (e) {
+          loginFirst.style.display = "none";
+        }, 3000);
       }
     }
   }, {
@@ -19716,8 +19726,7 @@ function (_Component) {
         backgroundColor: backgroundColor,
         shape: shape,
         title: title
-      }, this.updateGrid);
-      console.log("set current settings");
+      }, this.updateGrid); //console.log("set current settings")
     }
   }, {
     key: "loadDefaultSettings",
@@ -19752,9 +19761,14 @@ function (_Component) {
           document.getElementById("intensityValue").textContent = _this6.state.intensity;
           document.getElementById("mainColorPicker").value = _this6.state.mainColor;
           document.getElementById("backgroundColorPicker").value = _this6.state.backgroundColor;
-          document.getElementById("shape").value = _this6.state.shape;
-          console.log("Defaults loaded");
+          document.getElementById("shape").value = _this6.state.shape; //console.log("Defaults loaded")
         });
+      } else {
+        var loginFirst = document.getElementById("loginFirst");
+        loginFirst.style.display = "block";
+        setTimeout(function (e) {
+          loginFirst.style.display = "none";
+        }, 3000);
       }
     }
   }, {
@@ -19794,7 +19808,7 @@ function (_Component) {
         document.getElementById("shape").value = this.state.shape;
         */
         //document.getElementById("accountLink").textContent = this.state.accountName;
-        console.log("Logged in");
+        //console.log("Logged in")
         document.getElementById("accountModal").style.display = "none";
       });
     }
@@ -19810,7 +19824,7 @@ function (_Component) {
       }).then(function (response) {
         return response.text();
       }).then(function (data) {
-        console.log("Registered");
+        //console.log("Registered");
         submitRegister.value = "Register";
       });
     }
@@ -19826,16 +19840,15 @@ function (_Component) {
           }
         }).then(function (response) {
           return response.json();
-        }).then(function (data) {
-          console.log(data);
-          console.log("Account");
+        }).then(function (data) {//console.log(data)
+          //console.log("Account");
         });
       }
     }
   }, {
     key: "openDrawing",
     value: function openDrawing(e) {
-      console.log(e);
+      //console.log(e);
       this.setState({
         content: "Drawingboard"
       });
@@ -19847,7 +19860,8 @@ function (_Component) {
         opacity: JSON.parse(e.opacity).split(","),
         color: JSON.parse(e.color).split(","),
         shape: e.shape,
-        drawingId: e.id
+        drawingId: e.id,
+        title: e.title
       });
       var newOpacity = this.state.opacity.slice().map(function (e) {
         return Number(e);
@@ -19898,6 +19912,7 @@ function (_Component) {
         home: this.state.content,
         opacity: this.state.opacity,
         drawingId: this.state.drawingId,
+        title: this.state.title,
         updateGrid: this.updateGrid,
         createGrid: this.createGrid,
         save: this.saveDrawing,
@@ -42833,9 +42848,13 @@ function (_Component) {
           onClick: this.showSettings
         }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", {
           id: "settingsForm"
-        }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("hr", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Grid Size: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+        }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("hr", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+          className: "settingsSection"
+        }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Grid Size: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
           id: "gridSizeValue"
-        }, "20")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+        }, "20")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+          className: "settingsSection"
+        }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
           id: "gridSizeMin"
         }, "5"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
           type: "range",
@@ -42847,9 +42866,13 @@ function (_Component) {
           onChange: this.updateGridSizeSlider
         }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
           id: "gridSizeMax"
-        }, "50")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("hr", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Intensity: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+        }, "50")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("hr", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+          className: "settingsSection"
+        }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Intensity: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
           id: "intensityValue"
-        }, "0.3")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+        }, "0.3")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+          className: "settingsSection"
+        }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
           id: "intensityMin"
         }, "0.1"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
           type: "range",
@@ -42862,19 +42885,25 @@ function (_Component) {
           onChange: this.updateIntensitySlider
         }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
           id: "intensityMax"
-        }, "1")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("hr", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Main Color: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        }, "1")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("hr", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+          className: "settingsSection"
+        }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Main Color: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
           type: "color",
           name: "main_color",
           id: "mainColorPicker",
           defaultValue: "#008000",
           onChange: this.props.saveCurrentSettings
-        })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Background Color: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+          className: "settingsSection"
+        }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Background Color: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
           type: "color",
           name: "background_color",
           id: "backgroundColorPicker",
           defaultValue: "#ffffff",
           onChange: this.props.saveCurrentSettings
-        })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("hr", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Shape: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("select", {
+        })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("hr", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+          className: "settingsSection"
+        }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Shape: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("select", {
           name: "shape",
           id: "shape",
           onChange: this.props.saveCurrentSettings
@@ -42887,11 +42916,14 @@ function (_Component) {
         }, "Round"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("hr", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
           type: "text",
           name: "title",
+          value: this.props.title,
           placeholder: "Title",
           id: "titleInput",
           required: true,
           onChange: this.props.saveCurrentSettings
-        }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+          className: "settingsSection"
+        }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
           type: "button",
           id: "saveDefaultSettings",
           value: "Save Default",
@@ -42901,7 +42933,9 @@ function (_Component) {
           id: "loadDefaultSettings",
           value: "Load Default",
           onClick: this.props.loadDefaultSettings
-        }))));
+        })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+          id: "loginFirst"
+        }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Login First"))));
       } else if (this.props.home === "Gallery") {
         home = "Drawingboard";
         buttons = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
@@ -42975,7 +43009,7 @@ function (_Component) {
   _createClass(Drawingboard, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      console.log("Drawingboard mount");
+      //console.log("Drawingboard mount")
       var drawingBoard = document.getElementById("drawingBoard");
       drawingBoard.style.height = this.props.gridHeight + "px";
       drawingBoard.style.width = this.props.gridHeight + "px";
@@ -42993,8 +43027,7 @@ function (_Component) {
     key: "componentDidUpdate",
     value: function componentDidUpdate(prevProps) {
       if (this.props.gridSize !== prevProps.gridSize) {
-        this.props.createGrid();
-        console.log("Drawingboard update gridsize");
+        this.props.createGrid(); //console.log("Drawingboard update gridsize")
       }
     }
   }, {
@@ -43249,7 +43282,7 @@ exports = module.exports = __webpack_require__(53)(false);
 
 
 // module
-exports.push([module.i, "html, body, #app {\r\n  height: 100%;\r\n  margin: 0;\r\n  padding: 0;\r\n  font-family: \"pixel\", Arial;\r\n  font-size: 18px;\r\n}\r\n\r\n*:focus {\r\n  outline: none;\r\n}\r\n\r\n.App {\r\n  height:100%;\r\n}\r\n\r\n@font-face {\r\n  font-family: \"spixel\";\r\n  src: url(" + escape(__webpack_require__(54)) + ");\r\n}\r\n\r\nbutton, input {\r\n  font-family: \"pixel\", Arial;\r\n  font-size: 18px;\r\n}\r\n\r\nbutton {\r\n  height: 40px;\r\n  background: none;\r\n  border: none;\r\n  cursor: pointer;\r\n}\r\n\r\n#navbar, #footer {\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n}\r\n\r\n#navbar {\r\n  position: fixed;\r\n  top: 0;\r\n  z-index: 1;\r\n}\r\n\r\n#footer {\r\n  position: fixed;\r\n  bottom: 0;\r\n  height: 42px;\r\n  line-height: 42px;\r\n  background: #03A9F4;\r\n  border: 1px solid black;\r\n}\r\n\r\n#navbarButtons {\r\n  height: 40px;\r\n  display: flex;\r\n  justify-content: space-between;\r\n  background: #03A9F4;\r\n  box-shadow: 0 1px 5px gray;\r\n  border: 1px solid black;\r\n}\r\n\r\n#navbarSettings {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  height: 100%;\r\n}\r\n\r\n#settingsDrawing {\r\n  background: #03A9F4;\r\n  border-bottom: 1px solid black;\r\n  border-left: 1px solid black;\r\n  border-right: 1px solid black;\r\n  box-shadow: 0px 0px 5px gray;\r\n}\r\n\r\n#drawingBoard {\r\n  box-shadow: 0px 0px 10px gray;\r\n}\r\n\r\n#gallery, #interface, #account {\r\n  display: flex;\r\n  flex: 1;\r\n}\r\n\r\n#gallery {\r\n  align-items: flex-start;\r\n}\r\n\r\n#interface {\r\n  justify-content: center;\r\n}\r\n\r\n#account {\r\n  justify-content: flex-end;\r\n  align-items: flex-start;\r\n}\r\n\r\n#buttonsDrawing {\r\n  display: flex;\r\n  width: 100%;\r\n  justify-content: space-around;\r\n}\r\n\r\n#main {\r\n  xmargin-top: 20px;\r\n  display: flex;\r\n  justify-content: center;\r\n  height: 100%;\r\n  align-items: center;\r\n  background: #00bcd433;\r\n}\r\n\r\ninput, select {\r\n  cursor: pointer;\r\n}\r\n\r\n#settingsButton {\r\n  width: 100%;\r\n}\r\n\r\n#settingsForm {\r\n  width: 300px;\r\n  padding: 5px;\r\n  background: #03A9F4;\r\n  display: flex;\r\n  flex-direction: column;\r\n}\r\n\r\n#settingsForm div {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n}\r\n\r\n#settingsForm div span {\r\n  line-height: 40px;\r\n}\r\n\r\n#gridSizeMin, #gridSizeMax, #intensityMin, #intensityMax {\r\n  width: 30px;\r\n}\r\n\r\n#gridSizeMax, #intensityMax {\r\n  text-align: right;\r\n}\r\n\r\ninput[type=color] {\r\n  background: white;\r\n  border: none;\r\n}\r\n\r\ninput[type=text] {\r\n  height: 35px;\r\n  text-align: center;\r\n  margin-bottom: 20px;\r\n  border: none;\r\n  cursor: text;\r\n}\r\n\r\ninput[type=button] {\r\n  background: none;\r\n  border: none;\r\n}\r\n\r\nselect {\r\n  font-family: \"pixel\", Arial;\r\n  border: none;\r\n  background: #03A9F4;\r\n  font-size: 18px;\r\n}\r\n\r\noption {\r\n  height: 40px;\r\n}\r\n\r\n#gridSizeSlider, #intensitySlider {\r\n  width: 70%;\r\n}\r\n\r\n#galleryContainer {\r\n  display: flex;\r\n  flex-direction: column;\r\n  max-width: 1000px;\r\n  margin-bottom: 60px;\r\n  margin-top: 80px;\r\n}\r\n\r\n#galleryLatest, #galleryPopular, #galleryPersonal {\r\n  min-height: 230px;\r\n  min-width: 820px;\r\n  border: 1px solid black;\r\n  margin: 20px;\r\n  background: #03A9F4;\r\n}\r\n\r\n#galleryLatestContainer, #galleryPopular, #galleryPersonalContainer {\r\n  display: flex;\r\n  flex-direction: row;\r\n  flex-wrap: wrap;\r\n  justify-content: space-around;\r\n}\r\n\r\n.previewPopular, .previewLatest, .previewPersonal {\r\n  margin: 20px;\r\n}\r\n\r\nh2 {\r\n  text-align: center;\r\n}\r\n\r\n#registerForm, #loginForm {\r\n  margin: auto;\r\n  flex-direction: column;\r\n  display: flex;\r\n}\r\n\r\n#logout, #accountDetails {\r\n  margin-bottom: 0;\r\n  height: 0;\r\n}\r\n\r\n#registerForm, #loginForm {\r\n  margin-bottom: 20px;\r\n}\r\n\r\n#registerForm input, #loginForm input {\r\n  height: 30px;\r\n  padding: 5px;\r\n}\r\n\r\n#registerForm input[type=submit], #loginForm input[type=submit] {\r\n  height: 44px;\r\n  background: none;\r\n  border: none;\r\n}\r\n\r\n#accountForms div {\r\n  justify-content: space-between;\r\n  display: flex;\r\n  margin-bottom: 0;\r\n}\r\n\r\n/* The Modal (background) */\r\n#accountModal {\r\n  display: none; /* Hidden by default */\r\n  position: fixed; /* Stay in place */\r\n  z-index: 1; /* Sit on top */\r\n  left: 0;\r\n  top: 0;\r\n  width: 100%; /* Full width */\r\n  height: 100%; /* Full height */\r\n  overflow: auto; /* Enable scroll if needed */\r\n  background-color: rgb(0,0,0); /* Fallback color */\r\n  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */\r\n}\r\n\r\n/* Modal Content/Box */\r\n#modal-content {\r\n  background-color: #03A9F4;\r\n  margin: 15% auto; /* 15% from the top and centered */\r\n  padding: 20px;\r\n  border: 1px solid #888;\r\n  width: 400px;\r\n}\r\n\r\n#accountForms {\r\n  padding: 50px;\r\n}\r\n\r\n/* The Close Button */\r\n#closeModal {\r\n  color: #aaa;\r\n  float: right;\r\n  font-size: 28px;\r\n  font-weight: bold;\r\n}\r\n\r\n#closeModal:hover,\r\n#closeModal:focus {\r\n  color: black;\r\n  text-decoration: none;\r\n  cursor: pointer;\r\n}\r\n\r\nhr {\r\n  width: 100%;\r\n}", ""]);
+exports.push([module.i, "html, body, #app {\r\n  height: 100%;\r\n  margin: 0;\r\n  padding: 0;\r\n  font-family: 'Share Tech Mono', monospace;\r\n  font-size: 18px;\r\n}\r\n\r\n*:focus {\r\n  outline: none;\r\n}\r\n\r\n* {\r\n  font-family: 'Share Tech Mono', monospace;\r\n}\r\n\r\n@font-face {\r\n  font-family: \"pixel\";\r\n  src: url(" + escape(__webpack_require__(54)) + ");\r\n}\r\n\r\nselect, button, input {\r\n  font-family: 'Share Tech Mono', monospace;\r\n}\r\n\r\n/* ------------------------ */\r\n\r\nbutton, input {\r\n  font-size: 18px;\r\n}\r\n\r\nbutton {\r\n  width: 120px;\r\n  height: 40px;\r\n  background: none;\r\n  border: none;\r\n  cursor: pointer;\r\n}\r\n\r\nhr {\r\n  width: 100%;\r\n}\r\n\r\nh2 {\r\n  text-align: center;\r\n}\r\n\r\ninput, select {\r\n  cursor: pointer;\r\n}\r\n\r\n.previewLatest, .previewPersonal {\r\n  border: 5px solid #03A9F4;\r\n}\r\n\r\ninput[type=color] {\r\n  background: white;\r\n  border: none;\r\n}\r\n\r\ninput[type=text] {\r\n  height: 35px;\r\n  text-align: center;\r\n  margin-bottom: 10px;\r\n  border: none;\r\n  cursor: text;\r\n}\r\n\r\ninput[type=button] {\r\n  height: 40px;\r\n  background: none;\r\n  border: none;\r\n}\r\n\r\nselect {\r\n  border: none;\r\n  background: #03A9F4;\r\n  font-size: 18px;\r\n}\r\n\r\noption {\r\n  height: 40px;\r\n}\r\n\r\n/* ------------------------ */\r\n\r\n.App {\r\n  height:100%;\r\n  background: #00bcd433;\r\n}\r\n\r\n#navbar, #footer {\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n}\r\n\r\n#navbar {\r\n  position: fixed;\r\n  top: 0;\r\n  z-index: 1;\r\n}\r\n\r\n#footer {\r\n  position: fixed;\r\n  bottom: 0;\r\n  height: 42px;\r\n  line-height: 42px;\r\n  background: #03A9F4;\r\n  border: 1px solid black;\r\n}\r\n\r\n#navbarButtons {\r\n  height: 40px;\r\n  display: flex;\r\n  justify-content: space-between;\r\n  background: #03A9F4;\r\n  box-shadow: 0 1px 5px gray;\r\n  border: 1px solid black;\r\n}\r\n\r\n#navbarSettings {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  height: 100%;\r\n}\r\n\r\n#settingsDrawing {\r\n  background: #03A9F4;\r\n  border-bottom: 1px solid black;\r\n  border-left: 1px solid black;\r\n  border-right: 1px solid black;\r\n  box-shadow: 0px 0px 5px gray;\r\n}\r\n\r\n#drawingBoard {\r\n  box-shadow: 0px 0px 10px gray;\r\n}\r\n\r\n#gallery, #interface, #account {\r\n  display: flex;\r\n  flex: 1;\r\n}\r\n\r\n#gallery {\r\n  align-items: flex-start;\r\n}\r\n\r\n#interface {\r\n  justify-content: center;\r\n}\r\n\r\n#account {\r\n  justify-content: flex-end;\r\n  align-items: flex-start;\r\n}\r\n\r\n#buttonsDrawing {\r\n  display: flex;\r\n  width: 100%;\r\n  justify-content: space-around;\r\n}\r\n\r\n#main {\r\n  display: flex;\r\n  justify-content: center;\r\n  height: 100%;\r\n  align-items: center;\r\n}\r\n\r\n#settingsButton {\r\n  width: 100%;\r\n}\r\n\r\n#settingsForm {\r\n  width: 300px;\r\n  padding: 5px;\r\n  background: #03A9F4;\r\n  display: flex;\r\n  flex-direction: column;\r\n}\r\n\r\n.settingsSection {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n}\r\n\r\n#settingsForm div span {\r\n  line-height: 40px;\r\n}\r\n\r\n#gridSizeMin, #gridSizeMax, #intensityMin, #intensityMax {\r\n  width: 30px;\r\n}\r\n\r\n#gridSizeMax, #intensityMax {\r\n  text-align: right;\r\n}\r\n\r\n#gridSizeSlider, #intensitySlider {\r\n  width: 70%;\r\n}\r\n\r\n#loginFirst {\r\n  display: none;\r\n  text-align: center;\r\n  height: 40px;\r\n  line-height: 40px;\r\n  background: #ccf2f6;\r\n  width: 120px;\r\n  margin: auto;\r\n  margin-top: 5px;\r\n}\r\n\r\n#galleryContainer {\r\n  display: flex;\r\n  flex-direction: column;\r\n  max-width: 1000px;\r\n  margin-bottom: 60px;\r\n  margin-top: 80px;\r\n}\r\n\r\n#galleryButton {\r\n  width: inherit;\r\n}\r\n\r\n#galleryLatest, #galleryPopular, #galleryPersonal {\r\n  min-height: 230px;\r\n  min-width: 820px;\r\n  border: 1px solid black;\r\n  margin: 20px;\r\n  background: #03A9F4;\r\n}\r\n\r\n#galleryLatestContainer, #galleryPopular, #galleryPersonalContainer {\r\n  display: flex;\r\n  flex-direction: row;\r\n  flex-wrap: wrap;\r\n  justify-content: space-around;\r\n}\r\n\r\n.previewPopular, .previewLatest, .previewPersonal {\r\n  margin: 20px;\r\n}\r\n\r\n#registerForm, #loginForm {\r\n  margin: auto;\r\n  flex-direction: column;\r\n  display: flex;\r\n  align-items: center;\r\n  margin-bottom: 20px;\r\n}\r\n\r\n#registerForm input, #loginForm input {\r\n  height: 30px;\r\n  padding: 5px;\r\n  width: 100%;\r\n}\r\n\r\n#registerForm input[type=submit], #loginForm input[type=submit] {\r\n  width: 100px;\r\n  height: 40px;\r\n  background: #03A9F4;\r\n  border: none;\r\n}\r\n\r\n#accountForms div {\r\n  justify-content: space-between;\r\n  display: flex;\r\n  margin-bottom: 0;\r\n}\r\n\r\n/* The Modal (background) */\r\n#accountModal {\r\n  display: none; /* Hidden by default */\r\n  position: fixed; /* Stay in place */\r\n  z-index: 1; /* Sit on top */\r\n  left: 0;\r\n  top: 0;\r\n  width: 100%; /* Full width */\r\n  height: 100%; /* Full height */\r\n  overflow: auto; /* Enable scroll if needed */\r\n  background-color: rgb(0,0,0); /* Fallback color */\r\n  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */\r\n}\r\n\r\n/* Modal Content/Box */\r\n#modal-content {\r\n  background-color: #03A9F4;\r\n  margin: 15% auto; /* 15% from the top and centered */\r\n  padding: 20px;\r\n  border: 1px solid #888;\r\n  width: 400px;\r\n}\r\n\r\n#accountForms {\r\n  padding: 50px;\r\n  padding-bottom: 0;\r\n}\r\n\r\n/* The Close Button */\r\n#closeModal {\r\n  float: right;\r\n  font-size: 28px;\r\n  font-weight: bold;\r\n}\r\n\r\n#closeModal:hover,\r\n#closeModal:focus {\r\n  color: black;\r\n  text-decoration: none;\r\n  cursor: pointer;\r\n}\r\n\r\nbutton:hover, input:hover, #registerForm input[type=submit]:hover, #loginForm input[type=submit]:hover, select:hover {\r\n  background: #ccf2f6;\r\n}\r\n\r\n.previewLatest:hover, .previewPersonal:hover {\r\n  cursor: pointer;\r\n  border: 5px solid #ccf2f6;\r\n}", ""]);
 
 // exports
 

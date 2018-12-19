@@ -2,7 +2,7 @@ html, body, #app {
   height: 100%;
   margin: 0;
   padding: 0;
-  font-family: "pixel", Arial;
+  font-family: 'Share Tech Mono', monospace;
   font-size: 18px;
 }
 
@@ -10,25 +10,83 @@ html, body, #app {
   outline: none;
 }
 
-.App {
-  height:100%;
+* {
+  font-family: 'Share Tech Mono', monospace;
 }
 
 @font-face {
-  font-family: "spixel";
+  font-family: "pixel";
   src: url("LCD_Solid.ttf");
 }
 
+select, button, input {
+  font-family: 'Share Tech Mono', monospace;
+}
+
+/* ------------------------ */
+
 button, input {
-  font-family: "pixel", Arial;
   font-size: 18px;
 }
 
 button {
+  width: 120px;
   height: 40px;
   background: none;
   border: none;
   cursor: pointer;
+}
+
+hr {
+  width: 100%;
+}
+
+h2 {
+  text-align: center;
+}
+
+input, select {
+  cursor: pointer;
+}
+
+.previewLatest, .previewPersonal {
+  border: 5px solid #03A9F4;
+}
+
+input[type=color] {
+  background: white;
+  border: none;
+}
+
+input[type=text] {
+  height: 35px;
+  text-align: center;
+  margin-bottom: 10px;
+  border: none;
+  cursor: text;
+}
+
+input[type=button] {
+  height: 40px;
+  background: none;
+  border: none;
+}
+
+select {
+  border: none;
+  background: #03A9F4;
+  font-size: 18px;
+}
+
+option {
+  height: 40px;
+}
+
+/* ------------------------ */
+
+.App {
+  height:100%;
+  background: #00bcd433;
 }
 
 #navbar, #footer {
@@ -104,16 +162,10 @@ button {
 }
 
 #main {
-  xmargin-top: 20px;
   display: flex;
   justify-content: center;
   height: 100%;
   align-items: center;
-  background: #00bcd433;
-}
-
-input, select {
-  cursor: pointer;
 }
 
 #settingsButton {
@@ -128,7 +180,7 @@ input, select {
   flex-direction: column;
 }
 
-#settingsForm div {
+.settingsSection {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -146,37 +198,19 @@ input, select {
   text-align: right;
 }
 
-input[type=color] {
-  background: white;
-  border: none;
-}
-
-input[type=text] {
-  height: 35px;
-  text-align: center;
-  margin-bottom: 20px;
-  border: none;
-  cursor: text;
-}
-
-input[type=button] {
-  background: none;
-  border: none;
-}
-
-select {
-  font-family: "pixel", Arial;
-  border: none;
-  background: #03A9F4;
-  font-size: 18px;
-}
-
-option {
-  height: 40px;
-}
-
 #gridSizeSlider, #intensitySlider {
   width: 70%;
+}
+
+#loginFirst {
+  display: none;
+  text-align: center;
+  height: 40px;
+  line-height: 40px;
+  background: #ccf2f6;
+  width: 120px;
+  margin: auto;
+  margin-top: 5px;
 }
 
 #galleryContainer {
@@ -185,6 +219,10 @@ option {
   max-width: 1000px;
   margin-bottom: 60px;
   margin-top: 80px;
+}
+
+#galleryButton {
+  width: inherit;
 }
 
 #galleryLatest, #galleryPopular, #galleryPersonal {
@@ -206,33 +244,24 @@ option {
   margin: 20px;
 }
 
-h2 {
-  text-align: center;
-}
-
 #registerForm, #loginForm {
   margin: auto;
   flex-direction: column;
   display: flex;
-}
-
-#logout, #accountDetails {
-  margin-bottom: 0;
-  height: 0;
-}
-
-#registerForm, #loginForm {
+  align-items: center;
   margin-bottom: 20px;
 }
 
 #registerForm input, #loginForm input {
   height: 30px;
   padding: 5px;
+  width: 100%;
 }
 
 #registerForm input[type=submit], #loginForm input[type=submit] {
-  height: 44px;
-  background: none;
+  width: 100px;
+  height: 40px;
+  background: #03A9F4;
   border: none;
 }
 
@@ -267,11 +296,11 @@ h2 {
 
 #accountForms {
   padding: 50px;
+  padding-bottom: 0;
 }
 
 /* The Close Button */
 #closeModal {
-  color: #aaa;
   float: right;
   font-size: 28px;
   font-weight: bold;
@@ -284,6 +313,11 @@ h2 {
   cursor: pointer;
 }
 
-hr {
-  width: 100%;
+button:hover, input:hover, #registerForm input[type=submit]:hover, #loginForm input[type=submit]:hover, select:hover {
+  background: #ccf2f6;
+}
+
+.previewLatest:hover, .previewPersonal:hover {
+  cursor: pointer;
+  border: 5px solid #ccf2f6;
 }

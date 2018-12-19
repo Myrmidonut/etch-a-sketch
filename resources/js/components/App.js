@@ -76,7 +76,7 @@ class App extends Component {
   }
 
   updateGrid() {
-    console.log("update grid")
+    //console.log("update grid")
 
     const gridItems = document.querySelectorAll(".gridItem");
     const drawingBoard = document.getElementById("drawingBoard");
@@ -190,12 +190,11 @@ class App extends Component {
         document.getElementById("previewPopular" + i).style.backgroundColor = e.background_color;
         document.getElementById("previewPopular" + i).style.height = gridHeight + "px";
         document.getElementById("previewPopular" + i).style.width = gridHeight + "px";
-        document.getElementById("previewPopular" + i).style.border = "2px solid white";
 
         document.getElementById("previewPopular" + i).addEventListener("click", f => {
           f.preventDefault();
 
-          console.log("clicked " + e.id)
+          //console.log("clicked " + e.id)
         })
 
         for (let j = 0; j < (e.grid_size * e.grid_size); j++) {
@@ -238,11 +237,10 @@ class App extends Component {
         document.getElementById("previewLatest" + i).style.backgroundColor = e.background_color;
         document.getElementById("previewLatest" + i).style.height = gridHeight + "px";
         document.getElementById("previewLatest" + i).style.width = gridHeight + "px";
-        document.getElementById("previewLatest" + i).style.border = "2px solid #03A9F4";
 
         document.getElementById("previewLatest" + i).addEventListener("click", f => {
           f.preventDefault();
-          console.log("clicked " + e.id)
+          //console.log("clicked " + e.id)
 
           this.openDrawing(e);
         })
@@ -267,7 +265,7 @@ class App extends Component {
       })
     })
     .then(() => {
-      console.log("latest done")
+      //console.log("latest done")
     })
   }
 
@@ -275,7 +273,7 @@ class App extends Component {
     fetch(`/api/drawings/one/${id}`)
     .then(response => response.json())
     .then(data => {
-      console.log(data)
+      //console.log(data)
     })
   }
 
@@ -298,11 +296,10 @@ class App extends Component {
         document.getElementById("previewPersonal" + i).style.backgroundColor = e.background_color;
         document.getElementById("previewPersonal" + i).style.height = gridHeight + "px";
         document.getElementById("previewPersonal" + i).style.width = gridHeight + "px";
-        document.getElementById("previewPersonal" + i).style.border = "2px solid #03A9F4";
 
         document.getElementById("previewPersonal" + i).addEventListener("click", f => {
           f.preventDefault();
-          console.log("clicked " + e.id)
+          //console.log("clicked " + e.id)
 
           this.openDrawing(e);
         })
@@ -327,7 +324,7 @@ class App extends Component {
       })
     })
     .then(() => {
-      console.log("personal done");
+      //console.log("personal done");
     })
   }
 
@@ -353,11 +350,19 @@ class App extends Component {
       })
       .then(response => response.text())
       .then(data => {
-        console.log("drawing saved")
-        console.log(data);
+        //console.log("drawing saved")
+        //console.log(data);
 
         document.getElementById("save").textContent = "Save";
       })
+    } else {
+      document.getElementById("save").textContent = "Login first";
+      document.getElementById("save").style.background = "#ccf2f6";
+
+      setTimeout(e => {
+        document.getElementById("save").textContent = "Save";
+        document.getElementById("save").style.background = "#03A9F4";
+      }, 3000)
     }
   }
 
@@ -385,7 +390,7 @@ class App extends Component {
     if (this.state.accountName) {
       document.getElementById("delete").textContent = "Deleting";
 
-      console.log("deleting");
+      //console.log("deleting");
 
       fetch(`/api/delete/${id}`, {
         method: "post",
@@ -399,11 +404,19 @@ class App extends Component {
       })
       .then(response => response.text())
       .then(data => {
-        console.log("drawing deleted")
-        console.log(data);
+        //console.log("drawing deleted")
+        //console.log(data);
 
         document.getElementById("delete").textContent = "Delete";
       })
+    } else {
+      document.getElementById("delete").textContent = "Login first";
+      document.getElementById("delete").style.background = "#ccf2f6";
+
+      setTimeout(e => {
+        document.getElementById("delete").textContent = "Delete";
+        document.getElementById("delete").style.background = "#03A9F4";
+      }, 3000)
     }
   }
 
@@ -426,8 +439,16 @@ class App extends Component {
       .then(data => {
         saveDefaultSettings.value = "Save Default";
 
-        console.log("default settings loaded")
+        //console.log("default settings loaded")
       })
+    } else {
+      const loginFirst = document.getElementById("loginFirst");
+
+      loginFirst.style.display = "block";
+
+      setTimeout(e => {
+        loginFirst.style.display = "none"
+      }, 3000)
     }
   }
 
@@ -448,7 +469,7 @@ class App extends Component {
       title: title
     }, this.updateGrid)
 
-    console.log("set current settings")
+    //console.log("set current settings")
   }
 
   loadDefaultSettings() {
@@ -485,8 +506,16 @@ class App extends Component {
         document.getElementById("backgroundColorPicker").value = this.state.backgroundColor;
         document.getElementById("shape").value = this.state.shape;
 
-        console.log("Defaults loaded")
+        //console.log("Defaults loaded")
       })
+    } else {
+      const loginFirst = document.getElementById("loginFirst");
+
+      loginFirst.style.display = "block";
+
+      setTimeout(e => {
+        loginFirst.style.display = "none"
+      }, 3000)
     }
   }
 
@@ -528,7 +557,7 @@ class App extends Component {
 
       //document.getElementById("accountLink").textContent = this.state.accountName;
 
-      console.log("Logged in")
+      //console.log("Logged in")
 
       document.getElementById("accountModal").style.display = "none";
     })
@@ -546,7 +575,7 @@ class App extends Component {
     })
     .then(response => response.text())
     .then(data => {
-      console.log("Registered");
+      //console.log("Registered");
 
       submitRegister.value = "Register"
     })
@@ -563,14 +592,14 @@ class App extends Component {
       })
       .then(response => response.json())
       .then(data => {
-        console.log(data)
-        console.log("Account");
+        //console.log(data)
+        //console.log("Account");
       })
     }
   }
 
   openDrawing(e) {
-    console.log(e);
+    //console.log(e);
 
     this.setState({
       content: "Drawingboard"
@@ -585,7 +614,8 @@ class App extends Component {
       opacity: JSON.parse(e.opacity).split(","),
       color: JSON.parse(e.color).split(","),
       shape: e.shape,
-      drawingId: e.id
+      drawingId: e.id,
+      title: e.title
     })
 
     const newOpacity = this.state.opacity.slice().map(e => Number(e))
@@ -635,6 +665,7 @@ class App extends Component {
           home={this.state.content}
           opacity={this.state.opacity}
           drawingId={this.state.drawingId}
+          title={this.state.title}
 
           updateGrid={this.updateGrid}
           createGrid={this.createGrid}

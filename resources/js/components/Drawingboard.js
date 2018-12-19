@@ -6,7 +6,7 @@ class Drawingboard extends Component {
   }
 
   componentDidMount() {
-    console.log("Drawingboard mount")
+    //console.log("Drawingboard mount")
 
     const drawingBoard = document.getElementById("drawingBoard");
 
@@ -28,7 +28,7 @@ class Drawingboard extends Component {
     if (this.props.gridSize !== prevProps.gridSize) {
       this.props.createGrid();
       
-      console.log("Drawingboard update gridsize")
+      //console.log("Drawingboard update gridsize")
     }
   }
 

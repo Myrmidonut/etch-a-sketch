@@ -109,11 +109,11 @@ class Navbar extends Component {
           <form id="settingsForm">
             <hr />
 
-            <div>
+            <div className="settingsSection">
               <span>Grid Size: </span>
               <span id="gridSizeValue">20</span>
             </div>
-            <div>
+            <div className="settingsSection">
               <span id="gridSizeMin">5</span>
               <input type="range" min="5" max="50" defaultValue="20" name="grid_size" id="gridSizeSlider" onChange={this.updateGridSizeSlider} />
               <span id="gridSizeMax">50</span>
@@ -121,11 +121,11 @@ class Navbar extends Component {
 
             <hr />
 
-            <div>
+            <div className="settingsSection">
               <span>Intensity: </span>
               <span id="intensityValue">0.3</span>
             </div>
-            <div>
+            <div className="settingsSection">
               <span id="intensityMin">0.1</span>
               <input type="range" min="0.1" max="1.0" step="0.1" defaultValue="0.3" name="intensity" id="intensitySlider" onChange={this.updateIntensitySlider} />
               <span id="intensityMax">1</span>
@@ -133,18 +133,18 @@ class Navbar extends Component {
 
             <hr />
 
-            <div>
+            <div className="settingsSection">
               <span>Main Color: </span>
               <input type="color" name="main_color" id="mainColorPicker" defaultValue="#008000" onChange={this.props.saveCurrentSettings} />
             </div>
-            <div>
+            <div className="settingsSection">
               <span>Background Color: </span>
               <input type="color" name="background_color" id="backgroundColorPicker" defaultValue="#ffffff" onChange={this.props.saveCurrentSettings} />
             </div>
 
             <hr />
 
-            <div>
+            <div className="settingsSection">
               <span>Shape: </span>
               <select name="shape" id="shape" onChange={this.props.saveCurrentSettings} >
                 <option value="square" className="shape">Square</option>
@@ -154,11 +154,15 @@ class Navbar extends Component {
 
             <hr />
 
-            <input type="text" name="title" placeholder="Title" id="titleInput" required onChange={this.props.saveCurrentSettings} />
+            <input type="text" name="title" value={this.props.title} placeholder="Title" id="titleInput" required onChange={this.props.saveCurrentSettings} />
 
-            <div>
+            <div className="settingsSection">
               <input type="button" id="saveDefaultSettings" value="Save Default" onClick={this.props.saveDefaultSettings} />
               <input type="button" id="loadDefaultSettings" value="Load Default" onClick={this.props.loadDefaultSettings} />
+            </div>
+
+            <div id="loginFirst">
+              <span>Login First</span>
             </div>
           </form>
         </div>

@@ -30,7 +30,8 @@ class DrawingController extends Controller {
   }
 
   public function personal($id) {
-    $personaldrawings = Drawing::where("owner", $id)->get();
+    //$personaldrawings = Drawing::where("owner", $id)->get();
+    $personaldrawings = Drawing::where("owner", $id)->orderBy("created_at", "desc")->take(5)->get();
 
     return response()->json($personaldrawings);
   }
