@@ -58,6 +58,17 @@ class Navbar extends Component {
   }
 
   updateGridSizeSlider() {
+    //document.getElementById("gridSizeSlider").addEventListener("mouseup", (e) => {
+    //  e.preventDefault();
+    //  this.props.saveCurrentSettings();
+    //  this.props.clear();
+    //})
+
+    //console.log(event.target)
+
+    //this.props.saveCurrentSettings();
+    //this.props.clear();
+
     document.getElementById("gridSizeValue").textContent = document.getElementById("gridSizeSlider").value;
   }
 

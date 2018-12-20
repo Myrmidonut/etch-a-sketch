@@ -27,6 +27,7 @@ select, button, input {
 
 button, input {
   font-size: 18px;
+  transition: all 0.3s;
 }
 
 button {
@@ -35,10 +36,12 @@ button {
   background: none;
   border: none;
   cursor: pointer;
+  transition: all 0.3s;
 }
 
 hr {
   width: 100%;
+  border: 1px solid white;
 }
 
 h2 {
@@ -76,6 +79,7 @@ select {
   border: none;
   background: #03A9F4;
   font-size: 18px;
+  transition: all 0.3s;
 }
 
 option {
@@ -107,6 +111,7 @@ option {
   line-height: 42px;
   background: #03A9F4;
   border: 1px solid black;
+  box-shadow: 0 -1px 5px grey;
 }
 
 #navbarButtons {
@@ -225,22 +230,22 @@ option {
   width: inherit;
 }
 
-#galleryLatest, #galleryPopular, #galleryPersonal {
-  min-height: 230px;
-  min-width: 820px;
+#galleryLatest, #galleryPersonal {
+  min-height: 245px;
+  min-width: 850px;
   border: 1px solid black;
   margin: 20px;
   background: #03A9F4;
 }
 
-#galleryLatestContainer, #galleryPopular, #galleryPersonalContainer {
+#galleryLatestContainer, #galleryPersonalContainer {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
 }
 
-.previewPopular, .previewLatest, .previewPersonal {
+.previewLatest, .previewPersonal {
   margin: 20px;
 }
 
@@ -320,4 +325,8 @@ button:hover, input:hover, #registerForm input[type=submit]:hover, #loginForm in
 .previewLatest:hover, .previewPersonal:hover {
   cursor: pointer;
   border: 5px solid #ccf2f6;
+}
+
+#drawingBoard:hover {
+  cursor: pointer;
 }

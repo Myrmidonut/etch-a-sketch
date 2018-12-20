@@ -76,7 +76,7 @@ class App extends Component {
   }
 
   updateGrid() {
-    //console.log("update grid")
+    console.log("update grid")
 
     const gridItems = document.querySelectorAll(".gridItem");
     const drawingBoard = document.getElementById("drawingBoard");
@@ -469,7 +469,7 @@ class App extends Component {
       title: title
     }, this.updateGrid)
 
-    //console.log("set current settings")
+    console.log("set current settings")
   }
 
   loadDefaultSettings() {

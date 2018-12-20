@@ -6,7 +6,7 @@ class Drawingboard extends Component {
   }
 
   componentDidMount() {
-    //console.log("Drawingboard mount")
+    console.log("Drawingboard mount")
 
     const drawingBoard = document.getElementById("drawingBoard");
 
