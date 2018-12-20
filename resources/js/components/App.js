@@ -15,7 +15,7 @@ class App extends Component {
       content: "Drawingboard",
       gridHeight: 600,
 
-      gridSize: 20,
+      gridSize: 40,
       intensity: "0.3",
       mainColor: "#008000",
       backgroundColor: "#ffffff",
@@ -49,6 +49,8 @@ class App extends Component {
     this.delete = this.delete.bind(this);
     this.reset = this.reset.bind(this);
     this.clear = this.clear.bind(this);
+    this.setMainColor = this.setMainColor.bind(this);
+    this.setBackgroundColor = this.setBackgroundColor.bind(this);
 
     this.saveDefaultSettings = this.saveDefaultSettings.bind(this);
     this.saveCurrentSettings = this.saveCurrentSettings.bind(this);
@@ -76,7 +78,7 @@ class App extends Component {
   }
 
   updateGrid() {
-    console.log("update grid")
+    //console.log("update grid")
 
     const gridItems = document.querySelectorAll(".gridItem");
     const drawingBoard = document.getElementById("drawingBoard");
@@ -368,7 +370,7 @@ class App extends Component {
 
   reset() {
     this.setState({
-      gridSize: 20,
+      gridSize: 40,
       intensity: "0.3",
       mainColor: "#008000",
       backgroundColor: "#ffffff",
@@ -469,7 +471,7 @@ class App extends Component {
       title: title
     }, this.updateGrid)
 
-    console.log("set current settings")
+    //console.log("set current settings")
   }
 
   loadDefaultSettings() {
@@ -625,6 +627,34 @@ class App extends Component {
     }, this.updateGrid)
   }
 
+  setMainColor(e) {
+    e.preventDefault();
+
+    document.querySelectorAll(".mainColor").forEach(f => {
+      f.style.border = "2px solid #03A9F4";
+    })
+
+    e.target.style.border = "2px solid white";
+
+    this.setState({
+      mainColor: e.target.value
+    })
+  }
+
+  setBackgroundColor(e) {
+    e.preventDefault();
+
+    document.querySelectorAll(".backgroundColor").forEach(f => {
+      f.style.border = "2px solid #03A9F4";
+    })
+
+    e.target.style.border = "2px solid white";
+
+    this.setState({
+      backgroundColor: e.target.value
+    }, this.updateGrid)
+  }
+
   componentDidMount() {
     document.getElementById("galleryButton").addEventListener("click", e => {
       e.preventDefault();
@@ -650,11 +680,11 @@ class App extends Component {
           home={this.state.content}
           accountId={this.state.accountId}
 
-          loadAllDrawings={this.loadAllDrawings}
+          //loadAllDrawings={this.loadAllDrawings}
           loadLatestDrawings={this.loadLatestDrawings}
-          loadOneDrawing={this.loadOneDrawing}
+          //loadOneDrawing={this.loadOneDrawing}
           loadPersonalDrawings={this.loadPersonalDrawings}
-          openDrawing={this.openDrawing}
+          //openDrawing={this.openDrawing}
         />
       )
     }
@@ -666,6 +696,7 @@ class App extends Component {
           opacity={this.state.opacity}
           drawingId={this.state.drawingId}
           title={this.state.title}
+          gridSize={this.state.gridSize}
 
           updateGrid={this.updateGrid}
           createGrid={this.createGrid}
@@ -674,6 +705,8 @@ class App extends Component {
           delete={this.delete}
           reset={this.reset}
           clear={this.clear}
+          setMainColor={this.setMainColor}
+          setBackgroundColor={this.setBackgroundColor}
 
           saveCurrentSettings={this.saveCurrentSettings}
           saveDefaultSettings={this.saveDefaultSettings}

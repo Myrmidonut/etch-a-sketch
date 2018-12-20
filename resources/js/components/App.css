@@ -207,6 +207,48 @@ option {
   width: 70%;
 }
 
+.mainColor {
+  width: 50px;
+  height: 25px;
+  display: inline-block;
+  border: 2px solid #03A9F4;
+}
+
+.backgroundColor {
+  width: 50px;
+  height: 25px;
+  display: inline-block;
+  border: 2px solid #03A9F4;
+}
+
+.blue {
+  background: #0088FF;
+}
+
+.yellow {
+  background: #FFAA00;
+}
+
+.orange {
+  background: #FF7700;
+}
+
+
+.red {
+  background: #FF0033;
+}
+
+
+.purple {
+  background: #9911AA;
+}
+
+
+.green {
+  background: #AADD22;
+}
+
+
 #loginFirst {
   display: none;
   text-align: center;
