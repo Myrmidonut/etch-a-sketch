@@ -986,7 +986,7 @@ module.exports = checkPropTypes;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(12);
-module.exports = __webpack_require__(57);
+module.exports = __webpack_require__(58);
 
 
 /***/ }),
@@ -19280,11 +19280,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(39);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Navbar__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Drawingboard__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Footer__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Gallery__ = __webpack_require__(48);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Modal__ = __webpack_require__(49);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__App_css__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Drawingboard__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Footer__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Gallery__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Modal__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__App_css__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__App_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__App_css__);
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -19327,9 +19327,9 @@ function (_Component) {
     _this.state = {
       content: "Drawingboard",
       gridHeight: 600,
-      gridSize: 40,
-      intensity: "0.3",
-      mainColor: "#008000",
+      gridSize: 50,
+      intensity: "0.2",
+      mainColor: "#FF0033",
       backgroundColor: "#ffffff",
       shape: "square",
       title: "",
@@ -19637,9 +19637,9 @@ function (_Component) {
     key: "reset",
     value: function reset() {
       this.setState({
-        gridSize: 40,
-        intensity: "0.3",
-        mainColor: "#008000",
+        gridSize: 50,
+        intensity: "0.2",
+        mainColor: "#FF0033",
         backgroundColor: "#ffffff",
         shape: "square",
         opacity: new Array(400).fill(0),
@@ -19880,6 +19880,7 @@ function (_Component) {
         f.style.border = "2px solid #03A9F4";
       });
       e.target.style.border = "2px solid white";
+      document.getElementById("mainColorPicker").value = e.target.value;
       this.setState({
         mainColor: e.target.value
       });
@@ -42726,7 +42727,7 @@ exports.unstable_unsubscribe = unstable_unsubscribe;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Settings__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Settings__ = __webpack_require__(46);
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -42849,6 +42850,8 @@ function (_Component) {
           onClick: this.props.clear
         }, "Clear")));
         settings = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Settings__["a" /* default */], {
+          saveDefaultSettings: this.props.saveDefaultSettings,
+          loadDefaultSettings: this.props.loadDefaultSettings,
           showSettings: this.showSettings,
           saveCurrentSettings: this.props.saveCurrentSettings,
           clear: this.props.clear,
@@ -42890,6 +42893,232 @@ function (_Component) {
 
 /***/ }),
 /* 46 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+
+
+var Settings =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(Settings, _Component);
+
+  function Settings(props) {
+    var _this;
+
+    _classCallCheck(this, Settings);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Settings).call(this, props));
+    _this.updateGridSizeSlider = _this.updateGridSizeSlider.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.updateIntensitySlider = _this.updateIntensitySlider.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    return _this;
+  }
+
+  _createClass(Settings, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      document.getElementById("gridSizeSlider").value = this.props.gridSize;
+      document.getElementById("gridSizeSlider").addEventListener("mouseup", function (e) {
+        e.preventDefault();
+
+        _this2.props.saveCurrentSettings();
+
+        _this2.props.clear();
+      });
+      document.getElementById("intensitySlider").addEventListener("mouseup", function (e) {
+        e.preventDefault();
+
+        _this2.props.saveCurrentSettings();
+      });
+    }
+  }, {
+    key: "updateGridSizeSlider",
+    value: function updateGridSizeSlider() {
+      document.getElementById("gridSizeValue").textContent = document.getElementById("gridSizeSlider").value;
+    }
+  }, {
+    key: "updateIntensitySlider",
+    value: function updateIntensitySlider() {
+      document.getElementById("intensityValue").textContent = document.getElementById("intensitySlider").value;
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+        id: "settingsDrawing"
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+        id: "settingsButton",
+        onClick: this.props.showSettings
+      }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", {
+        id: "settingsForm"
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("hr", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+        className: "settingsSection"
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Grid Size: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+        id: "gridSizeValue"
+      }, "20")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+        className: "settingsSection"
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+        id: "gridSizeMin"
+      }, "5"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        type: "range",
+        min: "5",
+        max: "50",
+        defaultValue: "20",
+        name: "grid_size",
+        id: "gridSizeSlider",
+        onChange: this.updateGridSizeSlider
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+        id: "gridSizeMax"
+      }, "50")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("hr", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+        className: "settingsSection"
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Intensity: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+        id: "intensityValue"
+      }, "0.3")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+        className: "settingsSection"
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+        id: "intensityMin"
+      }, "0.1"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        type: "range",
+        min: "0.1",
+        max: "1.0",
+        step: "0.1",
+        defaultValue: "0.3",
+        name: "intensity",
+        id: "intensitySlider",
+        onChange: this.updateIntensitySlider
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+        id: "intensityMax"
+      }, "1")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("hr", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+        className: "settingsSection"
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Main Color: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        type: "color",
+        name: "main_color",
+        id: "mainColorPicker",
+        defaultValue: "#008000",
+        onChange: this.props.saveCurrentSettings
+      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+        className: "mainColor blue",
+        value: "#0088FF",
+        onClick: this.props.setMainColor
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+        className: "mainColor yellow",
+        value: "#FFAA00",
+        onClick: this.props.setMainColor
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+        className: "mainColor orange",
+        value: "#FF7700",
+        onClick: this.props.setMainColor
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+        className: "mainColor red",
+        value: "#FF0033",
+        onClick: this.props.setMainColor
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+        className: "mainColor purple",
+        value: "#9911AA",
+        onClick: this.props.setMainColor
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+        className: "mainColor green",
+        value: "#AADD22",
+        onClick: this.props.setMainColor
+      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("hr", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+        className: "settingsSection"
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Background Color: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        type: "color",
+        name: "background_color",
+        id: "backgroundColorPicker",
+        defaultValue: "#ffffff",
+        onChange: this.props.saveCurrentSettings
+      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+        className: "backgroundColor blue",
+        value: "#0088FF",
+        onClick: this.props.setBackgroundColor
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+        className: "backgroundColor yellow",
+        value: "#FFAA00",
+        onClick: this.props.setBackgroundColor
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+        className: "backgroundColor orange",
+        value: "#FF7700",
+        onClick: this.props.setBackgroundColor
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+        className: "backgroundColor red",
+        value: "#FF0033",
+        onClick: this.props.setBackgroundColor
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+        className: "backgroundColor purple",
+        value: "#9911AA",
+        onClick: this.props.setBackgroundColor
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
+        className: "backgroundColor green",
+        value: "#AADD22",
+        onClick: this.props.setBackgroundColor
+      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("hr", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+        className: "settingsSection"
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Shape: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("select", {
+        name: "shape",
+        id: "shape",
+        onChange: this.props.saveCurrentSettings
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("option", {
+        value: "square",
+        className: "shape"
+      }, "Square"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("option", {
+        value: "round",
+        className: "shape"
+      }, "Round"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("hr", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        type: "text",
+        name: "title",
+        value: this.props.title,
+        placeholder: "Title",
+        id: "titleInput",
+        required: true,
+        onChange: this.props.saveCurrentSettings
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+        className: "settingsSection"
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        type: "button",
+        id: "saveDefaultSettings",
+        value: "Save Default",
+        onClick: this.props.saveDefaultSettings
+      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        type: "button",
+        id: "loadDefaultSettings",
+        value: "Load Default",
+        onClick: this.props.loadDefaultSettings
+      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+        id: "loginFirst"
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Login First"))));
+    }
+  }]);
+
+  return Settings;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (Settings);
+
+/***/ }),
+/* 47 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42965,7 +43194,7 @@ function (_Component) {
 /* harmony default export */ __webpack_exports__["a"] = (Drawingboard);
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42982,7 +43211,7 @@ var Footer = function Footer() {
 /* harmony default export */ __webpack_exports__["a"] = (Footer);
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43064,7 +43293,7 @@ function (_Component) {
 /* harmony default export */ __webpack_exports__["a"] = (Gallery);
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43162,13 +43391,13 @@ function (_Component) {
 /* harmony default export */ __webpack_exports__["a"] = (Modal);
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(51);
+var content = __webpack_require__(52);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -43176,7 +43405,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(55)(content, options);
+var update = __webpack_require__(56)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -43193,22 +43422,22 @@ if(false) {
 }
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var escape = __webpack_require__(52);
-exports = module.exports = __webpack_require__(53)(false);
+var escape = __webpack_require__(53);
+exports = module.exports = __webpack_require__(54)(false);
 // imports
 
 
 // module
-exports.push([module.i, "html, body, #app {\r\n  height: 100%;\r\n  margin: 0;\r\n  padding: 0;\r\n  font-family: 'Share Tech Mono', monospace;\r\n  font-size: 18px;\r\n}\r\n\r\n*:focus {\r\n  outline: none;\r\n}\r\n\r\n* {\r\n  font-family: 'Share Tech Mono', monospace;\r\n}\r\n\r\n@font-face {\r\n  font-family: \"pixel\";\r\n  src: url(" + escape(__webpack_require__(54)) + ");\r\n}\r\n\r\nselect, button, input {\r\n  font-family: 'Share Tech Mono', monospace;\r\n}\r\n\r\n/* ------------------------ */\r\n\r\nbutton, input {\r\n  font-size: 18px;\r\n  transition: all 0.3s;\r\n}\r\n\r\nbutton {\r\n  width: 120px;\r\n  height: 40px;\r\n  background: none;\r\n  border: none;\r\n  cursor: pointer;\r\n  transition: all 0.3s;\r\n}\r\n\r\nhr {\r\n  width: 100%;\r\n  border: 1px solid white;\r\n}\r\n\r\nh2 {\r\n  text-align: center;\r\n}\r\n\r\ninput, select {\r\n  cursor: pointer;\r\n}\r\n\r\n.previewLatest, .previewPersonal {\r\n  border: 5px solid #03A9F4;\r\n}\r\n\r\ninput[type=color] {\r\n  background: white;\r\n  border: none;\r\n}\r\n\r\ninput[type=text] {\r\n  height: 35px;\r\n  text-align: center;\r\n  margin-bottom: 10px;\r\n  border: none;\r\n  cursor: text;\r\n}\r\n\r\ninput[type=button] {\r\n  height: 40px;\r\n  background: none;\r\n  border: none;\r\n}\r\n\r\nselect {\r\n  border: none;\r\n  background: #03A9F4;\r\n  font-size: 18px;\r\n  transition: all 0.3s;\r\n}\r\n\r\noption {\r\n  height: 40px;\r\n}\r\n\r\n/* ------------------------ */\r\n\r\n.App {\r\n  height:100%;\r\n  background: #00bcd433;\r\n}\r\n\r\n#navbar, #footer {\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n}\r\n\r\n#navbar {\r\n  position: fixed;\r\n  top: 0;\r\n  z-index: 1;\r\n}\r\n\r\n#footer {\r\n  position: fixed;\r\n  bottom: 0;\r\n  height: 42px;\r\n  line-height: 42px;\r\n  background: #03A9F4;\r\n  border: 1px solid black;\r\n  box-shadow: 0 -1px 5px grey;\r\n}\r\n\r\n#navbarButtons {\r\n  height: 40px;\r\n  display: flex;\r\n  justify-content: space-between;\r\n  background: #03A9F4;\r\n  box-shadow: 0 1px 5px gray;\r\n  border: 1px solid black;\r\n}\r\n\r\n#navbarSettings {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  height: 100%;\r\n}\r\n\r\n#settingsDrawing {\r\n  background: #03A9F4;\r\n  border-bottom: 1px solid black;\r\n  border-left: 1px solid black;\r\n  border-right: 1px solid black;\r\n  box-shadow: 0px 0px 5px gray;\r\n}\r\n\r\n#drawingBoard {\r\n  box-shadow: 0px 0px 10px gray;\r\n}\r\n\r\n#gallery, #interface, #account {\r\n  display: flex;\r\n  flex: 1;\r\n}\r\n\r\n#gallery {\r\n  align-items: flex-start;\r\n}\r\n\r\n#interface {\r\n  justify-content: center;\r\n}\r\n\r\n#account {\r\n  justify-content: flex-end;\r\n  align-items: flex-start;\r\n}\r\n\r\n#buttonsDrawing {\r\n  display: flex;\r\n  width: 100%;\r\n  justify-content: space-around;\r\n}\r\n\r\n#main {\r\n  display: flex;\r\n  justify-content: center;\r\n  height: 100%;\r\n  align-items: center;\r\n}\r\n\r\n#settingsButton {\r\n  width: 100%;\r\n}\r\n\r\n#settingsForm {\r\n  width: 300px;\r\n  padding: 5px;\r\n  background: #03A9F4;\r\n  display: flex;\r\n  flex-direction: column;\r\n}\r\n\r\n.settingsSection {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n}\r\n\r\n#settingsForm div span {\r\n  line-height: 40px;\r\n}\r\n\r\n#gridSizeMin, #gridSizeMax, #intensityMin, #intensityMax {\r\n  width: 30px;\r\n}\r\n\r\n#gridSizeMax, #intensityMax {\r\n  text-align: right;\r\n}\r\n\r\n#gridSizeSlider, #intensitySlider {\r\n  width: 70%;\r\n}\r\n\r\n.mainColor {\r\n  width: 50px;\r\n  height: 25px;\r\n  display: inline-block;\r\n  border: 2px solid #03A9F4;\r\n}\r\n\r\n.backgroundColor {\r\n  width: 50px;\r\n  height: 25px;\r\n  display: inline-block;\r\n  border: 2px solid #03A9F4;\r\n}\r\n\r\n.blue {\r\n  background: #0088FF;\r\n}\r\n\r\n.yellow {\r\n  background: #FFAA00;\r\n}\r\n\r\n.orange {\r\n  background: #FF7700;\r\n}\r\n\r\n\r\n.red {\r\n  background: #FF0033;\r\n}\r\n\r\n\r\n.purple {\r\n  background: #9911AA;\r\n}\r\n\r\n\r\n.green {\r\n  background: #AADD22;\r\n}\r\n\r\n\r\n#loginFirst {\r\n  display: none;\r\n  text-align: center;\r\n  height: 40px;\r\n  line-height: 40px;\r\n  background: #ccf2f6;\r\n  width: 120px;\r\n  margin: auto;\r\n  margin-top: 5px;\r\n}\r\n\r\n#galleryContainer {\r\n  display: flex;\r\n  flex-direction: column;\r\n  max-width: 1000px;\r\n  margin-bottom: 60px;\r\n  margin-top: 80px;\r\n}\r\n\r\n#galleryButton {\r\n  width: inherit;\r\n}\r\n\r\n#galleryLatest, #galleryPersonal {\r\n  min-height: 245px;\r\n  min-width: 850px;\r\n  border: 1px solid black;\r\n  margin: 20px;\r\n  background: #03A9F4;\r\n}\r\n\r\n#galleryLatestContainer, #galleryPersonalContainer {\r\n  display: flex;\r\n  flex-direction: row;\r\n  flex-wrap: wrap;\r\n  justify-content: space-around;\r\n}\r\n\r\n.previewLatest, .previewPersonal {\r\n  margin: 20px;\r\n}\r\n\r\n#registerForm, #loginForm {\r\n  margin: auto;\r\n  flex-direction: column;\r\n  display: flex;\r\n  align-items: center;\r\n  margin-bottom: 20px;\r\n}\r\n\r\n#registerForm input, #loginForm input {\r\n  height: 30px;\r\n  padding: 5px;\r\n  width: 100%;\r\n}\r\n\r\n#registerForm input[type=submit], #loginForm input[type=submit] {\r\n  width: 100px;\r\n  height: 40px;\r\n  background: #03A9F4;\r\n  border: none;\r\n}\r\n\r\n#accountForms div {\r\n  justify-content: space-between;\r\n  display: flex;\r\n  margin-bottom: 0;\r\n}\r\n\r\n/* The Modal (background) */\r\n#accountModal {\r\n  display: none; /* Hidden by default */\r\n  position: fixed; /* Stay in place */\r\n  z-index: 1; /* Sit on top */\r\n  left: 0;\r\n  top: 0;\r\n  width: 100%; /* Full width */\r\n  height: 100%; /* Full height */\r\n  overflow: auto; /* Enable scroll if needed */\r\n  background-color: rgb(0,0,0); /* Fallback color */\r\n  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */\r\n}\r\n\r\n/* Modal Content/Box */\r\n#modal-content {\r\n  background-color: #03A9F4;\r\n  margin: 15% auto; /* 15% from the top and centered */\r\n  padding: 20px;\r\n  border: 1px solid #888;\r\n  width: 400px;\r\n}\r\n\r\n#accountForms {\r\n  padding: 50px;\r\n  padding-bottom: 0;\r\n}\r\n\r\n/* The Close Button */\r\n#closeModal {\r\n  float: right;\r\n  font-size: 28px;\r\n  font-weight: bold;\r\n}\r\n\r\n#closeModal:hover,\r\n#closeModal:focus {\r\n  color: black;\r\n  text-decoration: none;\r\n  cursor: pointer;\r\n}\r\n\r\nbutton:hover, input:hover, #registerForm input[type=submit]:hover, #loginForm input[type=submit]:hover, select:hover {\r\n  background: #ccf2f6;\r\n}\r\n\r\n.previewLatest:hover, .previewPersonal:hover {\r\n  cursor: pointer;\r\n  border: 5px solid #ccf2f6;\r\n}\r\n\r\n#drawingBoard:hover {\r\n  cursor: pointer;\r\n}", ""]);
+exports.push([module.i, "html, body, #app {\r\n  height: 100%;\r\n  margin: 0;\r\n  padding: 0;\r\n  font-family: 'Share Tech Mono', monospace;\r\n  font-size: 18px;\r\n}\r\n\r\n*:focus {\r\n  outline: none;\r\n}\r\n\r\n* {\r\n  font-family: 'Share Tech Mono', monospace;\r\n}\r\n\r\n@font-face {\r\n  font-family: \"pixel\";\r\n  src: url(" + escape(__webpack_require__(55)) + ");\r\n}\r\n\r\nselect, button, input {\r\n  font-family: 'Share Tech Mono', monospace;\r\n}\r\n\r\n/* ------------------------ */\r\n\r\nbutton, input {\r\n  font-size: 18px;\r\n  transition: all 0.3s;\r\n}\r\n\r\nbutton {\r\n  width: 120px;\r\n  height: 40px;\r\n  background: none;\r\n  border: none;\r\n  cursor: pointer;\r\n  transition: all 0.3s;\r\n}\r\n\r\nhr {\r\n  width: 100%;\r\n  border: 1px solid white;\r\n}\r\n\r\nh2 {\r\n  text-align: center;\r\n}\r\n\r\ninput, select {\r\n  cursor: pointer;\r\n}\r\n\r\n.previewLatest, .previewPersonal {\r\n  border: 5px solid #03A9F4;\r\n}\r\n\r\ninput[type=color] {\r\n  background: white;\r\n  border: none;\r\n}\r\n\r\ninput[type=text] {\r\n  height: 35px;\r\n  text-align: center;\r\n  margin-bottom: 10px;\r\n  border: none;\r\n  cursor: text;\r\n}\r\n\r\ninput[type=button] {\r\n  height: 40px;\r\n  background: none;\r\n  border: none;\r\n}\r\n\r\nselect {\r\n  border: none;\r\n  background: #03A9F4;\r\n  font-size: 18px;\r\n  transition: all 0.3s;\r\n}\r\n\r\noption {\r\n  height: 40px;\r\n}\r\n\r\n/* ------------------------ */\r\n\r\n.App {\r\n  height:100%;\r\n  background: #00bcd433;\r\n}\r\n\r\n#navbar, #footer {\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n}\r\n\r\n#navbar {\r\n  position: fixed;\r\n  top: 0;\r\n  z-index: 1;\r\n}\r\n\r\n#footer {\r\n  position: fixed;\r\n  bottom: 0;\r\n  height: 42px;\r\n  line-height: 42px;\r\n  background: #03A9F4;\r\n  border: 1px solid black;\r\n  box-shadow: 0 -1px 5px grey;\r\n}\r\n\r\n#navbarButtons {\r\n  height: 40px;\r\n  display: flex;\r\n  justify-content: space-between;\r\n  background: #03A9F4;\r\n  box-shadow: 0 1px 5px gray;\r\n  border: 1px solid black;\r\n}\r\n\r\n#navbarSettings {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  height: 100%;\r\n}\r\n\r\n#settingsDrawing {\r\n  background: #03A9F4;\r\n  border-bottom: 1px solid black;\r\n  border-left: 1px solid black;\r\n  border-right: 1px solid black;\r\n  box-shadow: 0px 0px 5px gray;\r\n}\r\n\r\n#drawingBoard {\r\n  box-shadow: 0px 0px 10px gray;\r\n}\r\n\r\n#gallery, #interface, #account {\r\n  display: flex;\r\n  flex: 1;\r\n}\r\n\r\n#gallery {\r\n  align-items: flex-start;\r\n}\r\n\r\n#interface {\r\n  justify-content: center;\r\n}\r\n\r\n#account {\r\n  justify-content: flex-end;\r\n  align-items: flex-start;\r\n}\r\n\r\n#buttonsDrawing {\r\n  display: flex;\r\n  width: 100%;\r\n  justify-content: space-around;\r\n}\r\n\r\n#main {\r\n  display: flex;\r\n  justify-content: center;\r\n  height: 100%;\r\n  align-items: center;\r\n}\r\n\r\n#settingsButton {\r\n  width: 100%;\r\n}\r\n\r\n#settingsForm {\r\n  width: 300px;\r\n  padding: 5px;\r\n  background: #03A9F4;\r\n  display: flex;\r\n  flex-direction: column;\r\n}\r\n\r\n.settingsSection {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n}\r\n\r\n#settingsForm div span {\r\n  line-height: 40px;\r\n}\r\n\r\n#gridSizeMin, #gridSizeMax, #intensityMin, #intensityMax {\r\n  width: 30px;\r\n}\r\n\r\n#gridSizeMax, #intensityMax {\r\n  text-align: right;\r\n}\r\n\r\n#gridSizeSlider, #intensitySlider {\r\n  width: 70%;\r\n}\r\n\r\n.mainColor {\r\n  width: 50px;\r\n  height: 25px;\r\n  display: inline-block;\r\n  border: 2px solid #03A9F4;\r\n}\r\n\r\n.backgroundColor {\r\n  width: 50px;\r\n  height: 25px;\r\n  display: inline-block;\r\n  border: 2px solid #03A9F4;\r\n}\r\n\r\n.blue {\r\n  background: #0088FF;\r\n}\r\n\r\n.yellow {\r\n  background: #FFAA00;\r\n}\r\n\r\n.orange {\r\n  background: #FF7700;\r\n}\r\n\r\n\r\n.red {\r\n  background: #FF0033;\r\n}\r\n\r\n\r\n.purple {\r\n  background: #9911AA;\r\n}\r\n\r\n\r\n.green {\r\n  background: #AADD22;\r\n}\r\n\r\n\r\n#loginFirst {\r\n  display: none;\r\n  text-align: center;\r\n  height: 40px;\r\n  line-height: 40px;\r\n  background: #ccf2f6;\r\n  width: 120px;\r\n  margin: auto;\r\n  margin-top: 5px;\r\n}\r\n\r\n#galleryContainer {\r\n  display: flex;\r\n  flex-direction: column;\r\n  max-width: 1000px;\r\n  margin-bottom: 60px;\r\n  margin-top: 80px;\r\n}\r\n\r\n#galleryButton {\r\n  width: inherit;\r\n}\r\n\r\n#galleryLatest, #galleryPersonal {\r\n  min-height: 245px;\r\n  min-width: 850px;\r\n  border: 1px solid black;\r\n  margin: 20px;\r\n  background: #03A9F4;\r\n}\r\n\r\n#galleryLatestContainer, #galleryPersonalContainer {\r\n  display: flex;\r\n  flex-direction: row;\r\n  flex-wrap: wrap;\r\n  justify-content: space-around;\r\n}\r\n\r\n.previewLatest, .previewPersonal {\r\n  margin: 20px;\r\n}\r\n\r\n#registerForm, #loginForm {\r\n  margin: auto;\r\n  flex-direction: column;\r\n  display: flex;\r\n  align-items: center;\r\n  margin-bottom: 20px;\r\n}\r\n\r\n#registerForm input, #loginForm input {\r\n  height: 30px;\r\n  padding: 5px;\r\n  width: 100%;\r\n}\r\n\r\n#registerForm input[type=submit], #loginForm input[type=submit] {\r\n  width: 100px;\r\n  height: 40px;\r\n  background: #03A9F4;\r\n  border: none;\r\n}\r\n\r\n#accountForms div {\r\n  justify-content: space-between;\r\n  display: flex;\r\n  margin-bottom: 0;\r\n}\r\n\r\n/* The Modal (background) */\r\n#accountModal {\r\n  display: none; /* Hidden by default */\r\n  position: fixed; /* Stay in place */\r\n  z-index: 1; /* Sit on top */\r\n  left: 0;\r\n  top: 0;\r\n  width: 100%; /* Full width */\r\n  height: 100%; /* Full height */\r\n  overflow: auto; /* Enable scroll if needed */\r\n  background-color: rgb(0,0,0); /* Fallback color */\r\n  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */\r\n}\r\n\r\n/* Modal Content/Box */\r\n#modal-content {\r\n  background-color: #03A9F4;\r\n  margin: 15% auto; /* 15% from the top and centered */\r\n  padding: 20px;\r\n  border: 1px solid #888;\r\n  width: 400px;\r\n}\r\n\r\n#accountForms {\r\n  padding: 50px;\r\n  padding-bottom: 0;\r\n}\r\n\r\n/* The Close Button */\r\n#closeModal {\r\n  float: right;\r\n  font-size: 28px;\r\n  font-weight: bold;\r\n}\r\n\r\n#closeModal:hover,\r\n#closeModal:focus {\r\n  color: black;\r\n  text-decoration: none;\r\n  cursor: pointer;\r\n}\r\n\r\nbutton:hover, input:hover, #registerForm input[type=submit]:hover, #loginForm input[type=submit]:hover, select:hover {\r\n  background: #ccf2f6;\r\n}\r\n\r\n.previewLatest:hover, .previewPersonal:hover {\r\n  cursor: pointer;\r\n  border: 5px solid #ccf2f6;\r\n}\r\n\r\n#drawingBoard:hover {\r\n  cursor: pointer;\r\n}", ""]);
 
 // exports
 
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports) {
 
 module.exports = function escape(url) {
@@ -43230,7 +43459,7 @@ module.exports = function escape(url) {
 
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports) {
 
 /*
@@ -43312,13 +43541,13 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports) {
 
 module.exports = "/fonts/LCD_Solid.ttf?eedf346b57615cc9daf69f0dc8da7d69";
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -43364,7 +43593,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(56);
+var	fixUrls = __webpack_require__(57);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -43677,7 +43906,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports) {
 
 
@@ -43772,237 +44001,10 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 58 */,
-/* 59 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-
-
-var Settings =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(Settings, _Component);
-
-  function Settings(props) {
-    var _this;
-
-    _classCallCheck(this, Settings);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Settings).call(this, props));
-    _this.updateGridSizeSlider = _this.updateGridSizeSlider.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.updateIntensitySlider = _this.updateIntensitySlider.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    return _this;
-  }
-
-  _createClass(Settings, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      var _this2 = this;
-
-      document.getElementById("gridSizeSlider").value = this.props.gridSize;
-      document.getElementById("gridSizeSlider").addEventListener("mouseup", function (e) {
-        e.preventDefault();
-
-        _this2.props.saveCurrentSettings();
-
-        _this2.props.clear();
-      });
-      document.getElementById("intensitySlider").addEventListener("mouseup", function (e) {
-        e.preventDefault();
-
-        _this2.props.saveCurrentSettings();
-      });
-    }
-  }, {
-    key: "updateGridSizeSlider",
-    value: function updateGridSizeSlider() {
-      document.getElementById("gridSizeValue").textContent = document.getElementById("gridSizeSlider").value;
-    }
-  }, {
-    key: "updateIntensitySlider",
-    value: function updateIntensitySlider() {
-      document.getElementById("intensityValue").textContent = document.getElementById("intensitySlider").value;
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
-        id: "settingsDrawing"
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
-        id: "settingsButton",
-        onClick: this.props.showSettings
-      }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", {
-        id: "settingsForm"
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("hr", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
-        className: "settingsSection"
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Grid Size: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
-        id: "gridSizeValue"
-      }, "20")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
-        className: "settingsSection"
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
-        id: "gridSizeMin"
-      }, "5"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
-        type: "range",
-        min: "5",
-        max: "50",
-        defaultValue: "20",
-        name: "grid_size",
-        id: "gridSizeSlider",
-        onChange: this.updateGridSizeSlider
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
-        id: "gridSizeMax"
-      }, "50")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("hr", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
-        className: "settingsSection"
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Intensity: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
-        id: "intensityValue"
-      }, "0.3")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
-        className: "settingsSection"
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
-        id: "intensityMin"
-      }, "0.1"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
-        type: "range",
-        min: "0.1",
-        max: "1.0",
-        step: "0.1",
-        defaultValue: "0.3",
-        name: "intensity",
-        id: "intensitySlider",
-        onChange: this.updateIntensitySlider
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
-        id: "intensityMax"
-      }, "1")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("hr", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
-        className: "settingsSection"
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Main Color: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
-        type: "color",
-        name: "main_color",
-        id: "mainColorPicker",
-        defaultValue: "#008000",
-        onChange: this.props.saveCurrentSettings
-      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
-        className: "mainColor blue",
-        value: "#0088FF",
-        onClick: this.props.setMainColor
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
-        className: "mainColor yellow",
-        value: "#FFAA00",
-        onClick: this.props.setMainColor
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
-        className: "mainColor orange",
-        value: "#FF7700",
-        onClick: this.props.setMainColor
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
-        className: "mainColor red",
-        value: "#FF0033",
-        onClick: this.props.setMainColor
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
-        className: "mainColor purple",
-        value: "#9911AA",
-        onClick: this.props.setMainColor
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
-        className: "mainColor green",
-        value: "#AADD22",
-        onClick: this.props.setMainColor
-      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("hr", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
-        className: "settingsSection"
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Background Color: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
-        type: "color",
-        name: "background_color",
-        id: "backgroundColorPicker",
-        defaultValue: "#ffffff",
-        onChange: this.props.saveCurrentSettings
-      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", null, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
-        className: "backgroundColor blue",
-        value: "#0088FF",
-        onClick: this.props.setBackgroundColor
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
-        className: "backgroundColor yellow",
-        value: "#FFAA00",
-        onClick: this.props.setBackgroundColor
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
-        className: "backgroundColor orange",
-        value: "#FF7700",
-        onClick: this.props.setBackgroundColor
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
-        className: "backgroundColor red",
-        value: "#FF0033",
-        onClick: this.props.setBackgroundColor
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
-        className: "backgroundColor purple",
-        value: "#9911AA",
-        onClick: this.props.setBackgroundColor
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
-        className: "backgroundColor green",
-        value: "#AADD22",
-        onClick: this.props.setBackgroundColor
-      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("hr", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
-        className: "settingsSection"
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Shape: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("select", {
-        name: "shape",
-        id: "shape",
-        onChange: this.props.saveCurrentSettings
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("option", {
-        value: "square",
-        className: "shape"
-      }, "Square"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("option", {
-        value: "round",
-        className: "shape"
-      }, "Round"))), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("hr", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
-        type: "text",
-        name: "title",
-        value: this.props.title,
-        placeholder: "Title",
-        id: "titleInput",
-        required: true,
-        onChange: this.props.saveCurrentSettings
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
-        className: "settingsSection"
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
-        type: "button",
-        id: "saveDefaultSettings",
-        value: "Save Default",
-        onClick: this.props.saveDefaultSettings
-      }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
-        type: "button",
-        id: "loadDefaultSettings",
-        value: "Load Default",
-        onClick: this.props.loadDefaultSettings
-      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
-        id: "loginFirst"
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Login First"))));
-    }
-  }]);
-
-  return Settings;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-/* harmony default export */ __webpack_exports__["a"] = (Settings);
 
 /***/ })
 /******/ ]);

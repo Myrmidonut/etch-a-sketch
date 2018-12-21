@@ -15,9 +15,9 @@ class App extends Component {
       content: "Drawingboard",
       gridHeight: 600,
 
-      gridSize: 40,
-      intensity: "0.3",
-      mainColor: "#008000",
+      gridSize: 50,
+      intensity: "0.2",
+      mainColor: "#FF0033",
       backgroundColor: "#ffffff",
       shape: "square",
       title: "",
@@ -370,9 +370,9 @@ class App extends Component {
 
   reset() {
     this.setState({
-      gridSize: 40,
-      intensity: "0.3",
-      mainColor: "#008000",
+      gridSize: 50,
+      intensity: "0.2",
+      mainColor: "#FF0033",
       backgroundColor: "#ffffff",
       shape: "square",
       
@@ -635,6 +635,7 @@ class App extends Component {
     })
 
     e.target.style.border = "2px solid white";
+    document.getElementById("mainColorPicker").value = e.target.value;
 
     this.setState({
       mainColor: e.target.value

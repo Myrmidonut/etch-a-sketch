@@ -84,6 +84,8 @@ class Navbar extends Component {
 
       settings = (
         <Settings 
+          saveDefaultSettings={this.props.saveDefaultSettings}
+          loadDefaultSettings={this.props.loadDefaultSettings}
           showSettings={this.showSettings}
           saveCurrentSettings={this.props.saveCurrentSettings}
           clear={this.props.clear}
