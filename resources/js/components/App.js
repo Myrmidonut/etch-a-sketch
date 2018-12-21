@@ -343,7 +343,8 @@ class App extends Component {
           background_color: this.state.backgroundColor,
           shape: this.state.shape,
           owner: this.state.accountId,
-          title: this.state.title === "" ? "no title" : this.state.title
+          title: this.state.title === "" ? "no title" : this.state.title,
+          id: this.state.drawingId
         }),
         headers: {
           'Accept': 'application/json',

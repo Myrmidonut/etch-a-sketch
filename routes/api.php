@@ -28,7 +28,6 @@ Route::group(["middleware" => "auth:api"], function() {
 Route::group(["middleware" => "auth:api"], function() {
   Route::post("/save", "DrawingController@save");
   Route::post("/delete/{id}", "DrawingController@delete");
-  
 });
 
 // gallery:

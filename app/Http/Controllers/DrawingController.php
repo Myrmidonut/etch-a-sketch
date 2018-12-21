@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-//use Illuminate\Http\Request;
-//use App\Drawing;
-
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
@@ -14,24 +11,55 @@ use Validator;
 
 class DrawingController extends Controller {
   public function save(Request $request) {
-    $drawing = new Drawing;
+    if ($request->id == "null") {
+      $drawing = new Drawing;
 
-    $drawing->grid_size = $request->grid_size;
-    $drawing->opacity = json_encode($request->opacity);
-    $drawing->color = json_encode($request->color);
-    $drawing->background_color = $request->background_color;
-    $drawing->shape = $request->shape;
-    $drawing->owner = $request->owner;
-    $drawing->title = $request->title;
+      $drawing->grid_size = $request->grid_size;
+      $drawing->opacity = json_encode($request->opacity);
+      $drawing->color = json_encode($request->color);
+      $drawing->background_color = $request->background_color;
+      $drawing->shape = $request->shape;
+      $drawing->owner = $request->owner;
+      $drawing->title = $request->title;
 
-    $drawing->save();
+      $drawing->save();
 
-    return("saved" . $drawing);
+      return("saved" . $drawing);
+    } else {
+      $drawing = Drawing::find($request->id);
+
+      if ($drawing->owner == $request->owner) {
+        $drawing->grid_size = $request->grid_size;
+        $drawing->opacity = json_encode($request->opacity);
+        $drawing->color = json_encode($request->color);
+        $drawing->background_color = $request->background_color;
+        $drawing->shape = $request->shape;
+        $drawing->owner = $request->owner;
+        $drawing->title = $request->title;
+
+        $drawing->save();
+
+        return("saved" . $drawing);
+      } else {
+        $drawing = new Drawing;
+
+        $drawing->grid_size = $request->grid_size;
+        $drawing->opacity = json_encode($request->opacity);
+        $drawing->color = json_encode($request->color);
+        $drawing->background_color = $request->background_color;
+        $drawing->shape = $request->shape;
+        $drawing->owner = $request->owner;
+        $drawing->title = $request->title;
+
+        $drawing->save();
+
+        return("saved" . $drawing);
+      }
+    }
   }
 
   public function personal($id) {
-    //$personaldrawings = Drawing::where("owner", $id)->get();
-    $personaldrawings = Drawing::where("owner", $id)->orderBy("created_at", "desc")->take(5)->get();
+    $personaldrawings = Drawing::where("owner", $id)->orderBy("updated_at", "desc")->take(5)->get();
 
     return response()->json($personaldrawings);
   }
@@ -43,7 +71,7 @@ class DrawingController extends Controller {
   }
 
   public function latest() {
-    $latestdrawings = Drawing::orderBy("created_at", "desc")->take(5)->get();
+    $latestdrawings = Drawing::orderBy("updated_at", "desc")->take(5)->get();
 
     return response()->json($latestdrawings);
   }
