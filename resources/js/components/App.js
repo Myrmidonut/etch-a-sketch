@@ -27,6 +27,7 @@ class App extends Component {
       color: [],
 
       mouseHold: false,
+      mouseHoldRight: false,
 
       accountName: "",
       accountId: "",
@@ -64,6 +65,12 @@ class App extends Component {
   mousedown(e) {
     e.preventDefault();
 
+    if (e.button === 2) {
+      this.setState({
+        mouseHoldRight: true
+      })
+    }
+
     this.setState({
       mouseHold: true
     })
@@ -71,6 +78,12 @@ class App extends Component {
 
   mouseup(e) {
     e.preventDefault();
+
+    if (e.button === 2) {
+      this.setState({
+        mouseHoldRight: false
+      })
+    }
 
     this.setState({
       mouseHold: false
@@ -101,6 +114,8 @@ class App extends Component {
   }
 
   createGrid() {
+    document.getElementById("drawingBoard").addEventListener("contextmenu", e => e.preventDefault());
+
     const gridItemDimension = this.state.gridHeight/this.state.gridSize + "px";
     let newOpacity = [];
     let newColor = [];
@@ -135,8 +150,18 @@ class App extends Component {
 
       let self = this;
 
-      gridItem.addEventListener("mouseover", function() {
-        if (self.state.mouseHold) {
+      gridItem.addEventListener("mouseover", function(e) {
+        if (self.state.mouseHoldRight) {
+          let newOpacity = self.state.opacity.slice();
+
+          newOpacity[i] = 0;
+
+          self.setState({
+            opacity: newOpacity
+          })
+
+          if (this.style.opacity <= 1) this.style.opacity = self.state.opacity[i];
+        } else if (self.state.mouseHold) {
           this.style.backgroundColor = self.state.mainColor;
 
           let newOpacity = self.state.opacity.slice();
@@ -154,21 +179,33 @@ class App extends Component {
         }
       })
 
-      gridItem.addEventListener("mousedown", function() {
-        this.style.backgroundColor = self.state.mainColor;
+      gridItem.addEventListener("mousedown", function(e) {
+        if (e.button === 2) {
+          let newOpacity = self.state.opacity.slice();
 
-        let newOpacity = self.state.opacity.slice();
-        let newColor = self.state.color.slice();
+          newOpacity[i] = 0;
 
-        newOpacity[i] += Number(self.state.intensity);
-        newColor[i] = self.state.mainColor;
+          self.setState({
+            opacity: newOpacity
+          })
 
-        self.setState({
-          opacity: newOpacity,
-          color: newColor
-        })
+          if (this.style.opacity <= 1) this.style.opacity = self.state.opacity[i];
+        } else {
+          this.style.backgroundColor = self.state.mainColor;
 
-        if (this.style.opacity < 1) this.style.opacity = self.state.opacity[i];
+          let newOpacity = self.state.opacity.slice();
+          let newColor = self.state.color.slice();
+
+          if (newOpacity[i] < 1) newOpacity[i] += Number(self.state.intensity);
+          newColor[i] = self.state.mainColor;
+
+          self.setState({
+            opacity: newOpacity,
+            color: newColor
+          })
+          
+          this.style.opacity = self.state.opacity[i];
+        }
       })
     }
   }

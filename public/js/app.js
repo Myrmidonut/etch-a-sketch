@@ -19337,6 +19337,7 @@ function (_Component) {
       opacity: [],
       color: [],
       mouseHold: false,
+      mouseHoldRight: false,
       accountName: "",
       accountId: "",
       token: ""
@@ -19369,6 +19370,13 @@ function (_Component) {
     key: "mousedown",
     value: function mousedown(e) {
       e.preventDefault();
+
+      if (e.button === 2) {
+        this.setState({
+          mouseHoldRight: true
+        });
+      }
+
       this.setState({
         mouseHold: true
       });
@@ -19377,6 +19385,13 @@ function (_Component) {
     key: "mouseup",
     value: function mouseup(e) {
       e.preventDefault();
+
+      if (e.button === 2) {
+        this.setState({
+          mouseHoldRight: false
+        });
+      }
+
       this.setState({
         mouseHold: false
       });
@@ -19406,6 +19421,9 @@ function (_Component) {
     value: function createGrid() {
       var _this3 = this;
 
+      document.getElementById("drawingBoard").addEventListener("contextmenu", function (e) {
+        return e.preventDefault();
+      });
       var gridItemDimension = this.state.gridHeight / this.state.gridSize + "px";
       var newOpacity = [];
       var newColor = [];
@@ -19433,34 +19451,55 @@ function (_Component) {
         });
 
         var self = _this3;
-        gridItem.addEventListener("mouseover", function () {
-          if (self.state.mouseHold) {
+        gridItem.addEventListener("mouseover", function (e) {
+          if (self.state.mouseHoldRight) {
+            var _newOpacity = self.state.opacity.slice();
+
+            _newOpacity[i] = 0;
+            self.setState({
+              opacity: _newOpacity
+            });
+            if (this.style.opacity <= 1) this.style.opacity = self.state.opacity[i];
+          } else if (self.state.mouseHold) {
             this.style.backgroundColor = self.state.mainColor;
 
-            var _newOpacity = self.state.opacity.slice();
+            var _newOpacity2 = self.state.opacity.slice();
 
             var _newColor = self.state.color.slice();
 
-            _newOpacity[i] += Number(self.state.intensity);
+            _newOpacity2[i] += Number(self.state.intensity);
             _newColor[i] = self.state.mainColor;
             self.setState({
-              opacity: _newOpacity,
+              opacity: _newOpacity2,
               color: _newColor
             });
             if (this.style.opacity < 1) this.style.opacity = self.state.opacity[i];
           }
         });
-        gridItem.addEventListener("mousedown", function () {
-          this.style.backgroundColor = self.state.mainColor;
-          var newOpacity = self.state.opacity.slice();
-          var newColor = self.state.color.slice();
-          newOpacity[i] += Number(self.state.intensity);
-          newColor[i] = self.state.mainColor;
-          self.setState({
-            opacity: newOpacity,
-            color: newColor
-          });
-          if (this.style.opacity < 1) this.style.opacity = self.state.opacity[i];
+        gridItem.addEventListener("mousedown", function (e) {
+          if (e.button === 2) {
+            var _newOpacity3 = self.state.opacity.slice();
+
+            _newOpacity3[i] = 0;
+            self.setState({
+              opacity: _newOpacity3
+            });
+            if (this.style.opacity <= 1) this.style.opacity = self.state.opacity[i];
+          } else {
+            this.style.backgroundColor = self.state.mainColor;
+
+            var _newOpacity4 = self.state.opacity.slice();
+
+            var _newColor2 = self.state.color.slice();
+
+            if (_newOpacity4[i] < 1) _newOpacity4[i] += Number(self.state.intensity);
+            _newColor2[i] = self.state.mainColor;
+            self.setState({
+              opacity: _newOpacity4,
+              color: _newColor2
+            });
+            this.style.opacity = self.state.opacity[i];
+          }
         });
       };
 
