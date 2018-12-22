@@ -307,13 +307,6 @@ option {
   width: 100%;
 }
 
-#accountForms div {
-  justify-content: space-between;
-  display: flex;
-  margin-bottom: 0;
-  height: 32px;
-}
-
 /* The Modal (background) */
 #accountModal {
   display: none; /* Hidden by default */
@@ -337,7 +330,7 @@ option {
   padding: 20px;
   border: 1px solid #888;
   width: 400px;
-  height: 400px;
+  min-height: 400px;
 }
 
 #accountForms {

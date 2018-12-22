@@ -31,20 +31,25 @@ class PassportController extends Controller {
         'success' => $success
       ], $this->successStatus);
     } else {
-      return response()->json(['error' => 'Unauthorised'], 401);
+      return response()->json(["error" => "Unauthorized"]);
     }
   }
 
   public function register(Request $request) {
     $validator = Validator::make($request->all(), [
-      'name' => 'required',
-      'email' => 'required|email',
-      'password' => 'required',
-      'c_password' => 'required|same:password',
-    ]);
+        'name' => 'required',
+        'email' => 'required|email|unique:users',
+        'password' => 'required',
+        'c_password' => 'required|same:password',
+      ],[
+        "required" => "The :attribute field is required",
+        "same" => "The password must be the same",
+        "unique" => "The :attribute is already registered"
+      ]
+    );
 
     if ($validator->fails()) {
-      return response()->json(['error' => $validator->errors()], 401);            
+      return response()->json(["error" => $validator->errors()]);
     }
 
     $input = $request->all();

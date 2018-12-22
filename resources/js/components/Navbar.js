@@ -44,6 +44,7 @@ class Navbar extends Component {
       if (e.target === navbarSettings) {
         settingsForm.style.display = "none";
         navbar.style.height = "83px";
+        settingsButton.innerHTML = '<i class="fas fa-angle-double-down"></i> Settings'
       }
     }
   }

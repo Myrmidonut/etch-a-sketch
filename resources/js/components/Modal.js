@@ -26,6 +26,8 @@ class Modal extends Component {
               <button id="logout">Logout</button>
               <button id="accountDetails" onClick={this.props.accountDetails}>Account</button>
             </div>*/}
+
+            <div id="error"></div>
           </div>
         </div>
       </div>

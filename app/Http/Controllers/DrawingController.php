@@ -11,6 +11,8 @@ use Validator;
 
 class DrawingController extends Controller {
   public function save(Request $request) {
+    $user = Auth::user()->id;
+
     if ($request->id == "null") {
       $drawing = new Drawing;
 
@@ -24,7 +26,7 @@ class DrawingController extends Controller {
 
       $drawing->save();
 
-      return("saved" . $drawing);
+      return response()->json(["message" => "saved"]);
     } else {
       $drawing = Drawing::find($request->id);
 
@@ -39,7 +41,7 @@ class DrawingController extends Controller {
 
         $drawing->save();
 
-        return("saved" . $drawing);
+        return response()->json(["message" => "saved"]);
       } else {
         $drawing = new Drawing;
 
@@ -53,7 +55,7 @@ class DrawingController extends Controller {
 
         $drawing->save();
 
-        return("saved" . $drawing);
+        return response()->json(["message" => "saved"]);
       }
     }
   }

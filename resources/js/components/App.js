@@ -261,11 +261,12 @@ class App extends Component {
     fetch("/api/drawings/latest")
     .then(response => response.json())
     .then(data => {
-      console.log("latest received")
+      //console.log("latest received")
       document.getElementById("galleryLatestContainer").textContent = "";
 
       data.forEach((e, i) => {
         const drawing = document.createElement("div");
+
         drawing.id = "previewLatest" + i;
         drawing.className = "previewLatest";
 
@@ -304,7 +305,7 @@ class App extends Component {
       })
     })
     .then(() => {
-      console.log("latest build")
+      //console.log("latest build")
     })
   }
 
@@ -345,6 +346,7 @@ class App extends Component {
 
       data.forEach((e, i) => {
         const drawing = document.createElement("div");
+
         drawing.id = "previewPersonal" + i;
         drawing.className = "previewPersonal";
 
@@ -408,12 +410,17 @@ class App extends Component {
           'Authorization': "Bearer " + this.state.token
         }
       })
-      .then(response => response.text())
+      .then(response => response.json())
       .then(data => {
-        //console.log("drawing saved")
-        //console.log(data);
+        if (data.message === "Unauthenticated.") {
+          document.getElementById("save").textContent = "Login first";
+          document.getElementById("save").style.background = "#ffc107";
 
-        document.getElementById("save").textContent = "Save";
+          setTimeout(() => {
+            document.getElementById("save").textContent = "Save";
+            document.getElementById("save").style.background = "white";
+          }, 3000)
+        } else document.getElementById("save").textContent = "Save";
       })
     } else {
       document.getElementById("save").textContent = "Login first";
@@ -588,35 +595,27 @@ class App extends Component {
     })
     .then(response => response.json())
     .then(data => {
-      submitLogin.value = "Login"
+      submitLogin.value = "Login";
 
-      this.setState({
-        //gridSize: data.default_grid_size,
-        //intensity: data.default_intensity,
-        //mainColor: data.default_main_color,
-        //backgroundColor: data.default_background_color,
-        //shape: data.default_shape,
-        accountName: data.name,
-        accountId: data.id,
-        token: data.success.token
-      })
+      document.getElementById("error").innerHTML = "";
+
+      if (data.success) {
+        this.setState({
+          accountName: data.name,
+          accountId: data.id,
+          token: data.success.token
+        })
+
+        document.getElementById("accountModal").style.display = "none";
+      } else {
+        //console.log(data.error)
+
+        document.getElementById("error").innerHTML = `<span className="errorMessage">${data.error}</span>`;
+      }
+      
     })
     .then(() => {
-      /*
-      document.getElementById("gridSizeSlider").value = this.state.gridSize;
-      document.getElementById("gridSizeValue").textContent = this.state.gridSize;
-      document.getElementById("intensitySlider").value = this.state.intensity;
-      document.getElementById("intensityValue").textContent = this.state.intensity;
-      document.getElementById("mainColorPicker").value = this.state.mainColor;
-      document.getElementById("backgroundColorPicker").value = this.state.backgroundColor;
-      document.getElementById("shape").value = this.state.shape;
-      */
-
-      //document.getElementById("accountLink").textContent = this.state.accountName;
-
-      //console.log("Logged in")
-
-      document.getElementById("accountModal").style.display = "none";
+      
     })
   }
 
@@ -630,9 +629,17 @@ class App extends Component {
       method: "post",
       body: new URLSearchParams(new FormData(registerForm))
     })
-    .then(response => response.text())
+    .then(response => response.json())
     .then(data => {
-      console.log(data);
+      document.getElementById("error").innerHTML = "";
+
+      if ("error" in data) {
+        const errors = Object.values(data.error)
+
+        errors.forEach(e => {
+          document.getElementById("error").innerHTML += `<span className='errorMessage'>${e[0]}</span><br>`;
+        })
+      }
 
       submitRegister.value = "Register"
     })
