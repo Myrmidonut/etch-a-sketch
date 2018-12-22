@@ -169,7 +169,7 @@ option {
 
 #buttonsDrawing {
   display: flex;
-  width: 100%;
+  width: 430px;
   justify-content: space-around;
 }
 
