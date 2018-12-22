@@ -19459,7 +19459,7 @@ function (_Component) {
             self.setState({
               opacity: _newOpacity
             });
-            if (this.style.opacity <= 1) this.style.opacity = self.state.opacity[i];
+            this.style.opacity = self.state.opacity[i];
           } else if (self.state.mouseHold) {
             this.style.backgroundColor = self.state.mainColor;
 
@@ -19484,7 +19484,7 @@ function (_Component) {
             self.setState({
               opacity: _newOpacity3
             });
-            if (this.style.opacity <= 1) this.style.opacity = self.state.opacity[i];
+            this.style.opacity = self.state.opacity[i];
           } else {
             this.style.backgroundColor = self.state.mainColor;
 
@@ -19525,7 +19525,7 @@ function (_Component) {
           document.getElementById("previewPopular" + i).style.height = gridHeight + "px";
           document.getElementById("previewPopular" + i).style.width = gridHeight + "px";
           document.getElementById("previewPopular" + i).addEventListener("click", function (f) {
-            f.preventDefault(); //console.log("clicked " + e.id)
+            f.preventDefault();
           });
 
           for (var j = 0; j < e.grid_size * e.grid_size; j++) {
@@ -19552,6 +19552,7 @@ function (_Component) {
       fetch("/api/drawings/latest").then(function (response) {
         return response.json();
       }).then(function (data) {
+        console.log("latest received");
         document.getElementById("galleryLatestContainer").textContent = "";
         data.forEach(function (e, i) {
           var drawing = document.createElement("div");
@@ -19564,7 +19565,7 @@ function (_Component) {
           document.getElementById("previewLatest" + i).style.height = gridHeight + "px";
           document.getElementById("previewLatest" + i).style.width = gridHeight + "px";
           document.getElementById("previewLatest" + i).addEventListener("click", function (f) {
-            f.preventDefault(); //console.log("clicked " + e.id)
+            f.preventDefault();
 
             _this4.openDrawing(e);
           });
@@ -19583,7 +19584,8 @@ function (_Component) {
             document.getElementById("previewLatest" + i).appendChild(gridItem);
           }
         });
-      }).then(function () {//console.log("latest done")
+      }).then(function () {
+        console.log("latest build");
       });
     }
   }, {
@@ -19638,7 +19640,7 @@ function (_Component) {
           document.getElementById("previewPersonal" + i).style.height = gridHeight + "px";
           document.getElementById("previewPersonal" + i).style.width = gridHeight + "px";
           document.getElementById("previewPersonal" + i).addEventListener("click", function (f) {
-            f.preventDefault(); //console.log("clicked " + e.id)
+            f.preventDefault();
 
             _this6.openDrawing(e);
           });

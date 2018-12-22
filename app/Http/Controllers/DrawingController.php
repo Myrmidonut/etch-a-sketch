@@ -71,7 +71,7 @@ class DrawingController extends Controller {
   }
 
   public function latest() {
-    $latestdrawings = Drawing::orderBy("updated_at", "desc")->take(5)->get();
+    $latestdrawings = Drawing::orderBy("updated_at", "desc")->take(50)->get();
 
     return response()->json($latestdrawings);
   }

@@ -160,7 +160,7 @@ class App extends Component {
             opacity: newOpacity
           })
 
-          if (this.style.opacity <= 1) this.style.opacity = self.state.opacity[i];
+          this.style.opacity = self.state.opacity[i];
         } else if (self.state.mouseHold) {
           this.style.backgroundColor = self.state.mainColor;
 
@@ -189,7 +189,7 @@ class App extends Component {
             opacity: newOpacity
           })
 
-          if (this.style.opacity <= 1) this.style.opacity = self.state.opacity[i];
+          this.style.opacity = self.state.opacity[i];
         } else {
           this.style.backgroundColor = self.state.mainColor;
 
@@ -232,8 +232,6 @@ class App extends Component {
 
         document.getElementById("previewPopular" + i).addEventListener("click", f => {
           f.preventDefault();
-
-          //console.log("clicked " + e.id)
         })
 
         for (let j = 0; j < (e.grid_size * e.grid_size); j++) {
@@ -261,6 +259,7 @@ class App extends Component {
     fetch("/api/drawings/latest")
     .then(response => response.json())
     .then(data => {
+      console.log("latest received")
       document.getElementById("galleryLatestContainer").textContent = "";
 
       data.forEach((e, i) => {
@@ -279,7 +278,6 @@ class App extends Component {
 
         document.getElementById("previewLatest" + i).addEventListener("click", f => {
           f.preventDefault();
-          //console.log("clicked " + e.id)
 
           this.openDrawing(e);
         })
@@ -304,7 +302,7 @@ class App extends Component {
       })
     })
     .then(() => {
-      //console.log("latest done")
+      console.log("latest build")
     })
   }
 
@@ -359,7 +357,6 @@ class App extends Component {
 
         document.getElementById("previewPersonal" + i).addEventListener("click", f => {
           f.preventDefault();
-          //console.log("clicked " + e.id)
 
           this.openDrawing(e);
         })
