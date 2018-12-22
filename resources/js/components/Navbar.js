@@ -52,7 +52,7 @@ class Navbar extends Component {
     const accountModal = document.getElementById("accountModal");
     const closeModal = document.getElementById("closeModal");
 
-    accountModal.style.display = "block";
+    accountModal.style.display = "flex";
 
     closeModal.onclick = () => {
       accountModal.style.display = "none";
