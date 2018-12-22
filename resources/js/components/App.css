@@ -119,6 +119,10 @@ option {
   color: black;
 }
 
+#footer a:visited {
+  color: black;
+}
+
 #navbarButtons {
   height: 40px;
   display: flex;
