@@ -224,6 +224,7 @@ option {
   height: 25px;
   display: inline-block;
   border: 2px solid #03A9F4;
+  box-shadow: none;
 }
 
 .backgroundColor {
@@ -231,6 +232,7 @@ option {
   height: 25px;
   display: inline-block;
   border: 2px solid #03A9F4;
+  box-shadow: none;
 }
 
 .blue {

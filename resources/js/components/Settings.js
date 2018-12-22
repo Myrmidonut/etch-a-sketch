@@ -95,6 +95,7 @@ class Settings extends Component {
             <span>Shape: </span>
             <select name="shape" id="shape" onChange={this.props.saveCurrentSettings} >
               <option value="square" className="shape">Square</option>
+              <option value="squircle" className="shape">Squircle</option>
               <option value="round" className="shape">Round</option>
             </select>
           </div>

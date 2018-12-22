@@ -105,6 +105,7 @@ class App extends Component {
 
     gridItems.forEach((e, i) => {
       if (this.state.shape === "round") e.style.borderRadius = "50%";
+      else if (this.state.shape === "squircle") e.style.borderRadius = "35%";
       else e.style.borderRadius = "0";
 
       e.style.opacity = this.state.opacity[i];
@@ -136,6 +137,7 @@ class App extends Component {
       gridItem.className = "gridItem";
 
       if (this.state.shape === "round") gridItem.style.borderRadius = "50%";
+      else if (this.state.shape === "squircle") gridItem.style.borderRadius = "35%";
       else gridItem.style.borderRadius = "0";
       
       document.getElementById("drawingBoard").appendChild(gridItem);
