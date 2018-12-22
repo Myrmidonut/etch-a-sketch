@@ -632,7 +632,7 @@ class App extends Component {
     })
     .then(response => response.text())
     .then(data => {
-      //console.log("Registered");
+      console.log(data);
 
       submitRegister.value = "Register"
     })
