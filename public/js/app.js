@@ -986,7 +986,7 @@ module.exports = checkPropTypes;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(12);
-module.exports = __webpack_require__(58);
+module.exports = __webpack_require__(56);
 
 
 /***/ }),
@@ -19550,15 +19550,39 @@ function (_Component) {
   }, {
     key: "loadOneDrawing",
     value: function loadOneDrawing(id) {
+      var _this5 = this;
+
+      //console.log("loadOneDrawing");
       fetch("/api/drawings/one/".concat(id)).then(function (response) {
         return response.json();
-      }).then(function (data) {//console.log(data)
+      }).then(function (data) {
+        //console.log(data)
+        _this5.setState({
+          gridSize: data.grid_size
+        });
+
+        _this5.setState({
+          backgroundColor: data.background_color,
+          opacity: JSON.parse(data.opacity).split(","),
+          color: JSON.parse(data.color).split(","),
+          shape: data.shape,
+          drawingId: data.id,
+          title: data.title
+        });
+
+        var newOpacity = _this5.state.opacity.slice().map(function (e) {
+          return Number(e);
+        });
+
+        _this5.setState({
+          opacity: newOpacity
+        }, _this5.updateGrid);
       });
     }
   }, {
     key: "loadPersonalDrawings",
     value: function loadPersonalDrawings(id) {
-      var _this5 = this;
+      var _this6 = this;
 
       fetch("/api/drawings/personal/".concat(id)).then(function (response) {
         return response.json();
@@ -19577,7 +19601,7 @@ function (_Component) {
           document.getElementById("previewPersonal" + i).addEventListener("click", function (f) {
             f.preventDefault(); //console.log("clicked " + e.id)
 
-            _this5.openDrawing(e);
+            _this6.openDrawing(e);
           });
 
           for (var j = 0; j < e.grid_size * e.grid_size; j++) {
@@ -19736,7 +19760,7 @@ function (_Component) {
   }, {
     key: "loadDefaultSettings",
     value: function loadDefaultSettings() {
-      var _this6 = this;
+      var _this7 = this;
 
       var loadDefaultSettings = document.getElementById("loadDefaultSettings");
 
@@ -19753,7 +19777,7 @@ function (_Component) {
         }).then(function (data) {
           loadDefaultSettings.value = "Save";
 
-          _this6.setState({
+          _this7.setState({
             gridSize: data.default_grid_size,
             intensity: data.default_intensity,
             mainColor: data.default_main_color,
@@ -19761,13 +19785,13 @@ function (_Component) {
             shape: data.default_shape
           });
         }).then(function () {
-          document.getElementById("gridSizeSlider").value = _this6.state.gridSize;
-          document.getElementById("gridSizeValue").textContent = _this6.state.gridSize;
-          document.getElementById("intensitySlider").value = _this6.state.intensity;
-          document.getElementById("intensityValue").textContent = _this6.state.intensity;
-          document.getElementById("mainColorPicker").value = _this6.state.mainColor;
-          document.getElementById("backgroundColorPicker").value = _this6.state.backgroundColor;
-          document.getElementById("shape").value = _this6.state.shape;
+          document.getElementById("gridSizeSlider").value = _this7.state.gridSize;
+          document.getElementById("gridSizeValue").textContent = _this7.state.gridSize;
+          document.getElementById("intensitySlider").value = _this7.state.intensity;
+          document.getElementById("intensityValue").textContent = _this7.state.intensity;
+          document.getElementById("mainColorPicker").value = _this7.state.mainColor;
+          document.getElementById("backgroundColorPicker").value = _this7.state.backgroundColor;
+          document.getElementById("shape").value = _this7.state.shape;
         });
       } else {
         loadDefaultSettings.style.background = "#ffc107";
@@ -19781,7 +19805,7 @@ function (_Component) {
   }, {
     key: "login",
     value: function login() {
-      var _this7 = this;
+      var _this8 = this;
 
       var loginForm = document.getElementById("loginForm");
       var submitLogin = document.getElementById("submitLogin");
@@ -19794,7 +19818,7 @@ function (_Component) {
       }).then(function (data) {
         submitLogin.value = "Login";
 
-        _this7.setState({
+        _this8.setState({
           //gridSize: data.default_grid_size,
           //intensity: data.default_intensity,
           //mainColor: data.default_main_color,
@@ -19905,17 +19929,17 @@ function (_Component) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this8 = this;
+      var _this9 = this;
 
       document.getElementById("galleryButton").addEventListener("click", function (e) {
         e.preventDefault();
 
-        if (_this8.state.content === "Drawingboard") {
-          _this8.setState({
+        if (_this9.state.content === "Drawingboard") {
+          _this9.setState({
             content: "Gallery"
           });
         } else {
-          _this8.setState({
+          _this9.setState({
             content: "Drawingboard"
           });
         }
@@ -19929,12 +19953,9 @@ function (_Component) {
       if (this.state.content === "Gallery") {
         content = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__Gallery__["a" /* default */], {
           home: this.state.content,
-          accountId: this.state.accountId //loadAllDrawings={this.loadAllDrawings}
-          ,
-          loadLatestDrawings: this.loadLatestDrawings //loadOneDrawing={this.loadOneDrawing}
-          ,
-          loadPersonalDrawings: this.loadPersonalDrawings //openDrawing={this.openDrawing}
-
+          accountId: this.state.accountId,
+          loadLatestDrawings: this.loadLatestDrawings,
+          loadPersonalDrawings: this.loadPersonalDrawings
         });
       }
 
@@ -19971,7 +19992,8 @@ function (_Component) {
         mouseup: this.mouseup,
         mousedown: this.mousedown,
         createGrid: this.createGrid,
-        updateGrid: this.updateGrid
+        updateGrid: this.updateGrid,
+        loadOneDrawing: this.loadOneDrawing
       }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__Modal__["a" /* default */], {
         accountDetails: this.accountDetails
       })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__Footer__["a" /* default */], null));
@@ -42983,9 +43005,9 @@ function (_Component) {
         className: "fas fa-angle-double-down"
       }), " Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", {
         id: "settingsForm"
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("hr", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
         className: "settingsSection"
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Grid Size: "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Grid Size (clears board): "), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", {
         id: "gridSizeValue"
       }, "20")), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
         className: "settingsSection"
@@ -43173,6 +43195,7 @@ function (_Component) {
       document.getElementById("drawingBoard").addEventListener("mousedown", this.props.mousedown);
       document.addEventListener("mouseup", this.props.mouseup);
       this.props.createGrid();
+      this.props.loadOneDrawing(51);
     }
   }, {
     key: "componentWillUnmount",
@@ -43419,7 +43442,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(56)(content, options);
+var update = __webpack_require__(54)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -43439,19 +43462,18 @@ if(false) {
 /* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(54)(false);
+exports = module.exports = __webpack_require__(53)(false);
 // imports
 
 
 // module
-exports.push([module.i, "html, body, #app {\r\n  height: 100%;\r\n  margin: 0;\r\n  padding: 0;\r\n  font-size: 18px;\r\n}\r\n\r\n*, html, body, #app, select, button, input {\r\n  font-family: 'Share Tech Mono', monospace;\r\n}\r\n\r\n/* ------------------------ */\r\n\r\n*:focus {\r\n  outline: none;\r\n}\r\n\r\nbutton, input {\r\n  font-size: 18px;\r\n  transition: all 0.3s;\r\n}\r\n\r\nbutton {\r\n  width: 120px;\r\n  height: 100%;\r\n  background: none;\r\n  border: none;\r\n  border-radius: 3px;\r\n  cursor: pointer;\r\n  transition: all 0.3s;\r\n  background: white;\r\n  box-shadow: 2px 2px 4px grey;\r\n}\r\n\r\nhr {\r\n  width: 100%;\r\n  border: 1px solid white;\r\n}\r\n\r\nh2 {\r\n  text-align: center;\r\n}\r\n\r\ninput, select {\r\n  cursor: pointer;\r\n}\r\n\r\n.previewLatest, .previewPersonal {\r\n  border: 5px solid #03A9F4;\r\n}\r\n\r\ninput[type=color] {\r\n  background: white;\r\n  border: none;\r\n}\r\n\r\ninput[type=text] {\r\n  height: 35px;\r\n  text-align: center;\r\n  margin-bottom: 10px;\r\n  border: none;\r\n  cursor: text;\r\n}\r\n\r\ninput[type=submit] {\r\n  margin-top: 3px;\r\n}\r\n\r\ninput[type=button], input[type=submit] {\r\n  width: 100px;\r\n  height: 32px;\r\n  background: white;\r\n  border: none;\r\n  border-radius: 3px;\r\n  box-shadow: 2px 2px 4px grey;\r\n}\r\n\r\nselect {\r\n  border: none;\r\n  background: #03A9F4;\r\n  font-size: 18px;\r\n  transition: all 0.3s;\r\n}\r\n\r\noption {\r\n  height: 40px;\r\n}\r\n\r\n/* ------------------------ */\r\n\r\n.App {\r\n  height:100%;\r\n  background: #00bcd433;\r\n}\r\n\r\n#navbar, #footer {\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n}\r\n\r\n#navbar {\r\n  position: fixed;\r\n  top: 0;\r\n  z-index: 1;\r\n}\r\n\r\n#footer {\r\n  position: fixed;\r\n  bottom: 0;\r\n  height: 42px;\r\n  line-height: 42px;\r\n  background: #03A9F4;\r\n  border: 1px solid black;\r\n  box-shadow: 0 -1px 5px grey;\r\n}\r\n\r\n#navbarButtons {\r\n  height: 40px;\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n  background: #03A9F4;\r\n  box-shadow: 0 1px 5px gray;\r\n  border: 1px solid black;\r\n}\r\n\r\n#navbarSettings {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  height: 100%;\r\n}\r\n\r\n#settingsDrawing {\r\n  background: #03A9F4;\r\n  border-bottom: 1px solid black;\r\n  border-left: 1px solid black;\r\n  border-right: 1px solid black;\r\n  box-shadow: 0px 0px 5px gray;\r\n}\r\n\r\n#drawingBoard {\r\n  box-shadow: 0px 0px 10px gray;\r\n}\r\n\r\n#gallery, #interface, #account {\r\n  display: flex;\r\n  flex: 1;\r\n  height: 32px;\r\n}\r\n\r\n#gallery {\r\n  align-items: flex-start;\r\n  margin-left: 4px;\r\n}\r\n\r\n#interface {\r\n  justify-content: center;\r\n}\r\n\r\n#account {\r\n  justify-content: flex-end;\r\n  align-items: flex-start;\r\n  margin-right: 4px;\r\n}\r\n\r\n#buttonsDrawing {\r\n  display: flex;\r\n  width: 100%;\r\n  justify-content: space-around;\r\n}\r\n\r\n#main {\r\n  display: flex;\r\n  justify-content: center;\r\n  height: 100%;\r\n  align-items: center;\r\n}\r\n\r\n#settingsButton {\r\n  width: 100%;\r\n  height: 32px;\r\n}\r\n\r\n#settingsForm {\r\n  width: 300px;\r\n  padding: 5px;\r\n  background: #03A9F4;\r\n  display: flex;\r\n  flex-direction: column;\r\n}\r\n\r\n.settingsSection {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n}\r\n\r\n#settingsForm div span {\r\n  line-height: 40px;\r\n}\r\n\r\n#gridSizeMin, #gridSizeMax, #intensityMin, #intensityMax {\r\n  width: 30px;\r\n}\r\n\r\n#gridSizeMax, #intensityMax {\r\n  text-align: right;\r\n}\r\n\r\n#gridSizeSlider, #intensitySlider {\r\n  width: 70%;\r\n}\r\n\r\n.mainColor {\r\n  width: 50px;\r\n  height: 25px;\r\n  display: inline-block;\r\n  border: 2px solid #03A9F4;\r\n}\r\n\r\n.backgroundColor {\r\n  width: 50px;\r\n  height: 25px;\r\n  display: inline-block;\r\n  border: 2px solid #03A9F4;\r\n}\r\n\r\n.blue {\r\n  background: #0088FF;\r\n}\r\n\r\n.yellow {\r\n  background: #FFAA00;\r\n}\r\n\r\n.orange {\r\n  background: #FF7700;\r\n}\r\n\r\n.red {\r\n  background: #FF0033;\r\n}\r\n\r\n.purple {\r\n  background: #9911AA;\r\n}\r\n\r\n.green {\r\n  background: #AADD22;\r\n}\r\n\r\n#saveDefaultSettings, #loadDefaultSettings {\r\n  width: 127px;\r\n}\r\n\r\n#galleryContainer {\r\n  display: flex;\r\n  flex-direction: column;\r\n  max-width: 1000px;\r\n  margin-bottom: 60px;\r\n  margin-top: 80px;\r\n}\r\n\r\n#galleryButton {\r\n  width: inherit;\r\n}\r\n\r\n#galleryLatest, #galleryPersonal {\r\n  min-height: 245px;\r\n  min-width: 850px;\r\n  border: 1px solid black;\r\n  margin: 20px;\r\n  background: #03A9F4;\r\n}\r\n\r\n#galleryLatestContainer, #galleryPersonalContainer {\r\n  display: flex;\r\n  flex-direction: row;\r\n  flex-wrap: wrap;\r\n  justify-content: space-around;\r\n}\r\n\r\n.previewLatest, .previewPersonal {\r\n  margin: 20px;\r\n}\r\n\r\n#registerForm, #loginForm {\r\n  margin: auto;\r\n  flex-direction: column;\r\n  display: flex;\r\n  align-items: center;\r\n  margin-bottom: 20px;\r\n}\r\n\r\n.accountForm {\r\n  padding: 5px;\r\n  width: 100%;\r\n}\r\n\r\n#accountForms div {\r\n  justify-content: space-between;\r\n  display: flex;\r\n  margin-bottom: 0;\r\n  height: 32px;\r\n}\r\n\r\n/* The Modal (background) */\r\n#accountModal {\r\n  display: none; /* Hidden by default */\r\n  position: fixed; /* Stay in place */\r\n  z-index: 1; /* Sit on top */\r\n  left: 0;\r\n  top: 0;\r\n  width: 100%; /* Full width */\r\n  height: 100%; /* Full height */\r\n  overflow: auto; /* Enable scroll if needed */\r\n  background-color: rgb(0,0,0); /* Fallback color */\r\n  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */\r\n}\r\n\r\n/* Modal Content/Box */\r\n#modal-content {\r\n  background-color: #03A9F4;\r\n  margin: 15% auto; /* 15% from the top and centered */\r\n  padding: 20px;\r\n  border: 1px solid #888;\r\n  width: 400px;\r\n}\r\n\r\n#accountForms {\r\n  padding: 50px;\r\n  padding-bottom: 0;\r\n}\r\n\r\n/* The Close Button */\r\n#closeModal {\r\n  float: right;\r\n  font-size: 28px;\r\n  font-weight: bold;\r\n}\r\n\r\n/* --------------------------*/\r\n\r\n#closeModal:hover,\r\n#closeModal:focus {\r\n  color: black;\r\n  text-decoration: none;\r\n  cursor: pointer;\r\n}\r\n\r\nbutton:hover, input:hover, #registerForm input[type=submit]:hover, #loginForm input[type=submit]:hover, select:hover {\r\n  background: #ccf2f6;\r\n}\r\n\r\nbutton:hover, input[type=submit]:hover {\r\n  box-shadow: none;\r\n}\r\n\r\nbutton:active, input[type=submit]:active {\r\n  box-shadow: inset 2px 2px 7px grey;\r\n  transition: none;\r\n}\r\n\r\n.previewLatest:hover, .previewPersonal:hover {\r\n  cursor: pointer;\r\n  border: 5px solid #ccf2f6;\r\n}\r\n\r\n#drawingBoard:hover {\r\n  cursor: pointer;\r\n}", ""]);
+exports.push([module.i, "html, body, #app {\r\n  height: 100%;\r\n  margin: 0;\r\n  padding: 0;\r\n  font-size: 18px;\r\n}\r\n\r\n*, html, body, #app, select, button, input {\r\n  font-family: 'Share Tech Mono', monospace;\r\n}\r\n\r\n/* ------------------------ */\r\n\r\n*:focus {\r\n  outline: none;\r\n}\r\n\r\nbutton, input {\r\n  font-size: 18px;\r\n  transition: all 0.3s;\r\n}\r\n\r\nbutton {\r\n  width: 120px;\r\n  height: 100%;\r\n  background: none;\r\n  border: none;\r\n  border-radius: 3px;\r\n  cursor: pointer;\r\n  transition: all 0.3s;\r\n  background: white;\r\n  box-shadow: 2px 2px 4px grey;\r\n}\r\n\r\nhr {\r\n  width: 100%;\r\n  border: 1px solid white;\r\n}\r\n\r\nh2 {\r\n  text-align: center;\r\n}\r\n\r\ninput, select {\r\n  cursor: pointer;\r\n}\r\n\r\n.previewLatest, .previewPersonal {\r\n  border: 5px solid #03A9F4;\r\n}\r\n\r\ninput[type=color] {\r\n  background: white;\r\n  border: none;\r\n}\r\n\r\ninput[type=text] {\r\n  height: 35px;\r\n  text-align: center;\r\n  margin-bottom: 10px;\r\n  border: none;\r\n  cursor: text;\r\n}\r\n\r\ninput[type=submit] {\r\n  margin-top: 3px;\r\n}\r\n\r\ninput[type=button], input[type=submit] {\r\n  width: 100px;\r\n  height: 32px;\r\n  background: white;\r\n  border: none;\r\n  border-radius: 3px;\r\n  box-shadow: 2px 2px 4px grey;\r\n}\r\n\r\nselect {\r\n  border: none;\r\n  background: #03A9F4;\r\n  font-size: 18px;\r\n  transition: all 0.3s;\r\n}\r\n\r\noption {\r\n  height: 40px;\r\n}\r\n\r\n/* ------------------------ */\r\n\r\n.App {\r\n  height:100%;\r\n  background: #00bcd433;\r\n}\r\n\r\n#navbar, #footer {\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n}\r\n\r\n#navbar {\r\n  position: fixed;\r\n  top: 0;\r\n  z-index: 1;\r\n}\r\n\r\n#footer {\r\n  position: fixed;\r\n  bottom: 0;\r\n  height: 42px;\r\n  line-height: 42px;\r\n  background: #03A9F4;\r\n  border: 1px solid black;\r\n  box-shadow: 0 -1px 5px grey;\r\n}\r\n\r\n#navbarButtons {\r\n  height: 40px;\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n  background: #03A9F4;\r\n  box-shadow: 0 1px 5px gray;\r\n  border: 1px solid black;\r\n}\r\n\r\n#navbarSettings {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  height: 100%;\r\n  margin-top: 5px;\r\n}\r\n\r\n#settingsDrawing {\r\n  border: 1px solid black;\r\n  box-shadow: 0px 0px 5px gray;\r\n}\r\n\r\n#drawingBoard {\r\n  box-shadow: 0px 0px 10px gray;\r\n}\r\n\r\n#gallery, #interface, #account {\r\n  display: flex;\r\n  flex: 1;\r\n  height: 32px;\r\n}\r\n\r\n#gallery {\r\n  align-items: flex-start;\r\n  margin-left: 4px;\r\n}\r\n\r\n#interface {\r\n  justify-content: center;\r\n}\r\n\r\n#account {\r\n  justify-content: flex-end;\r\n  align-items: flex-start;\r\n  margin-right: 4px;\r\n}\r\n\r\n#buttonsDrawing {\r\n  display: flex;\r\n  width: 100%;\r\n  justify-content: space-around;\r\n}\r\n\r\n#main {\r\n  display: flex;\r\n  justify-content: center;\r\n  height: 100%;\r\n  align-items: center;\r\n}\r\n\r\n#settingsButton {\r\n  width: 100%;\r\n  height: 32px;\r\n}\r\n\r\n#settingsForm {\r\n  width: 300px;\r\n  padding: 5px;\r\n  background: #03A9F4;\r\n  display: flex;\r\n  flex-direction: column;\r\n}\r\n\r\n.settingsSection {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n}\r\n\r\n#settingsForm div span {\r\n  line-height: 40px;\r\n}\r\n\r\n#gridSizeMin, #gridSizeMax, #intensityMin, #intensityMax {\r\n  width: 30px;\r\n}\r\n\r\n#gridSizeMax, #intensityMax {\r\n  text-align: right;\r\n}\r\n\r\n#gridSizeSlider, #intensitySlider {\r\n  width: 70%;\r\n}\r\n\r\n.mainColor {\r\n  width: 50px;\r\n  height: 25px;\r\n  display: inline-block;\r\n  border: 2px solid #03A9F4;\r\n}\r\n\r\n.backgroundColor {\r\n  width: 50px;\r\n  height: 25px;\r\n  display: inline-block;\r\n  border: 2px solid #03A9F4;\r\n}\r\n\r\n.blue {\r\n  background: #0088FF;\r\n}\r\n\r\n.yellow {\r\n  background: #FFAA00;\r\n}\r\n\r\n.orange {\r\n  background: #FF7700;\r\n}\r\n\r\n.red {\r\n  background: #FF0033;\r\n}\r\n\r\n.purple {\r\n  background: #9911AA;\r\n}\r\n\r\n.green {\r\n  background: #AADD22;\r\n}\r\n\r\n#saveDefaultSettings, #loadDefaultSettings {\r\n  width: 127px;\r\n}\r\n\r\n#galleryContainer {\r\n  display: flex;\r\n  flex-direction: column;\r\n  max-width: 1000px;\r\n  margin-bottom: 60px;\r\n  margin-top: 80px;\r\n}\r\n\r\n#galleryButton {\r\n  width: inherit;\r\n}\r\n\r\n#galleryLatest, #galleryPersonal {\r\n  min-height: 245px;\r\n  min-width: 850px;\r\n  border: 1px solid black;\r\n  margin: 20px;\r\n  background: #03A9F4;\r\n}\r\n\r\n#galleryLatestContainer, #galleryPersonalContainer {\r\n  display: flex;\r\n  flex-direction: row;\r\n  flex-wrap: wrap;\r\n  justify-content: space-around;\r\n}\r\n\r\n.previewLatest, .previewPersonal {\r\n  margin: 20px;\r\n}\r\n\r\n#registerForm, #loginForm {\r\n  margin: auto;\r\n  flex-direction: column;\r\n  display: flex;\r\n  align-items: center;\r\n  margin-bottom: 20px;\r\n}\r\n\r\n.accountForm {\r\n  padding: 5px;\r\n  width: 100%;\r\n}\r\n\r\n#accountForms div {\r\n  justify-content: space-between;\r\n  display: flex;\r\n  margin-bottom: 0;\r\n  height: 32px;\r\n}\r\n\r\n/* The Modal (background) */\r\n#accountModal {\r\n  display: none; /* Hidden by default */\r\n  position: fixed; /* Stay in place */\r\n  z-index: 1; /* Sit on top */\r\n  left: 0;\r\n  top: 0;\r\n  width: 100%; /* Full width */\r\n  height: 100%; /* Full height */\r\n  overflow: auto; /* Enable scroll if needed */\r\n  background-color: rgb(0,0,0); /* Fallback color */\r\n  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */\r\n}\r\n\r\n/* Modal Content/Box */\r\n#modal-content {\r\n  background-color: #03A9F4;\r\n  margin: 15% auto; /* 15% from the top and centered */\r\n  padding: 20px;\r\n  border: 1px solid #888;\r\n  width: 400px;\r\n}\r\n\r\n#accountForms {\r\n  padding: 50px;\r\n  padding-bottom: 0;\r\n}\r\n\r\n/* The Close Button */\r\n#closeModal {\r\n  float: right;\r\n  font-size: 28px;\r\n  font-weight: bold;\r\n}\r\n\r\n/* --------------------------*/\r\n\r\n#closeModal:hover,\r\n#closeModal:focus {\r\n  color: black;\r\n  text-decoration: none;\r\n  cursor: pointer;\r\n}\r\n\r\nbutton:hover, input:hover, #registerForm input[type=submit]:hover, #loginForm input[type=submit]:hover, select:hover {\r\n  background: #ccf2f6;\r\n}\r\n\r\nbutton:hover, input[type=submit]:hover {\r\n  box-shadow: none;\r\n}\r\n\r\nbutton:active, input[type=submit]:active {\r\n  box-shadow: inset 2px 2px 7px grey;\r\n  transition: none;\r\n}\r\n\r\n.previewLatest:hover, .previewPersonal:hover {\r\n  cursor: pointer;\r\n  border: 5px solid #ccf2f6;\r\n}\r\n\r\n#drawingBoard:hover {\r\n  cursor: pointer;\r\n}", ""]);
 
 // exports
 
 
 /***/ }),
-/* 53 */,
-/* 54 */
+/* 53 */
 /***/ (function(module, exports) {
 
 /*
@@ -43533,8 +43555,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 55 */,
-/* 56 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -43580,7 +43601,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(57);
+var	fixUrls = __webpack_require__(55);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -43893,7 +43914,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 57 */
+/* 55 */
 /***/ (function(module, exports) {
 
 
@@ -43988,7 +44009,7 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 58 */
+/* 56 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

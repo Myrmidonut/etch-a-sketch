@@ -272,10 +272,31 @@ class App extends Component {
   }
 
   loadOneDrawing(id) {
+    //console.log("loadOneDrawing");
+
     fetch(`/api/drawings/one/${id}`)
     .then(response => response.json())
     .then(data => {
       //console.log(data)
+
+      this.setState({
+        gridSize: data.grid_size
+      })
+  
+      this.setState({
+        backgroundColor: data.background_color,
+        opacity: JSON.parse(data.opacity).split(","),
+        color: JSON.parse(data.color).split(","),
+        shape: data.shape,
+        drawingId: data.id,
+        title: data.title
+      })
+
+      const newOpacity = this.state.opacity.slice().map(e => Number(e))
+    
+      this.setState({
+        opacity: newOpacity
+      }, this.updateGrid)
     })
   }
 
@@ -679,11 +700,8 @@ class App extends Component {
           home={this.state.content}
           accountId={this.state.accountId}
 
-          //loadAllDrawings={this.loadAllDrawings}
           loadLatestDrawings={this.loadLatestDrawings}
-          //loadOneDrawing={this.loadOneDrawing}
           loadPersonalDrawings={this.loadPersonalDrawings}
-          //openDrawing={this.openDrawing}
         />
       )
     }
@@ -730,6 +748,7 @@ class App extends Component {
             mousedown={this.mousedown}
             createGrid={this.createGrid}
             updateGrid={this.updateGrid}
+            loadOneDrawing={this.loadOneDrawing}
           />
 
           <Modal 

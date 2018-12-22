@@ -37,10 +37,8 @@ class Settings extends Component {
         <button id="settingsButton" onClick={this.props.showSettings}><i className="fas fa-angle-double-down"></i> Settings</button>
 
         <form id="settingsForm">
-          <hr />
-
           <div className="settingsSection">
-            <span>Grid Size: </span>
+            <span>Grid Size (clears board): </span>
             <span id="gridSizeValue">20</span>
           </div>
           <div className="settingsSection">

@@ -17,6 +17,8 @@ class Drawingboard extends Component {
     document.addEventListener("mouseup", this.props.mouseup)
 
     this.props.createGrid();
+
+    this.props.loadOneDrawing(51);
   }
   
   componentWillUnmount() {
