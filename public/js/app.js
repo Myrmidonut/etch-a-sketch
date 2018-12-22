@@ -19627,10 +19627,10 @@ function (_Component) {
         });
       } else {
         document.getElementById("save").textContent = "Login first";
-        document.getElementById("save").style.background = "#ccf2f6";
-        setTimeout(function (e) {
+        document.getElementById("save").style.background = "#ffc107";
+        setTimeout(function () {
           document.getElementById("save").textContent = "Save";
-          document.getElementById("save").style.background = "#03A9F4";
+          document.getElementById("save").style.background = "white";
         }, 3000);
       }
     }
@@ -19679,19 +19679,20 @@ function (_Component) {
         });
       } else {
         document.getElementById("delete").textContent = "Login first";
-        document.getElementById("delete").style.background = "#ccf2f6";
-        setTimeout(function (e) {
+        document.getElementById("delete").style.background = "#ffc107";
+        setTimeout(function () {
           document.getElementById("delete").textContent = "Delete";
-          document.getElementById("delete").style.background = "#03A9F4";
+          document.getElementById("delete").style.background = "white";
         }, 3000);
       }
     }
   }, {
     key: "saveDefaultSettings",
     value: function saveDefaultSettings() {
+      var saveDefaultSettings = document.getElementById("saveDefaultSettings");
+
       if (this.state.accountName) {
         var settingsForm = document.getElementById("settingsForm");
-        var saveDefaultSettings = document.getElementById("saveDefaultSettings");
         saveDefaultSettings.value = "Saving";
         fetch("/api/settings", {
           method: "post",
@@ -19703,13 +19704,14 @@ function (_Component) {
         }).then(function (response) {
           return response.json();
         }).then(function (data) {
-          saveDefaultSettings.value = "Save Default"; //console.log("default settings loaded")
+          saveDefaultSettings.value = "Save Default";
         });
       } else {
-        var loginFirst = document.getElementById("loginFirst");
-        loginFirst.style.display = "block";
-        setTimeout(function (e) {
-          loginFirst.style.display = "none";
+        saveDefaultSettings.style.background = "#ffc107";
+        saveDefaultSettings.value = "Login First";
+        setTimeout(function () {
+          saveDefaultSettings.style.background = "white";
+          saveDefaultSettings.value = "Save Default";
         }, 3000);
       }
     }
@@ -19736,8 +19738,9 @@ function (_Component) {
     value: function loadDefaultSettings() {
       var _this6 = this;
 
+      var loadDefaultSettings = document.getElementById("loadDefaultSettings");
+
       if (this.state.accountName) {
-        var loadDefaultSettings = document.getElementById("loadDefaultSettings");
         loadDefaultSettings.value = "Loading";
         fetch("/api/settings", {
           method: "get",
@@ -19764,13 +19767,14 @@ function (_Component) {
           document.getElementById("intensityValue").textContent = _this6.state.intensity;
           document.getElementById("mainColorPicker").value = _this6.state.mainColor;
           document.getElementById("backgroundColorPicker").value = _this6.state.backgroundColor;
-          document.getElementById("shape").value = _this6.state.shape; //console.log("Defaults loaded")
+          document.getElementById("shape").value = _this6.state.shape;
         });
       } else {
-        var loginFirst = document.getElementById("loginFirst");
-        loginFirst.style.display = "block";
-        setTimeout(function (e) {
-          loginFirst.style.display = "none";
+        loadDefaultSettings.style.background = "#ffc107";
+        loadDefaultSettings.value = "Login First";
+        setTimeout(function () {
+          loadDefaultSettings.style.background = "white";
+          loadDefaultSettings.value = "Load Default";
         }, 3000);
       }
     }
@@ -42788,13 +42792,16 @@ function (_Component) {
     value: function showSettings() {
       var settingsForm = document.getElementById("settingsForm");
       var navbar = document.getElementById("navbar");
+      var settingsButton = document.getElementById("settingsButton");
 
       if (settingsForm.style.display == "none") {
         settingsForm.style.display = "flex";
         navbar.style.height = "100%";
+        settingsButton.innerHTML = '<i class="fas fa-angle-double-up"></i> Settings';
       } else {
         settingsForm.style.display = "none";
         navbar.style.height = "83px";
+        settingsButton.innerHTML = '<i class="fas fa-angle-double-down"></i> Settings';
       }
 
       var navbarSettings = document.getElementById("navbarSettings");
@@ -42972,7 +42979,9 @@ function (_Component) {
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("button", {
         id: "settingsButton",
         onClick: this.props.showSettings
-      }, "Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", {
+      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", {
+        className: "fas fa-angle-double-down"
+      }), " Settings"), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", {
         id: "settingsForm"
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("hr", null), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
         className: "settingsSection"
@@ -43107,9 +43116,7 @@ function (_Component) {
         id: "loadDefaultSettings",
         value: "Load Default",
         onClick: this.props.loadDefaultSettings
-      })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", {
-        id: "loginFirst"
-      }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", null, "Login First"))));
+      }))));
     }
   }]);
 
@@ -43345,17 +43352,21 @@ function (_Component) {
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", {
         id: "registerForm"
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        className: "accountForm",
         name: "name",
         placeholder: "Username"
       }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        className: "accountForm",
         type: "email",
         name: "email",
         placeholder: "Email"
       }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        className: "accountForm",
         type: "password",
         name: "password",
         placeholder: "Password"
       }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        className: "accountForm",
         type: "password",
         name: "c_password",
         placeholder: "Confirm Password"
@@ -43366,10 +43377,12 @@ function (_Component) {
       })), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("form", {
         id: "loginForm"
       }, __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        className: "accountForm",
         type: "email",
         name: "email",
         placeholder: "Email"
       }), __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+        className: "accountForm",
         type: "password",
         name: "password",
         placeholder: "Password"
@@ -43426,40 +43439,18 @@ if(false) {
 /* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var escape = __webpack_require__(53);
 exports = module.exports = __webpack_require__(54)(false);
 // imports
 
 
 // module
-exports.push([module.i, "html, body, #app {\r\n  height: 100%;\r\n  margin: 0;\r\n  padding: 0;\r\n  font-family: 'Share Tech Mono', monospace;\r\n  font-size: 18px;\r\n}\r\n\r\n*:focus {\r\n  outline: none;\r\n}\r\n\r\n* {\r\n  font-family: 'Share Tech Mono', monospace;\r\n}\r\n\r\n@font-face {\r\n  font-family: \"pixel\";\r\n  src: url(" + escape(__webpack_require__(55)) + ");\r\n}\r\n\r\nselect, button, input {\r\n  font-family: 'Share Tech Mono', monospace;\r\n}\r\n\r\n/* ------------------------ */\r\n\r\nbutton, input {\r\n  font-size: 18px;\r\n  transition: all 0.3s;\r\n}\r\n\r\nbutton {\r\n  width: 120px;\r\n  height: 40px;\r\n  background: none;\r\n  border: none;\r\n  cursor: pointer;\r\n  transition: all 0.3s;\r\n}\r\n\r\nhr {\r\n  width: 100%;\r\n  border: 1px solid white;\r\n}\r\n\r\nh2 {\r\n  text-align: center;\r\n}\r\n\r\ninput, select {\r\n  cursor: pointer;\r\n}\r\n\r\n.previewLatest, .previewPersonal {\r\n  border: 5px solid #03A9F4;\r\n}\r\n\r\ninput[type=color] {\r\n  background: white;\r\n  border: none;\r\n}\r\n\r\ninput[type=text] {\r\n  height: 35px;\r\n  text-align: center;\r\n  margin-bottom: 10px;\r\n  border: none;\r\n  cursor: text;\r\n}\r\n\r\ninput[type=button] {\r\n  height: 40px;\r\n  background: none;\r\n  border: none;\r\n}\r\n\r\nselect {\r\n  border: none;\r\n  background: #03A9F4;\r\n  font-size: 18px;\r\n  transition: all 0.3s;\r\n}\r\n\r\noption {\r\n  height: 40px;\r\n}\r\n\r\n/* ------------------------ */\r\n\r\n.App {\r\n  height:100%;\r\n  background: #00bcd433;\r\n}\r\n\r\n#navbar, #footer {\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n}\r\n\r\n#navbar {\r\n  position: fixed;\r\n  top: 0;\r\n  z-index: 1;\r\n}\r\n\r\n#footer {\r\n  position: fixed;\r\n  bottom: 0;\r\n  height: 42px;\r\n  line-height: 42px;\r\n  background: #03A9F4;\r\n  border: 1px solid black;\r\n  box-shadow: 0 -1px 5px grey;\r\n}\r\n\r\n#navbarButtons {\r\n  height: 40px;\r\n  display: flex;\r\n  justify-content: space-between;\r\n  background: #03A9F4;\r\n  box-shadow: 0 1px 5px gray;\r\n  border: 1px solid black;\r\n}\r\n\r\n#navbarSettings {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  height: 100%;\r\n}\r\n\r\n#settingsDrawing {\r\n  background: #03A9F4;\r\n  border-bottom: 1px solid black;\r\n  border-left: 1px solid black;\r\n  border-right: 1px solid black;\r\n  box-shadow: 0px 0px 5px gray;\r\n}\r\n\r\n#drawingBoard {\r\n  box-shadow: 0px 0px 10px gray;\r\n}\r\n\r\n#gallery, #interface, #account {\r\n  display: flex;\r\n  flex: 1;\r\n}\r\n\r\n#gallery {\r\n  align-items: flex-start;\r\n}\r\n\r\n#interface {\r\n  justify-content: center;\r\n}\r\n\r\n#account {\r\n  justify-content: flex-end;\r\n  align-items: flex-start;\r\n}\r\n\r\n#buttonsDrawing {\r\n  display: flex;\r\n  width: 100%;\r\n  justify-content: space-around;\r\n}\r\n\r\n#main {\r\n  display: flex;\r\n  justify-content: center;\r\n  height: 100%;\r\n  align-items: center;\r\n}\r\n\r\n#settingsButton {\r\n  width: 100%;\r\n}\r\n\r\n#settingsForm {\r\n  width: 300px;\r\n  padding: 5px;\r\n  background: #03A9F4;\r\n  display: flex;\r\n  flex-direction: column;\r\n}\r\n\r\n.settingsSection {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n}\r\n\r\n#settingsForm div span {\r\n  line-height: 40px;\r\n}\r\n\r\n#gridSizeMin, #gridSizeMax, #intensityMin, #intensityMax {\r\n  width: 30px;\r\n}\r\n\r\n#gridSizeMax, #intensityMax {\r\n  text-align: right;\r\n}\r\n\r\n#gridSizeSlider, #intensitySlider {\r\n  width: 70%;\r\n}\r\n\r\n.mainColor {\r\n  width: 50px;\r\n  height: 25px;\r\n  display: inline-block;\r\n  border: 2px solid #03A9F4;\r\n}\r\n\r\n.backgroundColor {\r\n  width: 50px;\r\n  height: 25px;\r\n  display: inline-block;\r\n  border: 2px solid #03A9F4;\r\n}\r\n\r\n.blue {\r\n  background: #0088FF;\r\n}\r\n\r\n.yellow {\r\n  background: #FFAA00;\r\n}\r\n\r\n.orange {\r\n  background: #FF7700;\r\n}\r\n\r\n\r\n.red {\r\n  background: #FF0033;\r\n}\r\n\r\n\r\n.purple {\r\n  background: #9911AA;\r\n}\r\n\r\n\r\n.green {\r\n  background: #AADD22;\r\n}\r\n\r\n\r\n#loginFirst {\r\n  display: none;\r\n  text-align: center;\r\n  height: 40px;\r\n  line-height: 40px;\r\n  background: #ccf2f6;\r\n  width: 120px;\r\n  margin: auto;\r\n  margin-top: 5px;\r\n}\r\n\r\n#galleryContainer {\r\n  display: flex;\r\n  flex-direction: column;\r\n  max-width: 1000px;\r\n  margin-bottom: 60px;\r\n  margin-top: 80px;\r\n}\r\n\r\n#galleryButton {\r\n  width: inherit;\r\n}\r\n\r\n#galleryLatest, #galleryPersonal {\r\n  min-height: 245px;\r\n  min-width: 850px;\r\n  border: 1px solid black;\r\n  margin: 20px;\r\n  background: #03A9F4;\r\n}\r\n\r\n#galleryLatestContainer, #galleryPersonalContainer {\r\n  display: flex;\r\n  flex-direction: row;\r\n  flex-wrap: wrap;\r\n  justify-content: space-around;\r\n}\r\n\r\n.previewLatest, .previewPersonal {\r\n  margin: 20px;\r\n}\r\n\r\n#registerForm, #loginForm {\r\n  margin: auto;\r\n  flex-direction: column;\r\n  display: flex;\r\n  align-items: center;\r\n  margin-bottom: 20px;\r\n}\r\n\r\n#registerForm input, #loginForm input {\r\n  height: 30px;\r\n  padding: 5px;\r\n  width: 100%;\r\n}\r\n\r\n#registerForm input[type=submit], #loginForm input[type=submit] {\r\n  width: 100px;\r\n  height: 40px;\r\n  background: #03A9F4;\r\n  border: none;\r\n}\r\n\r\n#accountForms div {\r\n  justify-content: space-between;\r\n  display: flex;\r\n  margin-bottom: 0;\r\n}\r\n\r\n/* The Modal (background) */\r\n#accountModal {\r\n  display: none; /* Hidden by default */\r\n  position: fixed; /* Stay in place */\r\n  z-index: 1; /* Sit on top */\r\n  left: 0;\r\n  top: 0;\r\n  width: 100%; /* Full width */\r\n  height: 100%; /* Full height */\r\n  overflow: auto; /* Enable scroll if needed */\r\n  background-color: rgb(0,0,0); /* Fallback color */\r\n  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */\r\n}\r\n\r\n/* Modal Content/Box */\r\n#modal-content {\r\n  background-color: #03A9F4;\r\n  margin: 15% auto; /* 15% from the top and centered */\r\n  padding: 20px;\r\n  border: 1px solid #888;\r\n  width: 400px;\r\n}\r\n\r\n#accountForms {\r\n  padding: 50px;\r\n  padding-bottom: 0;\r\n}\r\n\r\n/* The Close Button */\r\n#closeModal {\r\n  float: right;\r\n  font-size: 28px;\r\n  font-weight: bold;\r\n}\r\n\r\n#closeModal:hover,\r\n#closeModal:focus {\r\n  color: black;\r\n  text-decoration: none;\r\n  cursor: pointer;\r\n}\r\n\r\nbutton:hover, input:hover, #registerForm input[type=submit]:hover, #loginForm input[type=submit]:hover, select:hover {\r\n  background: #ccf2f6;\r\n}\r\n\r\n.previewLatest:hover, .previewPersonal:hover {\r\n  cursor: pointer;\r\n  border: 5px solid #ccf2f6;\r\n}\r\n\r\n#drawingBoard:hover {\r\n  cursor: pointer;\r\n}", ""]);
+exports.push([module.i, "html, body, #app {\r\n  height: 100%;\r\n  margin: 0;\r\n  padding: 0;\r\n  font-size: 18px;\r\n}\r\n\r\n*, html, body, #app, select, button, input {\r\n  font-family: 'Share Tech Mono', monospace;\r\n}\r\n\r\n/* ------------------------ */\r\n\r\n*:focus {\r\n  outline: none;\r\n}\r\n\r\nbutton, input {\r\n  font-size: 18px;\r\n  transition: all 0.3s;\r\n}\r\n\r\nbutton {\r\n  width: 120px;\r\n  height: 100%;\r\n  background: none;\r\n  border: none;\r\n  border-radius: 3px;\r\n  cursor: pointer;\r\n  transition: all 0.3s;\r\n  background: white;\r\n  box-shadow: 2px 2px 4px grey;\r\n}\r\n\r\nhr {\r\n  width: 100%;\r\n  border: 1px solid white;\r\n}\r\n\r\nh2 {\r\n  text-align: center;\r\n}\r\n\r\ninput, select {\r\n  cursor: pointer;\r\n}\r\n\r\n.previewLatest, .previewPersonal {\r\n  border: 5px solid #03A9F4;\r\n}\r\n\r\ninput[type=color] {\r\n  background: white;\r\n  border: none;\r\n}\r\n\r\ninput[type=text] {\r\n  height: 35px;\r\n  text-align: center;\r\n  margin-bottom: 10px;\r\n  border: none;\r\n  cursor: text;\r\n}\r\n\r\ninput[type=submit] {\r\n  margin-top: 3px;\r\n}\r\n\r\ninput[type=button], input[type=submit] {\r\n  width: 100px;\r\n  height: 32px;\r\n  background: white;\r\n  border: none;\r\n  border-radius: 3px;\r\n  box-shadow: 2px 2px 4px grey;\r\n}\r\n\r\nselect {\r\n  border: none;\r\n  background: #03A9F4;\r\n  font-size: 18px;\r\n  transition: all 0.3s;\r\n}\r\n\r\noption {\r\n  height: 40px;\r\n}\r\n\r\n/* ------------------------ */\r\n\r\n.App {\r\n  height:100%;\r\n  background: #00bcd433;\r\n}\r\n\r\n#navbar, #footer {\r\n  box-sizing: border-box;\r\n  width: 100%;\r\n}\r\n\r\n#navbar {\r\n  position: fixed;\r\n  top: 0;\r\n  z-index: 1;\r\n}\r\n\r\n#footer {\r\n  position: fixed;\r\n  bottom: 0;\r\n  height: 42px;\r\n  line-height: 42px;\r\n  background: #03A9F4;\r\n  border: 1px solid black;\r\n  box-shadow: 0 -1px 5px grey;\r\n}\r\n\r\n#navbarButtons {\r\n  height: 40px;\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n  background: #03A9F4;\r\n  box-shadow: 0 1px 5px gray;\r\n  border: 1px solid black;\r\n}\r\n\r\n#navbarSettings {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  height: 100%;\r\n}\r\n\r\n#settingsDrawing {\r\n  background: #03A9F4;\r\n  border-bottom: 1px solid black;\r\n  border-left: 1px solid black;\r\n  border-right: 1px solid black;\r\n  box-shadow: 0px 0px 5px gray;\r\n}\r\n\r\n#drawingBoard {\r\n  box-shadow: 0px 0px 10px gray;\r\n}\r\n\r\n#gallery, #interface, #account {\r\n  display: flex;\r\n  flex: 1;\r\n  height: 32px;\r\n}\r\n\r\n#gallery {\r\n  align-items: flex-start;\r\n  margin-left: 4px;\r\n}\r\n\r\n#interface {\r\n  justify-content: center;\r\n}\r\n\r\n#account {\r\n  justify-content: flex-end;\r\n  align-items: flex-start;\r\n  margin-right: 4px;\r\n}\r\n\r\n#buttonsDrawing {\r\n  display: flex;\r\n  width: 100%;\r\n  justify-content: space-around;\r\n}\r\n\r\n#main {\r\n  display: flex;\r\n  justify-content: center;\r\n  height: 100%;\r\n  align-items: center;\r\n}\r\n\r\n#settingsButton {\r\n  width: 100%;\r\n  height: 32px;\r\n}\r\n\r\n#settingsForm {\r\n  width: 300px;\r\n  padding: 5px;\r\n  background: #03A9F4;\r\n  display: flex;\r\n  flex-direction: column;\r\n}\r\n\r\n.settingsSection {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n}\r\n\r\n#settingsForm div span {\r\n  line-height: 40px;\r\n}\r\n\r\n#gridSizeMin, #gridSizeMax, #intensityMin, #intensityMax {\r\n  width: 30px;\r\n}\r\n\r\n#gridSizeMax, #intensityMax {\r\n  text-align: right;\r\n}\r\n\r\n#gridSizeSlider, #intensitySlider {\r\n  width: 70%;\r\n}\r\n\r\n.mainColor {\r\n  width: 50px;\r\n  height: 25px;\r\n  display: inline-block;\r\n  border: 2px solid #03A9F4;\r\n}\r\n\r\n.backgroundColor {\r\n  width: 50px;\r\n  height: 25px;\r\n  display: inline-block;\r\n  border: 2px solid #03A9F4;\r\n}\r\n\r\n.blue {\r\n  background: #0088FF;\r\n}\r\n\r\n.yellow {\r\n  background: #FFAA00;\r\n}\r\n\r\n.orange {\r\n  background: #FF7700;\r\n}\r\n\r\n.red {\r\n  background: #FF0033;\r\n}\r\n\r\n.purple {\r\n  background: #9911AA;\r\n}\r\n\r\n.green {\r\n  background: #AADD22;\r\n}\r\n\r\n#saveDefaultSettings, #loadDefaultSettings {\r\n  width: 127px;\r\n}\r\n\r\n#galleryContainer {\r\n  display: flex;\r\n  flex-direction: column;\r\n  max-width: 1000px;\r\n  margin-bottom: 60px;\r\n  margin-top: 80px;\r\n}\r\n\r\n#galleryButton {\r\n  width: inherit;\r\n}\r\n\r\n#galleryLatest, #galleryPersonal {\r\n  min-height: 245px;\r\n  min-width: 850px;\r\n  border: 1px solid black;\r\n  margin: 20px;\r\n  background: #03A9F4;\r\n}\r\n\r\n#galleryLatestContainer, #galleryPersonalContainer {\r\n  display: flex;\r\n  flex-direction: row;\r\n  flex-wrap: wrap;\r\n  justify-content: space-around;\r\n}\r\n\r\n.previewLatest, .previewPersonal {\r\n  margin: 20px;\r\n}\r\n\r\n#registerForm, #loginForm {\r\n  margin: auto;\r\n  flex-direction: column;\r\n  display: flex;\r\n  align-items: center;\r\n  margin-bottom: 20px;\r\n}\r\n\r\n.accountForm {\r\n  padding: 5px;\r\n  width: 100%;\r\n}\r\n\r\n#accountForms div {\r\n  justify-content: space-between;\r\n  display: flex;\r\n  margin-bottom: 0;\r\n  height: 32px;\r\n}\r\n\r\n/* The Modal (background) */\r\n#accountModal {\r\n  display: none; /* Hidden by default */\r\n  position: fixed; /* Stay in place */\r\n  z-index: 1; /* Sit on top */\r\n  left: 0;\r\n  top: 0;\r\n  width: 100%; /* Full width */\r\n  height: 100%; /* Full height */\r\n  overflow: auto; /* Enable scroll if needed */\r\n  background-color: rgb(0,0,0); /* Fallback color */\r\n  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */\r\n}\r\n\r\n/* Modal Content/Box */\r\n#modal-content {\r\n  background-color: #03A9F4;\r\n  margin: 15% auto; /* 15% from the top and centered */\r\n  padding: 20px;\r\n  border: 1px solid #888;\r\n  width: 400px;\r\n}\r\n\r\n#accountForms {\r\n  padding: 50px;\r\n  padding-bottom: 0;\r\n}\r\n\r\n/* The Close Button */\r\n#closeModal {\r\n  float: right;\r\n  font-size: 28px;\r\n  font-weight: bold;\r\n}\r\n\r\n/* --------------------------*/\r\n\r\n#closeModal:hover,\r\n#closeModal:focus {\r\n  color: black;\r\n  text-decoration: none;\r\n  cursor: pointer;\r\n}\r\n\r\nbutton:hover, input:hover, #registerForm input[type=submit]:hover, #loginForm input[type=submit]:hover, select:hover {\r\n  background: #ccf2f6;\r\n}\r\n\r\nbutton:hover, input[type=submit]:hover {\r\n  box-shadow: none;\r\n}\r\n\r\nbutton:active, input[type=submit]:active {\r\n  box-shadow: inset 2px 2px 7px grey;\r\n  transition: none;\r\n}\r\n\r\n.previewLatest:hover, .previewPersonal:hover {\r\n  cursor: pointer;\r\n  border: 5px solid #ccf2f6;\r\n}\r\n\r\n#drawingBoard:hover {\r\n  cursor: pointer;\r\n}", ""]);
 
 // exports
 
 
 /***/ }),
-/* 53 */
-/***/ (function(module, exports) {
-
-module.exports = function escape(url) {
-    if (typeof url !== 'string') {
-        return url
-    }
-    // If url is already wrapped in quotes, remove them
-    if (/^['"].*['"]$/.test(url)) {
-        url = url.slice(1, -1);
-    }
-    // Should url be wrapped?
-    // See https://drafts.csswg.org/css-values-3/#urls
-    if (/["'() \t\n]/.test(url)) {
-        return '"' + url.replace(/"/g, '\\"').replace(/\n/g, '\\n') + '"'
-    }
-
-    return url
-}
-
-
-/***/ }),
+/* 53 */,
 /* 54 */
 /***/ (function(module, exports) {
 
@@ -43542,12 +43533,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 55 */
-/***/ (function(module, exports) {
-
-module.exports = "/fonts/LCD_Solid.ttf?eedf346b57615cc9daf69f0dc8da7d69";
-
-/***/ }),
+/* 55 */,
 /* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 

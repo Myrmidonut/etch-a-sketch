@@ -2,28 +2,18 @@ html, body, #app {
   height: 100%;
   margin: 0;
   padding: 0;
-  font-family: 'Share Tech Mono', monospace;
   font-size: 18px;
 }
 
-*:focus {
-  outline: none;
-}
-
-* {
-  font-family: 'Share Tech Mono', monospace;
-}
-
-@font-face {
-  font-family: "pixel";
-  src: url("LCD_Solid.ttf");
-}
-
-select, button, input {
+*, html, body, #app, select, button, input {
   font-family: 'Share Tech Mono', monospace;
 }
 
 /* ------------------------ */
+
+*:focus {
+  outline: none;
+}
 
 button, input {
   font-size: 18px;
@@ -32,11 +22,14 @@ button, input {
 
 button {
   width: 120px;
-  height: 40px;
+  height: 100%;
   background: none;
   border: none;
+  border-radius: 3px;
   cursor: pointer;
   transition: all 0.3s;
+  background: white;
+  box-shadow: 2px 2px 4px grey;
 }
 
 hr {
@@ -69,10 +62,17 @@ input[type=text] {
   cursor: text;
 }
 
-input[type=button] {
-  height: 40px;
-  background: none;
+input[type=submit] {
+  margin-top: 3px;
+}
+
+input[type=button], input[type=submit] {
+  width: 100px;
+  height: 32px;
+  background: white;
   border: none;
+  border-radius: 3px;
+  box-shadow: 2px 2px 4px grey;
 }
 
 select {
@@ -118,6 +118,7 @@ option {
   height: 40px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   background: #03A9F4;
   box-shadow: 0 1px 5px gray;
   border: 1px solid black;
@@ -145,10 +146,12 @@ option {
 #gallery, #interface, #account {
   display: flex;
   flex: 1;
+  height: 32px;
 }
 
 #gallery {
   align-items: flex-start;
+  margin-left: 4px;
 }
 
 #interface {
@@ -158,6 +161,7 @@ option {
 #account {
   justify-content: flex-end;
   align-items: flex-start;
+  margin-right: 4px;
 }
 
 #buttonsDrawing {
@@ -175,6 +179,7 @@ option {
 
 #settingsButton {
   width: 100%;
+  height: 32px;
 }
 
 #settingsForm {
@@ -233,31 +238,20 @@ option {
   background: #FF7700;
 }
 
-
 .red {
   background: #FF0033;
 }
-
 
 .purple {
   background: #9911AA;
 }
 
-
 .green {
   background: #AADD22;
 }
 
-
-#loginFirst {
-  display: none;
-  text-align: center;
-  height: 40px;
-  line-height: 40px;
-  background: #ccf2f6;
-  width: 120px;
-  margin: auto;
-  margin-top: 5px;
+#saveDefaultSettings, #loadDefaultSettings {
+  width: 127px;
 }
 
 #galleryContainer {
@@ -299,23 +293,16 @@ option {
   margin-bottom: 20px;
 }
 
-#registerForm input, #loginForm input {
-  height: 30px;
+.accountForm {
   padding: 5px;
   width: 100%;
-}
-
-#registerForm input[type=submit], #loginForm input[type=submit] {
-  width: 100px;
-  height: 40px;
-  background: #03A9F4;
-  border: none;
 }
 
 #accountForms div {
   justify-content: space-between;
   display: flex;
   margin-bottom: 0;
+  height: 32px;
 }
 
 /* The Modal (background) */
@@ -353,6 +340,8 @@ option {
   font-weight: bold;
 }
 
+/* --------------------------*/
+
 #closeModal:hover,
 #closeModal:focus {
   color: black;
@@ -362,6 +351,15 @@ option {
 
 button:hover, input:hover, #registerForm input[type=submit]:hover, #loginForm input[type=submit]:hover, select:hover {
   background: #ccf2f6;
+}
+
+button:hover, input[type=submit]:hover {
+  box-shadow: none;
+}
+
+button:active, input[type=submit]:active {
+  box-shadow: inset 2px 2px 7px grey;
+  transition: none;
 }
 
 .previewLatest:hover, .previewPersonal:hover {

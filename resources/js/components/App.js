@@ -360,11 +360,11 @@ class App extends Component {
       })
     } else {
       document.getElementById("save").textContent = "Login first";
-      document.getElementById("save").style.background = "#ccf2f6";
+      document.getElementById("save").style.background = "#ffc107";
 
-      setTimeout(e => {
+      setTimeout(() => {
         document.getElementById("save").textContent = "Save";
-        document.getElementById("save").style.background = "#03A9F4";
+        document.getElementById("save").style.background = "white";
       }, 3000)
     }
   }
@@ -414,19 +414,20 @@ class App extends Component {
       })
     } else {
       document.getElementById("delete").textContent = "Login first";
-      document.getElementById("delete").style.background = "#ccf2f6";
+      document.getElementById("delete").style.background = "#ffc107";
 
-      setTimeout(e => {
+      setTimeout(() => {
         document.getElementById("delete").textContent = "Delete";
-        document.getElementById("delete").style.background = "#03A9F4";
+        document.getElementById("delete").style.background = "white";
       }, 3000)
     }
   }
 
   saveDefaultSettings() {
+    const saveDefaultSettings = document.getElementById("saveDefaultSettings");
+
     if (this.state.accountName) {
       const settingsForm = document.getElementById("settingsForm");
-      const saveDefaultSettings = document.getElementById("saveDefaultSettings");
 
       saveDefaultSettings.value = "Saving";
 
@@ -441,16 +442,14 @@ class App extends Component {
       .then(response => response.json())
       .then(data => {
         saveDefaultSettings.value = "Save Default";
-
-        //console.log("default settings loaded")
       })
     } else {
-      const loginFirst = document.getElementById("loginFirst");
+      saveDefaultSettings.style.background = "#ffc107";
+      saveDefaultSettings.value = "Login First"
 
-      loginFirst.style.display = "block";
-
-      setTimeout(e => {
-        loginFirst.style.display = "none"
+      setTimeout(() => {
+        saveDefaultSettings.style.background = "white";
+        saveDefaultSettings.value = "Save Default"
       }, 3000)
     }
   }
@@ -476,9 +475,9 @@ class App extends Component {
   }
 
   loadDefaultSettings() {
-    if (this.state.accountName) {
-      const loadDefaultSettings = document.getElementById("loadDefaultSettings");
+    const loadDefaultSettings = document.getElementById("loadDefaultSettings");
 
+    if (this.state.accountName) {
       loadDefaultSettings.value = "Loading";
 
       fetch("/api/settings", {
@@ -508,16 +507,14 @@ class App extends Component {
         document.getElementById("mainColorPicker").value = this.state.mainColor;
         document.getElementById("backgroundColorPicker").value = this.state.backgroundColor;
         document.getElementById("shape").value = this.state.shape;
-
-        //console.log("Defaults loaded")
       })
     } else {
-      const loginFirst = document.getElementById("loginFirst");
+      loadDefaultSettings.style.background = "#ffc107";
+      loadDefaultSettings.value = "Login First"
 
-      loginFirst.style.display = "block";
-
-      setTimeout(e => {
-        loginFirst.style.display = "none"
+      setTimeout(() => {
+        loadDefaultSettings.style.background = "white";
+        loadDefaultSettings.value = "Load Default"
       }, 3000)
     }
   }

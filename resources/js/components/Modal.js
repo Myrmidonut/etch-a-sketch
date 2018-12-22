@@ -9,16 +9,16 @@ class Modal extends Component {
 
           <div id="accountForms">
             <form id="registerForm">
-              <input name="name" placeholder="Username"></input>
-              <input type="email" name="email" placeholder="Email"></input>
-              <input type="password" name="password" placeholder="Password"></input>
-              <input type="password" name="c_password" placeholder="Confirm Password"></input>
+              <input className="accountForm" name="name" placeholder="Username"></input>
+              <input className="accountForm" type="email" name="email" placeholder="Email"></input>
+              <input className="accountForm" type="password" name="password" placeholder="Password"></input>
+              <input className="accountForm" type="password" name="c_password" placeholder="Confirm Password"></input>
               <input type="submit" id="submitRegister" value="Register"></input>
             </form>
 
             <form id="loginForm">
-              <input type="email" name="email" placeholder="Email"></input>
-              <input type="password" name="password" placeholder="Password"></input>
+              <input className="accountForm" type="email" name="email" placeholder="Email"></input>
+              <input className="accountForm" type="password" name="password" placeholder="Password"></input>
               <input type="submit" id="submitLogin" value="Login"></input>
             </form>
 

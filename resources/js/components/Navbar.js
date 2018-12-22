@@ -26,13 +26,16 @@ class Navbar extends Component {
   showSettings() {
     const settingsForm = document.getElementById("settingsForm");
     const navbar = document.getElementById("navbar");
+    const settingsButton = document.getElementById("settingsButton");
       
     if (settingsForm.style.display == "none") {
       settingsForm.style.display = "flex";
       navbar.style.height = "100%";
+      settingsButton.innerHTML = '<i class="fas fa-angle-double-up"></i> Settings'
     } else {
       settingsForm.style.display = "none";
       navbar.style.height = "83px";
+      settingsButton.innerHTML = '<i class="fas fa-angle-double-down"></i> Settings'
     }
 
     const navbarSettings = document.getElementById("navbarSettings");

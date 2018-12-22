@@ -34,7 +34,7 @@ class Settings extends Component {
   render() {
     return (
       <div id="settingsDrawing">
-        <button id="settingsButton" onClick={this.props.showSettings}>Settings</button>
+        <button id="settingsButton" onClick={this.props.showSettings}><i className="fas fa-angle-double-down"></i> Settings</button>
 
         <form id="settingsForm">
           <hr />
@@ -108,10 +108,6 @@ class Settings extends Component {
           <div className="settingsSection">
             <input type="button" id="saveDefaultSettings" value="Save Default" onClick={this.props.saveDefaultSettings} />
             <input type="button" id="loadDefaultSettings" value="Load Default" onClick={this.props.loadDefaultSettings} />
-          </div>
-
-          <div id="loginFirst">
-            <span>Login First</span>
           </div>
         </form>
       </div>
