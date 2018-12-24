@@ -15,6 +15,11 @@ class App extends Component {
       content: "Drawingboard",
       gridHeight: 600,
 
+      galleryLatest: undefined,
+      galleryPersonal: undefined,
+      galleryLatestBlock: 5,
+      galleryPersonalBlock: 5,
+
       gridSize: 50,
       intensity: "0.2",
       mainColor: "#FF0033",
@@ -40,11 +45,19 @@ class App extends Component {
     this.createGrid = this.createGrid.bind(this);
     this.updateGrid = this.updateGrid.bind(this);
 
-    this.loadAllDrawings = this.loadAllDrawings.bind(this);
+    this.showLatestDrawings = this.showLatestDrawings.bind(this);
     this.loadLatestDrawings = this.loadLatestDrawings.bind(this);
-    this.loadOneDrawing = this.loadOneDrawing.bind(this);
-    this.loadPersonalDrawings = this.loadPersonalDrawings.bind(this);
+    this.galleryLatestBlockIncrease = this.galleryLatestBlockIncrease.bind(this);
+    this.galleryLatestBlockDecrease = this.galleryLatestBlockDecrease.bind(this);
 
+    this.showPersonalDrawings = this.showPersonalDrawings.bind(this);
+    this.loadPersonalDrawings = this.loadPersonalDrawings.bind(this);
+    this.galleryPersonalBlockIncrease = this.galleryPersonalBlockIncrease.bind(this);
+    this.galleryPersonalBlockDecrease = this.galleryPersonalBlockDecrease.bind(this);
+
+    //this.loadAllDrawings = this.loadAllDrawings.bind(this);
+    this.loadOneDrawing = this.loadOneDrawing.bind(this);
+    
     this.openDrawing = this.openDrawing.bind(this);
     this.saveDrawing = this.saveDrawing.bind(this);
     this.delete = this.delete.bind(this);
@@ -212,7 +225,203 @@ class App extends Component {
     }
   }
 
-  loadAllDrawings() {
+  galleryPersonalBlockIncrease() {
+    //console.log("galleryPersonalBlockIncrease")
+
+    let block = this.state.galleryPersonalBlock;
+    const length = this.state.galleryPersonal.length;
+
+    if (block <= length) {
+      block += 5;
+
+      this.setState({
+        galleryPersonalBlock: block
+      }, () => this.showPersonalDrawings(this.state.galleryPersonalBlock))
+    }
+  }
+
+  galleryPersonalBlockDecrease() {
+    //console.log("galleryPersonalBlockDecrease")
+
+    let block = this.state.galleryPersonalBlock;
+
+    if (block >= 10) {
+      block -= 5;
+
+      this.setState({
+        galleryPersonalBlock: block
+      }, () => this.showPersonalDrawings(this.state.galleryPersonalBlock))
+    } else {
+      this.setState({
+        galleryPersonalBlock: 5
+      }, () => this.showPersonalDrawings(this.state.galleryPersonalBlock))
+    }
+  }
+
+  galleryLatestBlockIncrease() {
+    //console.log("galleryLatestBlockIncrease")
+
+    let block = this.state.galleryLatestBlock;
+    const length = this.state.galleryLatest.length;
+
+    if (block <= length) {
+      block += 5;
+
+      this.setState({
+        galleryLatestBlock: block
+      }, () => this.showLatestDrawings(this.state.galleryLatestBlock))
+    }
+  }
+
+  galleryLatestBlockDecrease() {
+    //console.log("galleryLatestBlockDecrease")
+
+    let block = this.state.galleryLatestBlock;
+
+    if (block >= 10) {
+      block -= 5;
+
+      this.setState({
+        galleryLatestBlock: block
+      }, () => this.showLatestDrawings(this.state.galleryLatestBlock))
+    } else {
+      this.setState({
+        galleryLatestBlock: 5
+      }, () => this.showLatestDrawings(this.state.galleryLatestBlock))
+    }
+  }
+
+  showLatestDrawings(block) {
+    //console.log("showLatestDrawings")
+
+    document.getElementById("galleryLatestContainer").textContent = "";
+
+    this.state.galleryLatest.forEach((e, i) => {
+      let blockMin = 0;
+
+      if (block > 5) blockMin = block - 5;
+
+      if (i >= blockMin && i < block) {
+        //console.log("hit", i)
+
+        const drawing = document.createElement("div");
+
+        drawing.id = "previewLatest" + i;
+        drawing.className = "previewLatest";
+
+        document.getElementById("galleryLatestContainer").appendChild(drawing);
+
+        const gridHeight = 120;
+        const gridItemDimension = gridHeight/e.grid_size + "px";
+    
+        document.getElementById("previewLatest" + i).style.backgroundColor = e.background_color;
+        document.getElementById("previewLatest" + i).style.height = gridHeight + "px";
+        document.getElementById("previewLatest" + i).style.width = gridHeight + "px";
+
+        document.getElementById("previewLatest" + i).addEventListener("click", f => {
+          f.preventDefault();
+
+          this.openDrawing(e);
+        })
+
+        for (let j = 0; j < (e.grid_size * e.grid_size); j++) {
+          const gridItem = document.createElement("div");
+    
+          gridItem.style.width = gridItemDimension;
+          gridItem.style.height = gridItemDimension;
+          gridItem.style.boxSizing = "border-box"
+          gridItem.style.border = `1px solid ${e.background_color}`;
+          gridItem.style.float = "left";
+          gridItem.style.backgroundColor = JSON.parse(e.color).split(",")[j];
+          gridItem.style.opacity = JSON.parse(e.opacity).split(",")[j];
+          gridItem.className = "gridItem";
+
+          if (e.shape === "round") gridItem.style.borderRadius = "50%";
+          else gridItem.style.borderRadius = "0";
+          
+          document.getElementById("previewLatest" + i).appendChild(gridItem);
+        }
+      }
+    })
+  }
+
+  loadLatestDrawings() {
+    fetch("/api/drawings/latest")
+    .then(response => response.json())
+    .then(data => {
+      //console.log("loadLatestDrawings")
+
+      this.setState({
+        galleryLatest: data
+      }, () => this.showLatestDrawings(this.state.galleryLatestBlock))
+    })
+  }
+
+  showPersonalDrawings(block) {
+    document.getElementById("galleryPersonalContainer").textContent = "";
+
+    this.state.galleryPersonal.forEach((e, i) => {
+      let blockMin = 0;
+
+      if (block > 5) blockMin = block - 5;
+
+      if (i >= blockMin && i < block) {
+        //console.log("hit", i)
+
+        const drawing = document.createElement("div");
+
+        drawing.id = "previewPersonal" + i;
+        drawing.className = "previewPersonal";
+
+        document.getElementById("galleryPersonalContainer").appendChild(drawing);
+
+        const gridHeight = 120;
+        const gridItemDimension = gridHeight/e.grid_size + "px";
+    
+        document.getElementById("previewPersonal" + i).style.backgroundColor = e.background_color;
+        document.getElementById("previewPersonal" + i).style.height = gridHeight + "px";
+        document.getElementById("previewPersonal" + i).style.width = gridHeight + "px";
+
+        document.getElementById("previewPersonal" + i).addEventListener("click", f => {
+          f.preventDefault();
+
+          this.openDrawing(e);
+        })
+
+        for (let j = 0; j < (e.grid_size * e.grid_size); j++) {
+          const gridItem = document.createElement("div");
+    
+          gridItem.style.width = gridItemDimension;
+          gridItem.style.height = gridItemDimension;
+          gridItem.style.boxSizing = "border-box"
+          gridItem.style.border = `1px solid ${e.background_color}`;
+          gridItem.style.float = "left";
+          gridItem.style.backgroundColor = JSON.parse(e.color).split(",")[j];
+          gridItem.style.opacity = JSON.parse(e.opacity).split(",")[j];
+          gridItem.className = "gridItem";
+
+          if (e.shape === "round") gridItem.style.borderRadius = "50%";
+          else gridItem.style.borderRadius = "0";
+          
+          document.getElementById("previewPersonal" + i).appendChild(gridItem);
+        }
+      }
+    })
+  }
+
+  loadPersonalDrawings(id) {
+    fetch(`/api/drawings/personal/${id}`)
+    .then(response => response.json())
+    .then(data => {
+      //console.log("loadPersonalDrawings")
+
+      this.setState({
+        galleryPersonal: data
+      }, () => this.showPersonalDrawings(this.state.galleryPersonalBlock))
+    })
+  }
+
+  /*loadAllDrawings() {
     fetch("/api/drawings/all")
     .then(response => response.json())
     .then(data => {
@@ -255,68 +464,12 @@ class App extends Component {
         }
       })
     })
-  }
-
-  loadLatestDrawings() {
-    fetch("/api/drawings/latest")
-    .then(response => response.json())
-    .then(data => {
-      //console.log("latest received")
-      document.getElementById("galleryLatestContainer").textContent = "";
-
-      data.forEach((e, i) => {
-        const drawing = document.createElement("div");
-
-        drawing.id = "previewLatest" + i;
-        drawing.className = "previewLatest";
-
-        document.getElementById("galleryLatestContainer").appendChild(drawing);
-
-        const gridHeight = 120;
-        const gridItemDimension = gridHeight/e.grid_size + "px";
-    
-        document.getElementById("previewLatest" + i).style.backgroundColor = e.background_color;
-        document.getElementById("previewLatest" + i).style.height = gridHeight + "px";
-        document.getElementById("previewLatest" + i).style.width = gridHeight + "px";
-
-        document.getElementById("previewLatest" + i).addEventListener("click", f => {
-          f.preventDefault();
-
-          this.openDrawing(e);
-        })
-
-        for (let j = 0; j < (e.grid_size * e.grid_size); j++) {
-          const gridItem = document.createElement("div");
-    
-          gridItem.style.width = gridItemDimension;
-          gridItem.style.height = gridItemDimension;
-          gridItem.style.boxSizing = "border-box"
-          gridItem.style.border = `1px solid ${e.background_color}`;
-          gridItem.style.float = "left";
-          gridItem.style.backgroundColor = JSON.parse(e.color).split(",")[j];
-          gridItem.style.opacity = JSON.parse(e.opacity).split(",")[j];
-          gridItem.className = "gridItem";
-
-          if (e.shape === "round") gridItem.style.borderRadius = "50%";
-          else gridItem.style.borderRadius = "0";
-          
-          document.getElementById("previewLatest" + i).appendChild(gridItem);
-        }
-      })
-    })
-    .then(() => {
-      //console.log("latest build")
-    })
-  }
+  }*/
 
   loadOneDrawing(id) {
-    //console.log("loadOneDrawing");
-
     fetch(`/api/drawings/one/${id}`)
     .then(response => response.json())
     .then(data => {
-      //console.log(data)
-
       this.setState({
         gridSize: data.grid_size
       })
@@ -335,57 +488,6 @@ class App extends Component {
       this.setState({
         opacity: newOpacity
       }, this.updateGrid)
-    })
-  }
-
-  loadPersonalDrawings(id) {
-    fetch(`/api/drawings/personal/${id}`)
-    .then(response => response.json())
-    .then(data => {
-      document.getElementById("galleryPersonalContainer").textContent = "";
-
-      data.forEach((e, i) => {
-        const drawing = document.createElement("div");
-
-        drawing.id = "previewPersonal" + i;
-        drawing.className = "previewPersonal";
-
-        document.getElementById("galleryPersonalContainer").appendChild(drawing);
-
-        const gridHeight = 120;
-        const gridItemDimension = gridHeight/e.grid_size + "px";
-    
-        document.getElementById("previewPersonal" + i).style.backgroundColor = e.background_color;
-        document.getElementById("previewPersonal" + i).style.height = gridHeight + "px";
-        document.getElementById("previewPersonal" + i).style.width = gridHeight + "px";
-
-        document.getElementById("previewPersonal" + i).addEventListener("click", f => {
-          f.preventDefault();
-
-          this.openDrawing(e);
-        })
-
-        for (let j = 0; j < (e.grid_size * e.grid_size); j++) {
-          const gridItem = document.createElement("div");
-    
-          gridItem.style.width = gridItemDimension;
-          gridItem.style.height = gridItemDimension;
-          gridItem.style.boxSizing = "border-box"
-          gridItem.style.border = `1px solid ${e.background_color}`;
-          gridItem.style.float = "left";
-          gridItem.style.backgroundColor = JSON.parse(e.color).split(",")[j];
-          gridItem.style.opacity = JSON.parse(e.opacity).split(",")[j];
-          gridItem.className = "gridItem";
-
-          if (e.shape === "round") gridItem.style.borderRadius = "50%";
-          else gridItem.style.borderRadius = "0";
-          
-          document.getElementById("previewPersonal" + i).appendChild(gridItem);
-        }
-      })
-    })
-    .then(() => {
-      //console.log("personal done");
     })
   }
 
@@ -744,7 +846,12 @@ class App extends Component {
           accountId={this.state.accountId}
 
           loadLatestDrawings={this.loadLatestDrawings}
+          galleryLatestBlockIncrease={this.galleryLatestBlockIncrease}
+          galleryLatestBlockDecrease={this.galleryLatestBlockDecrease}
+
           loadPersonalDrawings={this.loadPersonalDrawings}
+          galleryPersonalBlockIncrease={this.galleryPersonalBlockIncrease}
+          galleryPersonalBlockDecrease={this.galleryPersonalBlockDecrease}
         />
       )
     }

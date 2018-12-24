@@ -61,7 +61,8 @@ class DrawingController extends Controller {
   }
 
   public function personal($id) {
-    $personaldrawings = Drawing::where("owner", $id)->orderBy("updated_at", "desc")->take(5)->get();
+    $personaldrawings = Drawing::where("owner", $id)->orderBy("updated_at", "desc")->get();
+    // ->take(5)
 
     return response()->json($personaldrawings);
   }
@@ -73,7 +74,8 @@ class DrawingController extends Controller {
   }
 
   public function latest() {
-    $latestdrawings = Drawing::orderBy("updated_at", "desc")->take(5)->get();
+    $latestdrawings = Drawing::orderBy("updated_at", "desc")->get();
+    // ->take(5)
 
     return response()->json($latestdrawings);
   }
