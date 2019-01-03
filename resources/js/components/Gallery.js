@@ -23,7 +23,6 @@ class Gallery extends Component {
     }
 
     this.props.loadLatestDrawings();
-    //this.props.showLatestDrawings();
   }
 
   render() {
@@ -31,16 +30,16 @@ class Gallery extends Component {
       <div id="galleryContainer">
         <div id="galleryLatest">
           <h2>Latest Drawings</h2>
-          <button id="galleryLatestPrevious" onClick={this.props.galleryLatestBlockDecrease}>Back</button>
+          <button className="galleryButtons" id="galleryLatestPrevious" onClick={this.props.galleryLatestBlockDecrease}>Previous</button>
           <div id="galleryLatestContainer" />
-          <button id="galleryLatestNext" onClick={this.props.galleryLatestBlockIncrease}>Next</button>
+          <button className="galleryButtons" id="galleryLatestNext" onClick={this.props.galleryLatestBlockIncrease}>Next</button>
         </div>
 
         <div id="galleryPersonal">
           <h2>Personal Drawings</h2>
-          <button id="galleryLatestPrevious" onClick={this.props.galleryPersonalBlockDecrease}>Back</button>
+          <button className="galleryButtons" id="galleryLatestPrevious" onClick={this.props.galleryPersonalBlockDecrease}>Previous</button>
           <div id="galleryPersonalContainer" />
-          <button id="galleryLatestNext" onClick={this.props.galleryPersonalBlockIncrease}>Next</button>
+          <button className="galleryButtons" id="galleryLatestNext" onClick={this.props.galleryPersonalBlockIncrease}>Next</button>
         </div>
       </div>
     )

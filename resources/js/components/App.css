@@ -275,15 +275,24 @@ option {
   width: inherit;
 }
 
+.galleryButtons {
+  display: block;
+  margin: auto;
+  height: 30px;
+}
+
 #galleryLatest, #galleryPersonal {
   min-height: 245px;
   min-width: 850px;
   border: 1px solid black;
   margin: 20px;
   background: #03A9F4;
+  padding-bottom: 20px;
 }
 
 #galleryLatestContainer, #galleryPersonalContainer {
+  align-items: center;
+  min-height: 170px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

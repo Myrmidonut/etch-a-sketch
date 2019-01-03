@@ -55,7 +55,6 @@ class App extends Component {
     this.galleryPersonalBlockIncrease = this.galleryPersonalBlockIncrease.bind(this);
     this.galleryPersonalBlockDecrease = this.galleryPersonalBlockDecrease.bind(this);
 
-    //this.loadAllDrawings = this.loadAllDrawings.bind(this);
     this.loadOneDrawing = this.loadOneDrawing.bind(this);
     
     this.openDrawing = this.openDrawing.bind(this);
@@ -104,8 +103,6 @@ class App extends Component {
   }
 
   updateGrid() {
-    //console.log("update grid")
-
     const gridItems = document.querySelectorAll(".gridItem");
     const drawingBoard = document.getElementById("drawingBoard");
 
@@ -226,8 +223,6 @@ class App extends Component {
   }
 
   galleryPersonalBlockIncrease() {
-    //console.log("galleryPersonalBlockIncrease")
-
     let block = this.state.galleryPersonalBlock;
     const length = this.state.galleryPersonal.length;
 
@@ -241,8 +236,6 @@ class App extends Component {
   }
 
   galleryPersonalBlockDecrease() {
-    //console.log("galleryPersonalBlockDecrease")
-
     let block = this.state.galleryPersonalBlock;
 
     if (block >= 10) {
@@ -259,8 +252,6 @@ class App extends Component {
   }
 
   galleryLatestBlockIncrease() {
-    //console.log("galleryLatestBlockIncrease")
-
     let block = this.state.galleryLatestBlock;
     const length = this.state.galleryLatest.length;
 
@@ -274,8 +265,6 @@ class App extends Component {
   }
 
   galleryLatestBlockDecrease() {
-    //console.log("galleryLatestBlockDecrease")
-
     let block = this.state.galleryLatestBlock;
 
     if (block >= 10) {
@@ -292,8 +281,6 @@ class App extends Component {
   }
 
   showLatestDrawings(block) {
-    //console.log("showLatestDrawings")
-
     document.getElementById("galleryLatestContainer").textContent = "";
 
     this.state.galleryLatest.forEach((e, i) => {
@@ -302,8 +289,6 @@ class App extends Component {
       if (block > 5) blockMin = block - 5;
 
       if (i >= blockMin && i < block) {
-        //console.log("hit", i)
-
         const drawing = document.createElement("div");
 
         drawing.id = "previewLatest" + i;
@@ -349,8 +334,6 @@ class App extends Component {
     fetch("/api/drawings/latest")
     .then(response => response.json())
     .then(data => {
-      //console.log("loadLatestDrawings")
-
       this.setState({
         galleryLatest: data
       }, () => this.showLatestDrawings(this.state.galleryLatestBlock))
@@ -366,8 +349,6 @@ class App extends Component {
       if (block > 5) blockMin = block - 5;
 
       if (i >= blockMin && i < block) {
-        //console.log("hit", i)
-
         const drawing = document.createElement("div");
 
         drawing.id = "previewPersonal" + i;
@@ -413,58 +394,11 @@ class App extends Component {
     fetch(`/api/drawings/personal/${id}`)
     .then(response => response.json())
     .then(data => {
-      //console.log("loadPersonalDrawings")
-
       this.setState({
         galleryPersonal: data
       }, () => this.showPersonalDrawings(this.state.galleryPersonalBlock))
     })
   }
-
-  /*loadAllDrawings() {
-    fetch("/api/drawings/all")
-    .then(response => response.json())
-    .then(data => {
-      document.getElementById("galleryPersonal").textContent = "";
-
-      data.forEach((e, i) => {
-        const drawing = document.createElement("div");
-        drawing.id = "previewPopular" + i;
-        drawing.className = "previewPopular";
-
-        document.getElementById("galleryPopular").appendChild(drawing);
-
-        const gridHeight = 200;
-        const gridItemDimension = gridHeight/e.grid_size + "px";
-    
-        document.getElementById("previewPopular" + i).style.backgroundColor = e.background_color;
-        document.getElementById("previewPopular" + i).style.height = gridHeight + "px";
-        document.getElementById("previewPopular" + i).style.width = gridHeight + "px";
-
-        document.getElementById("previewPopular" + i).addEventListener("click", f => {
-          f.preventDefault();
-        })
-
-        for (let j = 0; j < (e.grid_size * e.grid_size); j++) {
-          const gridItem = document.createElement("div");
-    
-          gridItem.style.width = gridItemDimension;
-          gridItem.style.height = gridItemDimension;
-          gridItem.style.boxSizing = "border-box"
-          gridItem.style.border = `1px solid ${e.background_color}`;
-          gridItem.style.float = "left";
-          gridItem.style.backgroundColor = JSON.parse(e.color).split(",")[j];
-          gridItem.style.opacity = JSON.parse(e.opacity).split(",")[j];
-          gridItem.className = "gridItem";
-
-          if (e.shape === "round") gridItem.style.borderRadius = "50%";
-          else gridItem.style.borderRadius = "0";
-          
-          document.getElementById("previewPopular" + i).appendChild(gridItem);
-        }
-      })
-    })
-  }*/
 
   loadOneDrawing(id) {
     fetch(`/api/drawings/one/${id}`)
@@ -559,8 +493,6 @@ class App extends Component {
     if (this.state.accountName) {
       document.getElementById("delete").textContent = "Deleting";
 
-      //console.log("deleting");
-
       fetch(`/api/delete/${id}`, {
         method: "post",
         body: new URLSearchParams({
@@ -573,9 +505,6 @@ class App extends Component {
       })
       .then(response => response.text())
       .then(data => {
-        //console.log("drawing deleted")
-        //console.log(data);
-
         document.getElementById("delete").textContent = "Delete";
       })
     } else {
@@ -636,8 +565,6 @@ class App extends Component {
       shape: shape,
       title: title
     }, this.updateGrid)
-
-    //console.log("set current settings")
   }
 
   loadDefaultSettings() {
@@ -710,8 +637,6 @@ class App extends Component {
 
         document.getElementById("accountModal").style.display = "none";
       } else {
-        //console.log(data.error)
-
         document.getElementById("error").innerHTML = `<span className="errorMessage">${data.error}</span>`;
       }
       
@@ -758,15 +683,11 @@ class App extends Component {
       })
       .then(response => response.json())
       .then(data => {
-        //console.log(data)
-        //console.log("Account");
       })
     }
   }
 
   openDrawing(e) {
-    //console.log(e);
-
     this.setState({
       content: "Drawingboard"
     })
