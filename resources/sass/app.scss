@@ -1,1 +1,389 @@
+html, body, #app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-size: 18px;
+}
 
+*, html, body, #app, select, button, input {
+  font-family: 'Share Tech Mono', monospace;
+}
+
+/* ------------------------ */
+
+*:focus {
+  outline: none;
+}
+
+button, input {
+  font-size: 18px;
+  transition: all 0.3s;
+}
+
+button {
+  width: 120px;
+  height: 100%;
+  background: none;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.3s;
+  background: white;
+  box-shadow: 2px 2px 4px grey;
+}
+
+hr {
+  width: 100%;
+  border: 1px solid white;
+}
+
+h2 {
+  text-align: center;
+}
+
+input, select {
+  cursor: pointer;
+}
+
+.previewLatest, .previewPersonal {
+  border: 5px solid #03A9F4;
+}
+
+input[type=color] {
+  background: white;
+  border: none;
+}
+
+input[type=text] {
+  height: 35px;
+  text-align: center;
+  margin-bottom: 10px;
+  border: none;
+  cursor: text;
+}
+
+input[type=submit] {
+  margin-top: 3px;
+}
+
+input[type=button], input[type=submit] {
+  width: 100px;
+  height: 32px;
+  background: white;
+  border: none;
+  border-radius: 3px;
+  box-shadow: 2px 2px 4px grey;
+}
+
+select {
+  border: none;
+  background: #03A9F4;
+  font-size: 18px;
+  transition: all 0.3s;
+}
+
+option {
+  height: 40px;
+}
+
+/* ------------------------ */
+
+.App {
+  height:100%;
+  background: #00bcd433;
+}
+
+#navbar, #footer {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+#navbar {
+  position: fixed;
+  top: 0;
+  z-index: 1;
+}
+
+#footer {
+  position: fixed;
+  bottom: 0;
+  height: 42px;
+  line-height: 42px;
+  background: #03A9F4;
+  border: 1px solid black;
+  box-shadow: 0 -1px 5px grey;
+  text-align: center;
+}
+
+#footer i {
+  color: black;
+}
+
+#footer a:visited {
+  color: black;
+}
+
+#navbarButtons {
+  height: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #03A9F4;
+  box-shadow: 0 1px 5px gray;
+  border: 1px solid black;
+}
+
+#navbarSettings {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  margin-top: 5px;
+}
+
+#settingsDrawing {
+  border: 1px solid black;
+  box-shadow: 0px 0px 5px gray;
+}
+
+#drawingBoard {
+  box-shadow: 0px 0px 10px gray;
+}
+
+#gallery, #interface, #account {
+  display: flex;
+  flex: 1;
+  height: 32px;
+
+  @media screen and (max-width: 650px) {
+    display: none;
+  }
+}
+
+#gallery {
+  align-items: flex-start;
+  margin-left: 4px;
+}
+
+#interface {
+  justify-content: center;
+}
+
+#account {
+  justify-content: flex-end;
+  align-items: flex-start;
+  margin-right: 4px;
+}
+
+#buttonsDrawing {
+  display: flex;
+  width: 430px;
+  justify-content: space-around;
+}
+
+#main {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  align-items: center;
+}
+
+#settingsButton {
+  width: 100%;
+  height: 32px;
+}
+
+#settingsForm {
+  width: 300px;
+  padding: 5px;
+  background: #03A9F4;
+  display: flex;
+  flex-direction: column;
+}
+
+.settingsSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#settingsForm div span {
+  line-height: 40px;
+}
+
+#gridSizeMin, #gridSizeMax, #intensityMin, #intensityMax {
+  width: 30px;
+}
+
+#gridSizeMax, #intensityMax {
+  text-align: right;
+}
+
+#gridSizeSlider, #intensitySlider {
+  width: 70%;
+}
+
+.mainColor {
+  width: 50px;
+  height: 25px;
+  display: inline-block;
+  border: 2px solid #03A9F4;
+  box-shadow: none;
+}
+
+.backgroundColor {
+  width: 50px;
+  height: 25px;
+  display: inline-block;
+  border: 2px solid #03A9F4;
+  box-shadow: none;
+}
+
+.blue {
+  background: #0088FF;
+}
+
+.yellow {
+  background: #FFAA00;
+}
+
+.orange {
+  background: #FF7700;
+}
+
+.red {
+  background: #FF0033;
+}
+
+.purple {
+  background: #9911AA;
+}
+
+.green {
+  background: #AADD22;
+}
+
+#saveDefaultSettings, #loadDefaultSettings {
+  width: 127px;
+}
+
+#galleryContainer {
+  display: flex;
+  flex-direction: column;
+  max-width: 1000px;
+  margin-bottom: 60px;
+  margin-top: 80px;
+}
+
+#galleryButton {
+  width: inherit;
+}
+
+.galleryButtons {
+  display: block;
+  margin: auto;
+  height: 30px;
+}
+
+#galleryLatest, #galleryPersonal {
+  min-height: 245px;
+  min-width: 850px;
+  border: 1px solid black;
+  margin: 20px;
+  background: #03A9F4;
+  padding-bottom: 20px;
+}
+
+#galleryLatestContainer, #galleryPersonalContainer {
+  align-items: center;
+  min-height: 170px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.previewLatest, .previewPersonal {
+  margin: 20px;
+}
+
+#registerForm, #loginForm {
+  margin: auto;
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.accountForm {
+  padding: 5px;
+  width: 100%;
+}
+
+/* The Modal (background) */
+#accountModal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+
+  justify-content: center;
+  align-items: center;
+}
+
+/* Modal Content/Box */
+#modal-content {
+  background-color: #03A9F4;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 400px;
+  min-height: 400px;
+}
+
+#accountForms {
+  padding: 50px;
+  padding-bottom: 0;
+}
+
+/* The Close Button */
+#closeModal {
+  float: right;
+  font-size: 40px;
+}
+
+/* --------------------------*/
+
+#closeModal:hover,
+#closeModal:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+button:hover, input:hover, #registerForm input[type=submit]:hover, #loginForm input[type=submit]:hover, select:hover {
+  background: #ccf2f6;
+}
+
+button:hover, input[type=submit]:hover {
+  box-shadow: none;
+}
+
+button:active, input[type=submit]:active {
+  box-shadow: inset 2px 2px 7px grey;
+  transition: none;
+}
+
+.previewLatest:hover, .previewPersonal:hover {
+  cursor: pointer;
+  border: 5px solid #ccf2f6;
+}
+
+#drawingBoard:hover {
+  cursor: pointer;
+}
