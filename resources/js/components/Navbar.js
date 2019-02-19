@@ -7,6 +7,7 @@ class Navbar extends Component {
 
     this.createAccountModal = this.createAccountModal.bind(this);
     this.showSettings = this.showSettings.bind(this);
+    this.showMenu = this.showMenu.bind(this);
   }
 
   componentDidMount() {
@@ -66,6 +67,14 @@ class Navbar extends Component {
     }
   }
 
+  showMenu() {
+    const navbarButtons = document.querySelector(".navbarButtons");
+    const menu = document.querySelector(".menu");
+
+    navbarButtons.classList.toggle("show-buttons");
+    menu.classList.toggle("align-burger")
+  }
+
   render() {
     let buttons = null;
     let home = null;
@@ -114,16 +123,22 @@ class Navbar extends Component {
 
     return (
       <div id="navbar">
-        <div id="navbarButtons">
+        <div className="menu">
 
-          <div id="gallery">
-            <button id="galleryButton">{home}</button>
+          <div className="navbarButtons">
+            <div id="gallery">
+              <button id="galleryButton">{home}</button>
+            </div>
+
+            {buttons}
+            
+            <div id="account">
+              <button id="openAccountModal" onClick={this.createAccountModal}>Account</button>
+            </div>
           </div>
 
-          {buttons}
-          
-          <div id="account">
-            <button id="openAccountModal" onClick={this.createAccountModal}>Account</button>
+          <div id="burger">
+            <i className="fas fa-bars" onClick={this.showMenu} />
           </div>
 
         </div>

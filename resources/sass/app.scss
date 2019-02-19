@@ -128,14 +128,52 @@ option {
   }
 }
 
-#navbarButtons {
+.navbarButtons {
   height: 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex: 1;
+
+  @media screen and (max-width: 650px) {
+    display: none;
+    flex-direction: column;
+    height: initial;
+    align-items: flex-start;
+  }
+}
+
+.show-buttons {
+  display: flex;
+}
+
+.align-burger {
+  justify-content: space-between;
+}
+
+.menu {
   background: #03A9F4;
-  box-shadow: 0 1px 5px gray;
+  box-shadow: 0 1px 5px grey;
   border: 1px solid black;
+  display: flex;
+  justify-content: flex-end;
+}
+
+#burger {
+  display: none;
+
+  @media screen and (max-width: 650px) {
+    display: block;
+  }
+
+  i {
+    margin: 5px;
+    font-size: 35px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }
 
 #navbarSettings {
@@ -161,21 +199,31 @@ option {
 
 #gallery, #interface, #account {
   display: flex;
-  flex: 1;
+  xflex: 1;
   height: 32px;
 
   @media screen and (max-width: 650px) {
-    display: none;
+    margin: 5px;
   }
 }
 
 #gallery {
   align-items: flex-start;
   margin-left: 4px;
+
+  @media screen and (max-width: 650px) {
+    #galleryButton {
+      width: 120px;
+    }
+  }
 }
 
 #interface {
   justify-content: center;
+
+  @media screen and (max-width: 650px) {
+    height: initial;
+  }
 }
 
 #account {
@@ -188,6 +236,16 @@ option {
   display: flex;
   width: 430px;
   justify-content: space-around;
+
+  @media screen and (max-width: 650px) {
+    flex-direction: column;
+    width: initial;
+
+    #save, #delete, #clear {
+      height: 32px;
+      margin-top: 10px;
+    }
+  }
 }
 
 #main {
