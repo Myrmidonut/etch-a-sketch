@@ -47,6 +47,11 @@ input, select {
 
 .previewLatest, .previewPersonal {
   border: 5px solid #03A9F4;
+
+  &:hover {
+    cursor: pointer;
+    border: 5px solid #ccf2f6;
+  }
 }
 
 input[type=color] {
@@ -113,14 +118,14 @@ option {
   border: 1px solid black;
   box-shadow: 0 -1px 5px grey;
   text-align: center;
-}
 
-#footer i {
-  color: black;
-}
-
-#footer a:visited {
-  color: black;
+  i {
+    color: black;
+  }
+  
+  a:visited {
+    color: black;
+  }
 }
 
 #navbarButtons {
@@ -148,6 +153,10 @@ option {
 
 #drawingBoard {
   box-shadow: 0px 0px 10px gray;
+
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 #gallery, #interface, #account {
@@ -199,16 +208,18 @@ option {
   background: #03A9F4;
   display: flex;
   flex-direction: column;
+
+  div {
+    span {
+      line-height: 40px;
+    }
+  }
 }
 
 .settingsSection {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-#settingsForm div span {
-  line-height: 40px;
 }
 
 #gridSizeMin, #gridSizeMax, #intensityMin, #intensityMax {
@@ -355,16 +366,15 @@ option {
 #closeModal {
   float: right;
   font-size: 40px;
+
+  &:hover, &:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
 }
 
 /* --------------------------*/
-
-#closeModal:hover,
-#closeModal:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
 
 button:hover, input:hover, #registerForm input[type=submit]:hover, #loginForm input[type=submit]:hover, select:hover {
   background: #ccf2f6;
@@ -377,13 +387,4 @@ button:hover, input[type=submit]:hover {
 button:active, input[type=submit]:active {
   box-shadow: inset 2px 2px 7px grey;
   transition: none;
-}
-
-.previewLatest:hover, .previewPersonal:hover {
-  cursor: pointer;
-  border: 5px solid #ccf2f6;
-}
-
-#drawingBoard:hover {
-  cursor: pointer;
 }
