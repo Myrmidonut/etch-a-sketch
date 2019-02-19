@@ -124,9 +124,13 @@ option {
   i {
     color: black;
   }
-  
-  a:visited {
-    color: black;
+
+  a {
+    display: block;
+
+    &:visited {
+      color: black;
+    }
   }
 }
 

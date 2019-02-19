@@ -1,22 +1,25 @@
 # Etch-A-Sketch
 
 ## Introduction
-An online interpretation of the popular children toy Etch-A-Sketch.
-The main difference is the ability to jump to another spot on the drawing board without creating a line to the old spot.
+A drawing board inspired by the popular childrens toy Etch-A-Sketch.  
 
-The app allows the user to create accounts and to save drawings to a database with customization options for a drawing like size, and color themes.
+Drawings are generated in a pixel-style by adding multiple color-layers over individual elements. Background color as well as the current color can be freely selected with options for the shape of the pixels, the size of the drawing board and how quickly new color layers are added.
+
+The app allows the user to create accounts and to save drawings to a database with customization options for a drawing like size, and color themes.  
+
 Drawings of other users can be viewed, customized and saved to own accounts.
 
 ***
 
 ## Final Project
-https://fathomless-escarpment-99576.herokuapp.com/
+https://fathomless-escarpment-99576.herokuapp.com
 
 ***
 
 ## Behind the scenes
 ### Frontend
 * React
+* Sass
 
 ### Backend
 * Laravel
@@ -37,6 +40,3 @@ https://fathomless-escarpment-99576.herokuapp.com/
 
 ### Settings
 ![Settings](readme_images/settings.jpg)
-
-### Account
-![Account](readme_images/account.jpg)
