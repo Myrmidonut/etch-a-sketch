@@ -1,3 +1,5 @@
+$navWidth: 800px;
+
 html, body, #app {
   height: 100%;
   margin: 0;
@@ -21,7 +23,7 @@ button, input {
 }
 
 button {
-  width: 120px;
+  width: 128px;
   height: 100%;
   background: none;
   border: none;
@@ -135,7 +137,7 @@ option {
   align-items: center;
   flex: 1;
 
-  @media screen and (max-width: 650px) {
+  @media screen and (max-width: $navWidth) {
     display: none;
     flex-direction: column;
     height: initial;
@@ -162,7 +164,7 @@ option {
 #burger {
   display: none;
 
-  @media screen and (max-width: 650px) {
+  @media screen and (max-width: $navWidth) {
     display: block;
   }
 
@@ -199,10 +201,9 @@ option {
 
 #gallery, #interface, #account {
   display: flex;
-  xflex: 1;
   height: 32px;
 
-  @media screen and (max-width: 650px) {
+  @media screen and (max-width: $navWidth) {
     margin: 5px;
   }
 }
@@ -210,18 +211,12 @@ option {
 #gallery {
   align-items: flex-start;
   margin-left: 4px;
-
-  @media screen and (max-width: 650px) {
-    #galleryButton {
-      width: 120px;
-    }
-  }
 }
 
 #interface {
   justify-content: center;
 
-  @media screen and (max-width: 650px) {
+  @media screen and (max-width: $navWidth) {
     height: initial;
   }
 }
@@ -237,7 +232,7 @@ option {
   width: 430px;
   justify-content: space-around;
 
-  @media screen and (max-width: 650px) {
+  @media screen and (max-width: $navWidth) {
     flex-direction: column;
     width: initial;
 
@@ -345,7 +340,7 @@ option {
 }
 
 #galleryButton {
-  width: inherit;
+  xwidth: inherit;
 }
 
 .galleryButtons {
