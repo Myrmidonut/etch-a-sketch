@@ -387,6 +387,10 @@ option {
   margin: 10px;
   background: #03A9F4;
   padding-bottom: 20px;
+
+  @media screen and (min-width: 800px) {
+    width: 690px;
+  }
 }
 
 #galleryLatestContainer, #galleryPersonalContainer {
