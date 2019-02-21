@@ -12,7 +12,7 @@ class App extends Component {
     
     this.state = {
       content: "Drawingboard",
-      gridHeight: 600,
+      gridHeight: null, // 600
 
       galleryLatest: undefined,
       galleryPersonal: undefined,
@@ -162,6 +162,8 @@ class App extends Component {
       let self = this;
 
       gridItem.addEventListener("mouseover", function(e) {
+        // hold to draw
+
         if (self.state.mouseHoldRight) {
           let newOpacity = self.state.opacity.slice();
 
@@ -191,6 +193,9 @@ class App extends Component {
       })
 
       gridItem.addEventListener("mousedown", function(e) {
+        // click to draw
+        // works with touch
+
         if (e.button === 2) {
           let newOpacity = self.state.opacity.slice();
 
@@ -738,6 +743,22 @@ class App extends Component {
     this.setState({
       backgroundColor: e.target.value
     }, this.updateGrid)
+  }
+
+  componentWillMount() {
+    if (window.innerWidth > 630) {
+      this.setState({
+        gridHeight: "600"
+      })
+    } else if (window.innerWidth > 470) {
+      this.setState({
+        gridHeight: "450"
+      })
+    } else {
+      this.setState({
+        gridHeight: "300"
+      })
+    }
   }
 
   componentDidMount() {
