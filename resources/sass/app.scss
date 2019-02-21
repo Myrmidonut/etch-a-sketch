@@ -97,7 +97,6 @@ option {
 
 .App {
   height:100%;
-  background: #00bcd433;
 }
 
 #navbar, #footer {
@@ -197,6 +196,8 @@ option {
 
 #drawingBoard {
   box-shadow: 0px 0px 10px gray;
+  margin-top: 60px;
+  margin-bottom: 80px;
 
   &:hover {
     cursor: pointer;
@@ -250,8 +251,9 @@ option {
 #main {
   display: flex;
   justify-content: center;
-  height: 100%;
+  min-height: 100%;
   align-items: center;
+  background: #00bcd433;
 }
 
 #settingsButton {
