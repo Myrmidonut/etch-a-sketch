@@ -5,7 +5,6 @@ import Drawingboard from "./Drawingboard";
 import Footer from "./Footer";
 import Gallery from "./Gallery";
 import Modal from "./Modal";
-//import './App.css';
 
 class App extends Component {
   constructor (props) {

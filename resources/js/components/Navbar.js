@@ -8,6 +8,7 @@ class Navbar extends Component {
     this.createAccountModal = this.createAccountModal.bind(this);
     this.showSettings = this.showSettings.bind(this);
     this.showMenu = this.showMenu.bind(this);
+    this.hideMenu = this.hideMenu.bind(this);
   }
 
   componentDidMount() {
@@ -22,6 +23,12 @@ class Navbar extends Component {
     });
 
     document.getElementById("settingsForm").style.display = "none";
+
+    document.querySelectorAll(".close").forEach(e => {
+      e.addEventListener("click", () => {
+        this.hideMenu();
+      })
+    })
   }
 
   showSettings() {
@@ -75,6 +82,14 @@ class Navbar extends Component {
     menu.classList.toggle("align-burger")
   }
 
+  hideMenu() {
+    const navbarButtons = document.querySelector(".navbarButtons");
+    const menu = document.querySelector(".menu");
+
+    navbarButtons.classList.remove("show-buttons");
+    menu.classList.remove("align-burger")
+  }
+
   render() {
     let buttons = null;
     let home = null;
@@ -88,9 +103,9 @@ class Navbar extends Component {
       buttons = (
         <div id="interface">
           <div id="buttonsDrawing">
-            <button id="save" onClick={this.props.save}>Save</button>
-            <button id="delete" onClick={() => this.props.delete(this.props.drawingId)}>Delete</button>
-            <button id="clear" onClick={this.props.clear}>Clear</button>
+            <button className="close" id="save" onClick={this.props.save}>Save</button>
+            <button className="close" id="delete" onClick={() => this.props.delete(this.props.drawingId)}>Delete</button>
+            <button className="close" id="clear" onClick={this.props.clear}>Clear</button>
           </div>
         </div>
       )
@@ -127,13 +142,13 @@ class Navbar extends Component {
 
           <div className="navbarButtons">
             <div id="gallery">
-              <button id="galleryButton">{home}</button>
+              <button className="close" id="galleryButton">{home}</button>
             </div>
 
             {buttons}
             
             <div id="account">
-              <button id="openAccountModal" onClick={this.createAccountModal}>Account</button>
+              <button className="close" id="openAccountModal" onClick={this.createAccountModal}>Account</button>
             </div>
           </div>
 
