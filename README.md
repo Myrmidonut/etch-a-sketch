@@ -32,11 +32,14 @@ https://fathomless-escarpment-99576.herokuapp.com
 ***
 
 ## Preview Images
-### Drawing Board
-![Drawing Board](readme_images/drawingboard.jpg)
+### Main View
+![Drawing Board](readme_images/main.png)
+
+### Mobile View
+![Mobile](readme_images/mobile.png)
 
 ### Gallery
-![Gallery](readme_images/gallery.jpg)
+![Gallery](readme_images/gallery.png)
 
 ### Settings
-![Settings](readme_images/settings.jpg)
+![Settings](readme_images/settings.png)
