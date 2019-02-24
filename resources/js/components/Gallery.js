@@ -8,6 +8,9 @@ class Gallery extends Component {
   componentWillUnmount() {
     document.getElementById("drawingBoard").style.display = "block";
     document.getElementById("settingsForm").style.display = "none";
+
+    document.getElementById("galleryLatestContainer").textContent = "Loading";
+    document.getElementById("galleryPersonalContainer").textContent = "Loading";
   }
 
   componentDidMount() {

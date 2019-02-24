@@ -106,6 +106,9 @@ class Navbar extends Component {
             <button className="close" id="save" onClick={this.props.save}>Save</button>
             <button className="close" id="delete" onClick={() => this.props.delete(this.props.drawingId)}>Delete</button>
             <button className="close" id="clear" onClick={this.props.clear}>Clear</button>
+            
+            <div id="galleryLatestContainer" />
+            <div id="palleryPersonalContainer" />
           </div>
         </div>
       )

@@ -238,6 +238,10 @@ option {
   width: 430px;
   justify-content: space-around;
 
+  #galleryLatestContainer, #galleryPersonalContainer {
+    display:none;
+  }
+
   @media screen and (max-width: $navWidth) {
     flex-direction: column;
     width: initial;
