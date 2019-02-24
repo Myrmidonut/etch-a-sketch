@@ -23,7 +23,7 @@ class App extends Component {
       intensity: "0.2",
       mainColor: "#FF0033",
       backgroundColor: "#ffffff",
-      shape: "square",
+      shape: "squircle",
       title: "",
       drawingId: null,
       
