@@ -12,7 +12,7 @@ Drawings of other users can be viewed, customized and saved to own accounts.
 ***
 
 ## Final Project
-https://fathomless-escarpment-99576.herokuapp.com
+https://etchthesketch.herokuapp.com
 
 ***
 
