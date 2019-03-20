@@ -144,6 +144,7 @@ class App extends Component {
       gridItem.style.backgroundColor = "#008000";
       gridItem.style.opacity = 0;
       gridItem.className = "gridItem";
+      gridItem.id = i
 
       if (this.state.shape === "round") gridItem.style.borderRadius = "50%";
       else if (this.state.shape === "squircle") gridItem.style.borderRadius = "35%";
@@ -192,6 +193,30 @@ class App extends Component {
         }
       })
 
+      gridItem.addEventListener("touchmove", function(e) {
+        // touch drag to draw
+
+        let touch = e.touches[0]
+        let element = document.elementFromPoint(touch.clientX, touch.clientY)
+
+        if (element.className === "gridItem") {
+          element.style.backgroundColor = self.state.mainColor;
+
+          let newOpacity = self.state.opacity.slice();
+          let newColor = self.state.color.slice();
+
+          newOpacity[element.id] += Number(self.state.intensity);
+          newColor[element.id] = self.state.mainColor;
+
+          self.setState({
+            opacity: newOpacity,
+            color: newColor
+          })
+
+          if (element.style.opacity < 1) element.style.opacity = self.state.opacity[element.id];
+        }
+      })
+
       gridItem.addEventListener("mousedown", function(e) {
         // click to draw
         // works with touch
@@ -223,6 +248,7 @@ class App extends Component {
           this.style.opacity = self.state.opacity[i];
         }
       })
+      
     }
   }
 
